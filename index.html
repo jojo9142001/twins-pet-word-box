@@ -1788,7 +1788,7 @@ const getCrystalBallSVG = (isActive) => `
                 }
             },
 
-            restoreBackup: function() {
+            restoreBackup: async function() {
                 const code = document.getElementById('backup-code-input').value.trim();
                 if (!code) { alert("❌ 請先貼上密碼！"); return; }
                 if (confirm(`確定要還原嗎？這會覆蓋掉目前所有的學習進度喔！`)) {
@@ -1803,8 +1803,10 @@ const getCrystalBallSVG = (isActive) => `
 
                         if (parsedData && parsedData.Enid && parsedData.Ian) {
                             this.appData = parsedData;
-                            this.saveData();
-                            alert("🎉 學習紀錄成功恢復囉！畫面將為您重新整理載入。");
+                            this.saveData(false);
+                            this.showSyncToast("☁️ 正在將進度同步至雲端...", 0);
+                            await this.pushToCloud();
+                            alert("🎉 學習紀錄成功恢復，且已同步備份至雲端！畫面將為您重新整理載入。");
                             window.location.reload(); 
                         } else { 
                             throw new Error("格式不正確");
