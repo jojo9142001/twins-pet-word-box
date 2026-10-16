@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎒 My Pet's Word Box 🏰</title>
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+    <style>
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background-color: #FDF8E1; 
+            overscroll-behavior-y: none;
+        }
+        .card-pop { transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card-pop:active { transform: scale(0.95); }
+        .hidden-view { display: none !important; }
+        
+        .super-large-text {
+            font-size: 9rem;
+            line-height: 1.2;
+            font-weight: bold;
+            color: #4A5568;
+            writing-mode: vertical-rl;
+            text-orientation: upright; /* 🌟 加上這行，讓注音符號跟聲調乖乖正面站好！ */
+        }
+
+        /* 🌟 聲調小精靈的專屬位置：跳出隊伍，往右上方移動到注音旁邊！ */
+        .tone-mark {
+            position: absolute;
+            transform: translate(0.8em, -0.5em); /* 🌟 把 0.3em 變大成 0.8em（往右多走幾步），-0.8em 改成 -0.5em（高度稍微對齊） */
+            font-size: 0.75em; /* 把聲調稍微縮小一點點，比例更好看 */
+        }
+
+        /* 寵物大小使用響應式調整，避免手機版太擠 */
+        .pixel-art {
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15));
+            transition: transform 0.2s;
+        }
+        @media (min-width: 768px) {
+            .pixel-art { width: 140px; height: 140px; }
+        }
+
+        .plant-art {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            transition: transform 0.2s, filter 0.2s;
+        }
+        @media (min-width: 768px) {
+            .plant-art { width: 100px; height: 100px; }
+        }
+
+        .plant-active {
+            cursor: pointer;
+            filter: drop-shadow(0 0 15px rgba(236, 201, 75, 0.9));
+            animation: pulse-glow 1.5s infinite;
+        }
+        @keyframes pulse-glow {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+        /* 🌟 相框本身直接卡點換色，連項圈一起變色！ */
+        .rainbow-glow {
+            cursor: pointer;
+        }
+        .rainbow-glow svg rect:first-of-type {
+            animation: frame-color-snap 5s infinite;
+        }
+        @keyframes frame-color-snap {
+            0%, 19.99% { fill: #FF69B4; stroke: #D53F8C; } /* 粉紅 */
+            20%, 39.99% { fill: #F6AD55; stroke: #DD6B20; } /* 橘色 */
+            40%, 59.99% { fill: #F6E05E; stroke: #D69E2E; } /* 金黃 */
+            60%, 79.99% { fill: #68D391; stroke: #38A169; } /* 綠色 */
+            80%, 99.99% { fill: #63B3ED; stroke: #3182CE; } /* 天藍 */
+            100% { fill: #FF69B4; stroke: #D53F8C; }
+        }
+        /* 一般跳躍 */
+        .pet-bounce { animation: bounce 0.4s ease infinite alternate; }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        /* 喝飲料大跳躍 */
+        .pet-mega-bounce { animation: mega-bounce 0.4s ease infinite alternate; }
+        @keyframes mega-bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-45px); }
+        }
+
+        .speech-bubble {
+            position: relative;
+            background: #ffffff;
+            border-radius: 1rem;
+            border: 4px solid #F6AD55;
+            white-space: pre-wrap; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            font-size: 1rem;
+            font-weight: bold;
+            color: #4A5568;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            max-width: 200px;
+        }
+        @media (min-width: 768px) {
+            .speech-bubble {
+                font-size: 1.25rem;
+                padding: 0.75rem 1.25rem;
+                max-width: 250px;
+            }
+        }
+        .speech-bubble:after {
+            content: ''; position: absolute; bottom: -15px; left: 50%;
+            width: 0; height: 0; border: 15px solid transparent;
+            border-top-color: #ffffff; border-bottom: 0; border-left: 0;
+            margin-left: -7px;
+        }
+        .speech-bubble:before {
+            content: ''; position: absolute; bottom: -20px; left: 50%;
+            width: 0; height: 0; border: 20px solid transparent;
+            border-top-color: #F6AD55; border-bottom: 0; border-left: 0;
+            margin-left: -10px;
+        }
+
+        .room-container {
+            position: relative;
+            height: 350px; 
+            background: linear-gradient(to bottom, #FFE4B5 60%, #DEB887 60%);
+            border: 6px solid #D2B48C;
+            border-radius: 2rem;
+            overflow: hidden; 
+        }
+        @media (min-width: 768px) {
+            .room-container { height: 420px; }
+        }
+        .wood-floor-lines {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(139,69,19,0.1) 50px, rgba(139,69,19,0.1) 53px);
+        }
+
+        /* 🐉 新增：龍舟水感滑行的專屬魔法動畫 */
+        @keyframes boat-slide {
+            /* 模擬在水面上微微左右搖晃漂流的感覺 */
+            0% { transform: translateY(-10vh) translateX(0) rotate(-3deg); opacity: 0; }
+            10% { opacity: 1; }
+            25% { transform: translateY(20vh) translateX(20px) rotate(3deg); }
+            50% { transform: translateY(50vh) translateX(-15px) rotate(-2deg); }
+            75% { transform: translateY(80vh) translateX(15px) rotate(3deg); opacity: 1; }
+            100% { transform: translateY(110vh) translateX(0) rotate(-3deg); opacity: 0; }
+        }
+        .dragon-boat-item {
+            position: absolute;
+            top: -10%;
+            z-index: -1; /* 確保在最背景，不會擋到遊戲 */
+            pointer-events: none; /* 確保滑鼠點不到它 */
+            animation: boat-slide linear infinite;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); /* 加點水上倒影的感覺 */
+        }
+
+        /* ☁️ 雲端同步狀態提示元件 */
+        .sync-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #FDBA74;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            box-shadow: 0 4px 15px rgba(234, 88, 12, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #C2410C;
+            z-index: 100;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(12px);
+            pointer-events: none;
+        }
+        .sync-toast.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #FB923C;
+            animation: pulse-dot 1.2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start py-8 px-4 relative overflow-x-hidden">
+
+    <!-- 🌸 新增：這是裝滿康乃馨的隱形大籃子，固定在最背景 -->
+    <div id="flower-container" class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden"></div>
+
+    <!-- ☁️ 雲端同步浮動提示 -->
+    <div id="syncToast" class="sync-toast">
+        <div class="sync-dot"></div>
+        <span id="syncToastText">☁️ 雲端同步中...</span>
+    </div>
+
+    <button id="btn-switch-user" onclick="app.logout()" class="hidden absolute top-4 right-4 md:top-6 md:right-6 bg-white border-2 border-orange-300 text-orange-600 px-4 py-2 md:px-5 md:py-3 rounded-full shadow-md text-sm md:text-xl font-bold flex items-center gap-2 hover:bg-orange-50 z-10 transition-transform active:scale-95">
+        <span id="switcher-avatar" class="text-xl md:text-2xl"></span> Switch challenger
+    </button>
+
+    <header class="text-center mb-6 w-full max-w-xl mt-10 md:mt-12">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-orange-500 tracking-wide drop-shadow-sm mb-2">
+            🎒 My Pet's Word Box
+        </h1>
+        <p id="currentUserDisplay" class="text-xl md:text-2xl text-emerald-600 font-bold h-8"></p>
+    </header>
+
+    <main class="w-full max-w-xl bg-white rounded-3xl shadow-2xl p-4 md:p-8 relative border-4 border-orange-200">
+        
+        <div id="view-profile" class="flex flex-col items-center space-y-8 py-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-700 mb-6">Choose your avatar!</h2>
+            <div class="flex gap-4 md:gap-6 w-full">
+                <button onclick="app.selectProfile('Enid')" class="card-pop flex-1 bg-pink-100 hover:bg-pink-200 border-4 border-pink-300 rounded-3xl p-6 md:p-8 flex flex-col items-center shadow-lg">
+                    <span class="text-6xl md:text-8xl mb-4">👧</span>
+                    <span class="text-2xl md:text-4xl font-bold text-pink-700">Enid</span>
+                </button>
+                <button onclick="app.selectProfile('Ian')" class="card-pop flex-1 bg-blue-100 hover:bg-blue-200 border-4 border-blue-300 rounded-3xl p-6 md:p-8 flex flex-col items-center shadow-lg">
+                    <span class="text-6xl md:text-8xl mb-4">👦</span>
+                    <span class="text-2xl md:text-4xl font-bold text-blue-700">Ian</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="view-menu" class="hidden-view flex flex-col items-center space-y-6 py-4">
+            <button onclick="app.showLessonSelect()" class="card-pop w-full bg-orange-100 hover:bg-orange-200 border-4 border-orange-300 rounded-3xl p-4 md:p-6 flex items-center justify-start shadow-md">
+                <span class="text-5xl md:text-6xl mr-4 md:mr-6">⚔️</span>
+                <div class="text-left">
+                    <div class="text-xl md:text-3xl font-bold text-orange-800 mb-1">單課練習模式</div>
+                    <div class="text-sm md:text-xl text-orange-600 font-bold">先考注音，再考國字！</div>
+                </div>
+            </button>
+
+            <button onclick="app.showBoxes()" class="card-pop w-full bg-emerald-100 hover:bg-emerald-200 border-4 border-emerald-300 rounded-3xl p-4 md:p-6 flex items-center justify-start shadow-md relative">
+                <span class="text-5xl md:text-6xl mr-4 md:mr-6">📦</span>
+                <div class="text-left">
+                    <div class="text-xl md:text-3xl font-bold text-emerald-800 mb-1">記憶寶盒 (四大分類)</div>
+                    <div class="text-sm md:text-xl text-emerald-600 font-bold">打擊弱點，消滅錯題！</div>
+                </div>
+            </button>
+
+            <button onclick="app.showStats()" class="card-pop w-full bg-purple-100 hover:bg-purple-200 border-4 border-purple-300 rounded-3xl p-4 md:p-6 flex items-center justify-start shadow-md relative mt-2 md:mt-4">
+                <span class="text-5xl md:text-6xl mr-4 md:mr-6">🐾</span>
+                <div class="text-left">
+                    <div class="text-xl md:text-3xl font-bold text-purple-800 mb-1">My Pet Room & Stats</div>
+                    <div class="text-sm md:text-xl text-purple-600 font-bold">餵寵物、喝飲料、看成績！</div>
+                </div>
+            </button>
+        </div>
+
+        <div id="view-boxes" class="hidden-view flex flex-col items-center w-full">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">📦 點擊寶盒開始複習</h2>
+            <div class="w-full space-y-4 mb-8">
+                <button onclick="app.startBoxReview(1)" class="card-pop w-full bg-red-50 border-4 border-red-300 rounded-3xl p-4 md:p-5 flex items-center justify-between shadow-sm">
+                    <div class="text-left flex items-center"><span class="text-4xl md:text-5xl mr-3 md:mr-4">🔴</span><div><div class="text-xl md:text-2xl font-bold text-red-800">Box 1</div><div class="text-sm md:text-lg text-red-600 font-bold">每天複習 (最不熟)</div></div></div>
+                    <div class="text-3xl md:text-4xl font-black text-red-600 bg-white px-4 md:px-6 py-2 rounded-2xl shadow-inner border-2 border-red-100"><span id="box-count-1">0</span></div>
+                </button>
+                <button onclick="app.startBoxReview(2)" class="card-pop w-full bg-orange-50 border-4 border-orange-300 rounded-3xl p-4 md:p-5 flex items-center justify-between shadow-sm">
+                    <div class="text-left flex items-center"><span class="text-4xl md:text-5xl mr-3 md:mr-4">🟠</span><div><div class="text-xl md:text-2xl font-bold text-orange-800">Box 2</div><div class="text-sm md:text-lg text-orange-600 font-bold">每週兩天複習</div></div></div>
+                    <div class="text-3xl md:text-4xl font-black text-orange-600 bg-white px-4 md:px-6 py-2 rounded-2xl shadow-inner border-2 border-orange-100"><span id="box-count-2">0</span></div>
+                </button>
+                <button onclick="app.startBoxReview(3)" class="card-pop w-full bg-blue-50 border-4 border-blue-300 rounded-3xl p-4 md:p-5 flex items-center justify-between shadow-sm">
+                    <div class="text-left flex items-center"><span class="text-4xl md:text-5xl mr-3 md:mr-4">🔵</span><div><div class="text-xl md:text-2xl font-bold text-blue-800">Box 3</div><div class="text-sm md:text-lg text-blue-600 font-bold">每週一次複習</div></div></div>
+                    <div class="text-3xl md:text-4xl font-black text-blue-600 bg-white px-4 md:px-6 py-2 rounded-2xl shadow-inner border-2 border-blue-100"><span id="box-count-3">0</span></div>
+                </button>
+                <button onclick="app.startBoxReview(4)" class="card-pop w-full bg-green-50 border-4 border-green-300 rounded-3xl p-4 md:p-5 flex items-center justify-between shadow-sm">
+                    <div class="text-left flex items-center"><span class="text-4xl md:text-5xl mr-3 md:mr-4">🟢</span><div><div class="text-xl md:text-2xl font-bold text-green-800">Box 4</div><div class="text-sm md:text-lg text-green-600 font-bold">每兩週一次複習</div></div></div>
+                    <div class="text-3xl md:text-4xl font-black text-green-600 bg-white px-4 md:px-6 py-2 rounded-2xl shadow-inner border-2 border-green-100"><span id="box-count-4">0</span></div>
+                </button>
+            </div>
+            <button onclick="app.showView('view-menu')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 md:px-10 py-3 md:py-4 text-lg md:text-2xl rounded-full font-bold shadow-md">返回主選單</button>
+        </div>
+
+        <div id="view-lesson-select" class="hidden-view flex flex-col items-center">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-700 mb-6">請選擇要挑戰的關卡</h2>
+            <div id="lesson-list" class="w-full space-y-4 overflow-y-auto max-h-[60vh] p-2"></div>
+            <button onclick="app.showView('view-menu')" class="mt-8 bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 md:px-10 py-3 md:py-4 text-lg md:text-2xl rounded-full font-bold shadow-md">返回主選單</button>
+        </div>
+
+        <div id="view-card" class="hidden-view flex flex-col items-center w-full">
+            <div class="w-full flex justify-between items-center text-lg md:text-xl font-bold text-gray-500 mb-4">
+                <span id="card-mode-title" class="bg-blue-100 text-blue-700 px-3 py-1 md:px-4 md:py-2 rounded-full border-2 border-blue-200">單課練習</span>
+                <span id="card-progress" class="bg-white border-2 border-gray-200 px-3 py-1 md:px-4 md:py-2 rounded-full">1 / 10</span>
+            </div>
+            <div id="phase-badge" class="hidden w-full text-center bg-orange-100 text-orange-700 text-base md:text-xl font-bold py-2 md:py-3 mb-4 rounded-2xl border-4 border-orange-200 shadow-sm"></div>
+
+            <div class="text-center w-full flex flex-col justify-center items-center bg-gray-50 rounded-3xl border-4 border-gray-200 p-6 md:p-8 mb-6 min-h-[200px] md:min-h-[250px] shadow-inner">
+                <p id="question-instruction" class="text-xl md:text-2xl text-gray-600 font-bold mb-4 md:mb-6"></p>
+                <div id="question-display" class="super-large-text text-indigo-700 font-sans tracking-widest"></div>
+            </div>
+
+            <button id="btn-show-answer" onclick="app.revealAnswer()" class="card-pop w-full bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold text-2xl md:text-3xl py-5 md:py-6 rounded-3xl border-4 border-yellow-300 mb-6 shadow-md">
+                👀 點我看解答
+            </button>
+
+            <div id="answer-details" class="w-full hidden justify-around items-end mb-6 bg-green-50 rounded-3xl p-4 md:p-6 border-4 border-green-200 shadow-sm">
+                <div class="text-center"><div class="text-base md:text-xl text-gray-500 font-bold mb-1 md:mb-2">國字</div><div id="ans-char" class="text-5xl md:text-6xl font-bold text-gray-800"></div></div>
+                <div class="text-center"><div class="text-base md:text-xl text-gray-500 font-bold mb-1 md:mb-2">注音</div><div id="ans-pinyin" class="text-3xl md:text-4xl font-bold text-blue-600"></div></div>
+                <div class="text-center"><div class="text-base md:text-xl text-gray-500 font-bold mb-1 md:mb-2">部首</div><div id="ans-radical" class="text-3xl md:text-4xl font-bold text-red-500"></div></div>
+                <div class="text-center"><div class="text-base md:text-xl text-gray-500 font-bold mb-1 md:mb-2">筆劃</div><div id="ans-strokes" class="text-3xl md:text-4xl font-bold text-orange-500"></div></div>
+            </div>
+
+            <div class="w-full bg-white border-4 border-gray-200 rounded-3xl p-4 md:p-6 shadow-md">
+                <div class="flex w-full gap-3 md:gap-4 mb-4">
+                    <button onclick="app.gradeAnswer(false, false)" class="card-pop flex-1 bg-red-100 hover:bg-red-200 border-4 border-red-300 text-red-700 font-bold text-xl md:text-2xl py-4 md:py-5 rounded-2xl flex flex-col items-center justify-center">
+                        <span>❌ 答錯了</span>
+                        <span class="text-xs md:text-base font-normal mt-1">(退一格)</span>
+                    </button>
+                    <button onclick="app.gradeAnswer(true, false)" class="card-pop flex-[1.5] bg-green-100 hover:bg-green-200 border-4 border-green-300 text-green-700 font-bold text-xl md:text-2xl py-4 md:py-5 rounded-2xl shadow-md flex flex-col items-center justify-center relative">
+                        <span>✅ 答對了</span>
+                        <span class="text-sm md:text-lg font-bold mt-1 md:mt-2 text-orange-700 bg-orange-200 px-3 md:px-4 py-1 rounded-full shadow-sm">Collect Cookie 🍪</span>
+                    </button>
+                </div>
+                
+                <div class="flex w-full gap-3 md:gap-4">
+                    <button onclick="app.gradeAnswer(true, false, true)" class="card-pop flex-1 bg-cyan-100 hover:bg-cyan-200 border-4 border-cyan-300 text-cyan-800 font-bold py-3 md:py-4 rounded-2xl flex flex-col items-center justify-center shadow-sm">
+                        <span>🤔 算對，但想多練</span>
+                        <span class="text-sm md:text-base font-normal mt-1">(Keep in this box)</span>
+                    </button>
+                </div>
+            </div>
+
+            <button onclick="app.exitCardSession()" class="mt-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 md:px-10 py-3 md:py-4 text-lg md:text-2xl rounded-full font-bold shadow-md">
+                返回上一頁
+            </button>
+        </div>
+
+        <div id="view-end" class="hidden-view flex flex-col items-center text-center py-10">
+            <div class="text-7xl md:text-8xl mb-8">🎉</div>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">任務完成！</h2>
+            <p id="end-message" class="text-2xl md:text-3xl text-gray-600 mb-12 font-bold"></p>
+            <button onclick="app.showView('view-menu')" class="card-pop bg-blue-500 hover:bg-blue-600 text-white font-bold text-2xl md:text-3xl px-10 md:px-12 py-4 md:py-5 rounded-full shadow-xl">
+                返回主選單
+            </button>
+        </div>
+
+
+<div id="view-stats" class="hidden-view flex flex-col items-center w-full">
+            <div class="w-full room-container mb-8 shadow-2xl relative">
+
+                    <div class="absolute top-4 left-4 md:left-6 z-10 w-24 md:w-36">
+
+
+                    <div id="room-picture-frame" class="w-full relative z-10"></div>
+                </div>
+
+                <div class="wood-floor-lines z-0"></div>
+                <div id="poop-container" class="absolute bottom-0 left-0 w-full h-[50%] z-20 pointer-events-none"></div>
+                <div id="peep-container" class="absolute bottom-0 left-0 w-full h-[50%] z-20 pointer-events-none"></div>
+
+                <div class="absolute top-4 right-4 md:right-6 z-10 w-[55%] md:w-[60%] flex flex-col gap-1">
+                    <div class="w-full bg-cyan-100 rounded-full h-5 md:h-6 border-2 border-cyan-400 relative overflow-hidden shadow-inner">
+                        <div id="ui-gem-bar" class="bg-cyan-500 h-full transition-all duration-500" style="width: 0%"></div>
+                        <span id="ui-gem-text" class="absolute inset-0 text-[11px] md:text-sm lg:text-base font-bold text-cyan-900 flex justify-center items-center drop-shadow-sm whitespace-nowrap">week mission: 💎 0/50</span>
+                    </div>
+                    <div class="w-full flex justify-evenly px-1 z-20 mt-1">
+                        <span id="ui-star-1" class="text-gray-300 text-[10px] md:text-sm transform -rotate-6 transition-all duration-300 grayscale opacity-40">⭐</span>
+                        <span id="ui-star-2" class="text-gray-300 text-[10px] md:text-sm transform rotate-12 transition-all duration-300 grayscale opacity-40">⭐</span>
+                        <span id="ui-star-3" class="text-gray-300 text-[10px] md:text-sm transform -rotate-12 transition-all duration-300 grayscale opacity-40">⭐</span>
+                        <span id="ui-star-4" class="text-gray-300 text-[10px] md:text-sm transform rotate-6 transition-all duration-300 grayscale opacity-40">⭐</span>
+                        <span id="ui-star-5" class="text-gray-300 text-[10px] md:text-sm transform -rotate-6 transition-all duration-300 grayscale opacity-40">⭐</span>
+                        <span id="ui-star-6" class="text-gray-300 text-[10px] md:text-sm transform rotate-12 transition-all duration-300 grayscale opacity-40">⭐</span>
+                        <span id="ui-star-7" class="text-gray-300 text-[10px] md:text-sm transform -rotate-12 transition-all duration-300 grayscale opacity-40">⭐</span>
+                    </div>
+                </div>
+
+  
+                <div class="relative z-10 flex justify-between h-full px-2 md:px-4 pt-4 pb-2">
+                    <div class="w-1/3 flex flex-col justify-end items-center pb-2 md:pb-4 gap-3">
+                        <div id="crystal-ball" class="plant-art" onclick="app.startStrokeQuest()"></div>
+                        <div id="m-plant" class="plant-art" onclick="app.startMathQuest()"></div>
+                    </div>
+
+
+                    <div class="w-1/3 flex flex-col justify-end items-center pb-4 md:pb-6">
+                        <div id="room-speech" class="speech-bubble mb-4 md:mb-6 opacity-0 transition-opacity duration-300 z-30">Hello!</div>
+                        <div id="room-pet-container" class="mt-auto z-10"></div>
+                    </div>
+                    <div class="w-1/3 flex flex-col justify-center items-center pb-2 md:pb-4 gap-3 md:gap-4 h-full mt-10">
+                        <div class="flex flex-col items-center bg-white bg-opacity-90 p-2 md:p-3 rounded-2xl border-4 border-orange-200 shadow-md w-full max-w-[160px]">
+                            <div class="flex justify-center items-center gap-1 md:gap-3 mb-2 w-full">
+                                <span class="text-3xl md:text-5xl filter drop-shadow-md">🍪</span>
+                                <span class="text-2xl md:text-4xl font-black text-orange-700">x<span id="ui-cookies-count" class="ml-1">0</span></span>
+                            </div>
+                             <div class="flex w-full px-1 mt-1">
+                                <button onclick="app.feedCookie(1)" class="card-pop w-full bg-orange-400 text-white font-bold text-sm md:text-lg py-2 rounded-lg shadow border-2 border-orange-500">Feed 1 🍪</button>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-center bg-white bg-opacity-90 p-2 md:p-3 rounded-2xl border-4 border-blue-200 shadow-md w-full max-w-[160px]">
+                            <div class="flex justify-center items-center gap-1 md:gap-3 mb-2 w-full">
+                                <span id="ui-drink-icon" class="text-3xl md:text-5xl filter drop-shadow-md">🥛</span>
+                                <span class="text-2xl md:text-4xl font-black text-blue-700">x<span id="ui-drinks-count" class="ml-1">0</span></span>
+                            </div>
+                                <div class="flex w-full px-1 mt-1">
+                                <button onclick="app.drinkEnergy(1)" class="card-pop w-full bg-blue-400 text-white font-bold text-sm md:text-lg py-2 rounded-lg shadow border-2 border-blue-500">Drink 1 🥛</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <div class="w-full bg-white border-4 border-blue-100 rounded-3xl p-5 md:p-6 mb-6 shadow-md mt-6">
+                <h3 class="font-bold text-gray-700 text-2xl md:text-3xl mb-4 border-b-4 border-blue-50 pb-3">🏆 Learning Stats</h3>
+                <div class="grid grid-cols-2 gap-4 md:gap-6 mb-6">
+                    <div class="bg-gray-50 border-4 border-gray-200 rounded-3xl p-4 md:p-5 text-center">
+                        <div class="text-4xl md:text-5xl font-black text-indigo-600 mb-1 md:mb-2" id="stat-total">0</div>
+                        <div class="text-sm md:text-xl text-gray-500 font-bold">Total Practiced</div>
+                    </div>
+                    <div class="bg-amber-50 border-4 border-amber-200 rounded-3xl p-4 md:p-5 text-center">
+                        <div class="text-4xl md:text-5xl font-black text-amber-500 mb-1 md:mb-2" id="stat-mastered">0</div>
+                        <div class="text-sm md:text-xl text-gray-500 font-bold">✨ Mastered</div>
+                    </div>
+                </div>
+                <div class="space-y-3 md:space-y-4 text-base md:text-xl text-gray-600 font-bold bg-gray-50 p-4 md:p-6 rounded-3xl border-4 border-gray-200">
+                    <div class="flex justify-between"><span>Box 1 (Daily):</span> <span id="stat-box1" class="text-red-500 text-xl md:text-3xl">0</span></div>
+                    <div class="flex justify-between"><span>Box 2 (3 days):</span> <span id="stat-box2" class="text-orange-500 text-xl md:text-3xl">0</span></div>
+                    <div class="flex justify-between"><span>Box 3 (Weekly):</span> <span id="stat-box3" class="text-blue-500 text-xl md:text-3xl">0</span></div>
+                    <div class="flex justify-between"><span>Box 4 (Bi-weekly):</span> <span id="stat-box4" class="text-green-500 text-xl md:text-3xl">0</span></div>
+                </div>
+            </div>
+           <div class="w-full bg-white border-4 border-pink-100 rounded-3xl p-5 md:p-6 mb-6 shadow-md mt-6">
+                <h3 class="font-bold text-gray-700 text-2xl md:text-3xl mb-4 border-b-4 border-pink-50 pb-3">🎬 My Video Collection</h3>
+                <div id="video-collection-list" class="flex flex-col gap-3">
+                    </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+
+            <div class="w-full bg-gray-50 border-4 border-gray-200 rounded-3xl p-5 md:p-6 mb-6">
+                <h3 class="font-bold text-gray-700 mb-3 md:mb-4 border-b-2 border-gray-300 pb-2 text-xl md:text-2xl">🛡️ Backup & Restore</h3>
+
+                <textarea id="backup-code-input" rows="2" class="w-full text-base md:text-lg border-4 border-gray-300 rounded-2xl p-3 md:p-4 mb-4 focus:outline-none focus:border-indigo-400" placeholder="Paste code here..."></textarea>
+                <div class="flex gap-3 md:gap-4">
+                    <button onclick="app.generateBackup()" class="flex-1 bg-indigo-100 text-indigo-800 font-bold py-3 md:py-4 rounded-2xl text-base md:text-xl border-4 border-indigo-200 shadow-sm">Generate Code</button>
+                    <button onclick="app.restoreBackup()" class="flex-1 bg-teal-100 text-teal-800 font-bold py-3 md:py-4 rounded-2xl text-base md:text-xl border-4 border-teal-200 shadow-sm">Restore</button>
+                </div>
+            </div>
+
+            <button onclick="app.showView('view-menu')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-10 md:px-12 py-4 md:py-5 rounded-full text-xl md:text-2xl font-bold shadow-lg mb-8">返回主選單</button>
+        </div>
+
+    </main>
+<div id="math-modal" class="hidden-view fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 px-4">
+        <div class="bg-white rounded-[2.5rem] p-8 md:p-10 max-w-md w-full text-center shadow-2xl border-8 border-indigo-400">
+            <h3 class="text-3xl md:text-4xl font-black text-indigo-700 mb-6">✨ Math Quest ✨</h3>
+            <div class="text-6xl md:text-7xl font-black text-gray-800 mb-8 md:mb-10 tracking-widest mt-4" id="math-question">7 x 8 = ?</div>
+            <input type="number" inputmode="numeric" pattern="[0-9]*" id="math-answer-input" class="w-32 md:w-40 text-center text-5xl md:text-6xl font-bold border-b-8 border-indigo-300 focus:outline-none focus:border-indigo-500 mb-6 pb-2 text-indigo-900 bg-gray-50 rounded-xl" placeholder="?" onkeypress="if(event.key==='Enter') app.checkMathAnswer()">
+            <p id="math-feedback" class="text-red-500 text-xl md:text-2xl font-bold mb-6 md:mb-8 h-8"></p>
+            <div class="flex gap-4">
+                <button onclick="document.getElementById('math-modal').classList.add('hidden-view')" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-xl md:text-2xl py-4 md:py-5 rounded-2xl">Later</button>
+                <button onclick="app.checkMathAnswer()" class="flex-[2] bg-indigo-500 hover:bg-indigo-600 text-white font-bold text-2xl md:text-3xl py-4 md:py-5 rounded-2xl shadow-xl">Check!</button>
+            </div>
+        </div>
+    </div>
+    <div id="stroke-modal" class="hidden-view fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 px-4">
+        <div class="bg-white rounded-[2.5rem] p-8 md:p-10 max-w-md w-full text-center shadow-2xl border-8 border-purple-400">
+            <h3 class="text-3xl md:text-4xl font-black text-purple-700 mb-6">🔮 Crystal Ball Quest 🔮</h3>
+            <p class="text-xl md:text-2xl text-gray-600 font-bold mb-2">請問這個國字有幾畫？</p>
+            <div class="text-7xl md:text-8xl font-black text-gray-800 mb-6 md:mb-8 tracking-widest mt-2" id="stroke-question">國</div>
+            <input type="number" inputmode="numeric" pattern="[0-9]*" id="stroke-answer-input" class="w-32 md:w-40 text-center text-5xl md:text-6xl font-bold border-b-8 border-purple-300 focus:outline-none focus:border-purple-500 mb-6 pb-2 text-purple-900 bg-gray-50 rounded-xl" placeholder="?" onkeypress="if(event.key==='Enter') app.checkStrokeAnswer()">
+            <p id="stroke-feedback" class="text-red-500 text-xl md:text-2xl font-bold mb-6 md:mb-8 h-8"></p>
+            <div class="flex gap-4">
+                <button onclick="document.getElementById('stroke-modal').classList.add('hidden-view')" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-xl md:text-2xl py-4 md:py-5 rounded-2xl">Later</button>
+                <button onclick="app.checkStrokeAnswer()" class="flex-[2] bg-purple-500 hover:bg-purple-600 text-white font-bold text-2xl md:text-3xl py-4 md:py-5 rounded-2xl shadow-xl">Look Into It!</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="praise-modal" class="hidden-view fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 px-4">
+        <div class="bg-transparent max-w-sm w-full text-center flex flex-col items-center">
+            <div class="speech-bubble mb-10 shadow-2xl text-xl md:text-2xl font-bold text-gray-800 w-full max-w-[300px]"><span id="praise-text"></span></div>
+            <div id="praise-pet-container" class="mb-8 transform scale-125 drop-shadow-2xl"></div>
+            <button onclick="app.closePraiseAndContinue()" class="card-pop w-full bg-green-500 hover:bg-green-600 text-white font-bold text-2xl md:text-3xl py-4 md:py-5 px-10 rounded-full shadow-2xl border-4 border-white mt-6">
+                繼續挑戰！🚀
+            </button>
+        </div>
+    </div>
+
+    <div id="custom-modal" class="hidden-view fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 px-4">
+        <div class="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full text-center shadow-2xl border-8 border-yellow-400">
+            <div id="modal-icon" class="text-6xl md:text-7xl mb-4">✨</div>
+            <h3 id="modal-title" class="text-2xl md:text-3xl font-bold text-gray-800 mb-4"></h3>
+            <p id="modal-text" class="text-lg md:text-xl text-gray-600 mb-6 md:mb-8 font-bold leading-relaxed"></p>
+            <button onclick="document.getElementById('custom-modal').classList.add('hidden-view')" class="card-pop bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold text-xl md:text-2xl py-3 md:py-4 px-10 rounded-full shadow-lg w-full">
+                OK!
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const STROKE_DICT = {
+            /* 一年級原本的筆畫資料 */
+            "一":1, "二":2, "三":3, "四":5, "五":4, "六":4, "七":2, "八":2, "九":2, "十":2,
+            "拍":8, "手":4, "左":5, "右":5, "你":7, "他":5, "也":3, "上":3, "下":3,
+            "這":11, "是":9, "誰":15, "的":8, "我":7, "分":4, "好":6, "了":2, "啊":11, "多":6, "個":10,
+            "秋":9, "千":3, "和":8, "玩":8, "陪":15, "高":10, "山":3, "到":8, "大":3, "海":10, "朋":8, "友":4, "們":10, "起":10,
+            "子":3, "小":3, "課":15, "兩":8, "人":2, "拉":8, "看":9, "找":7, "隻":10, "青":8, "蛙":12, "開":12, "心":4,
+            "比":4, "門":8, "裡":13, "外":5, "有":6, "什":4, "麼":14, "不":4, "同":6, "早":6, "晚":11, "王":4, "主":5, "又":2,
+            "路":13, "長":8, "白":5, "花":8, "紅":9, "走":7, "在":6, "向":6, "說":14, "朵":6, "從":11, "頭":16, "那":7,
+            "要":9, "靜":14, "天":4, "空":8, "雲":12, "水":4, "蟲":18, "鳥":11, "草":10, "先":6, "完":7, "再":6, "去":5,
+            "園":13, "聽":22, "沒":7, "正":5, "唱":11, "著":12, "輕":14, "快":7, "歌":14, "出":5, "新":13, "芽":8, "聞":14, "身":7, "香":9, "呢":8,
+            "媽":13, "音":9, "樂":15, "會":13, "始":8, "來":8, "重":9, "短":12, "陣":10, "過":13, "後":9, "吃":6, "菜":12, "就":12, "桌":10, "真":10,
+            "鞋":15, "回":6, "家":10, "把":7, "脫":11, "爸":8, "靠":15, "見":7, "像":14, "船":11, "港":12, "口":3, "享":8, "受":8, "溫":13, "暖":13,
+            "種":14, "問":11, "怎":9, "做":11, "它":5, "才":3, "需":14, "於":8, "澆":15, "陽":12, "光":6, "放":8, "院":10, "公":4, "話":13, "伴":7,
+            "奶":5, "跟":13, "班":10, "床":7, "弟":7, "她":6, "酒":10, "拿":10, "卡":5, "片":4, "給":12, "寫":15, "歡":22, "您":11,
+            "作":7, "夢":14, "躺":15, "自":6, "己":3, "變":23, "成":7, "棉":12, "糖":16, "黑":12, "鵝":18, "更":7, "得":11, "漂":14, "亮":9,
+            "妹":8, "雨":8, "雙":18, "穿":9, "滴":14, "遊":13, "戲":17, "顆":17, "珍":9, "珠":10, "落":13, "面":9, "魚":11, "缸":9, "金":8, "游":12,
+            "彩":11, "虹":9, "太":4, "國":11, "掃":11, "除":10, "洗":9, "淨":11, "馬":10, "低":7, "刷":8, "樹":16, "葉":13, "很":9, "認":14, "送":10,
+            "地":6, "化":4, "趣":15, "線":15, "風":9, "箏":14, "升":4, "神":10, "奇":8, "跑":12, "跳":13, "笑":10, "每":7, "件":6, "事":8, "情":11,
+            "生":5, "日":4, "今":4, "記":10, "時":10, "知":8, "道":13, "嗎":13, "學":16, "收":6, "張":11, "祝":10, "福":14, "第":11, "次":6, "謝":17,
+            "想":13, "燈":16, "前":9, "點":17, "半":5, "清":11, "楚":13, "停":11, "休":6, "息":10, "兒":8, "吧":7, "幫":17, "加":5, "油":8, "慢":14,
+            /* 🌟 二年級上學期新增的筆畫資料 */
+            "年":6, "希":7, "望":11, "坐":7, "位":7, "本":5, "淡":11, "書":10, "老":6, "師":10, "以":5, "為":9, "故":9, "用":5, "力":2, "只":5, "現":11, "還":17,
+            "全":6, "煎":13, "蛋":11, "圓":13, "番":12, "茄":9, "切":4, "輪":15, "吐":6, "司":5, "夾":7, "中":4, "方":4, "城":9, "堡":12, "接":11, "畫":12, "臉":17,
+            "巷":9, "叔":8, "貓":15, "屋":9, "捧":11, "蝴":15, "蝶":15, "忙":6, "娶":11, "娘":10, "黃":12, "筆":12, "打":5, "扮":7, "樣":15, "越":12, "美":9, "麗":19,
+            "運":13, "動":11, "飄":20, "熱":15, "鬧":15, "舞":14, "哇":9, "往":8, "容":10, "步":7, "汗":6, "腳":13, "協":8, "聲":17, "河":8, "氣":10, "最":12, "可":5,
+            "竹":6, "籃":20, "鄉":11, "南":9, "暑":12, "假":11, "帶":11, "等":12, "跨":13, "划":6, "吹":7, "邊":19, "叫":5, "原":10, "近":8, "活":9, "識":19,
+            "鎮":18, "餅":15, "節":13, "埔":10, "因":6, "此":6, "進":11, "排":11, "遠":14, "色":6, "愛":13, "月":4, "乾":11, "甜":11, "客":9, "買":12, "親":16, "如":6, "意":13,
+            "衣":6, "胖":9, "簡":18, "單":12, "聰":17, "明":8, "針":10, "臣":6, "東":8, "西":6, "敢":12, "直":8, "棒":12, "街":12, "滿":14, "眼":11, "哪":10, "思":9,
+            "渴":12, "烏":10, "喝":12, "瓶":11, "法":8, "森":12, "林":8, "旅":10, "行":6, "物":8, "午":4, "裝":13, "許":11, "石":5, "難":19, "忘":7, "哈":9, "但":7,
+            "象":12, "操":16, "粗":11, "腿":13, "柱":9, "砍":9, "幾":12, "部":11, "搖":13, "沖":7, "首":9, "牽":11, "沉":7, "少":4, "沿":8, "然":12, "紀":9, "竟":11,
+            "雪":11, "梨":11, "夜":8, "卻":9, "冷":7, "冬":5, "臺":14, "季":8, "相":9, "反":4, "煙":13, "火":4, "待":9, "雖":17, "春":9, "貨":11, "期":12, "飯":13,
+            "皮":5, "具":8, "飛":9, "者":8, "洋":9, "寒":12, "北":5, "嘴":16, "伸":7, "飽":13, "沙":7, "急":9, "服":8, "站":10, "翅":10, "膀":14, "充":6, "念":8,
+            "灰":6, "涼":11, "牠":7, "鼓":13, "絡":12, "欣":8, "發":12, "居":8, "冒":9, "冰":6, "圍":12, "咪":9, "幸":8, "團":14, "聚":14, "愉":12, "鍋":17, "妙":7
+        };
+
+        const RAW_DB = [
+            /* 一年級原本的課文資料 */
+            ["00. 一上_準備週", "一:ㄧ:一,二:ㄦˋ:二,三:ㄙㄢ:一,四:ㄙˋ:囗,五:ㄨˇ:二,六:ㄌㄧㄡˋ:八,七:ㄑㄧ:一,八:ㄅㄚ:八,九:ㄐㄧㄡˇ:乙,十:ㄕˊ:十"],
+            ["01. 一上_1.拍手", "拍:ㄆㄞ:手,手:ㄕㄡˇ:手,左:ㄗㄨㄛˇ:工,右:ㄧㄡˋ:口,你:ㄋㄧˇ:人,他:ㄊㄚ:人,也:ㄧㄝˇ:乙,上:ㄕㄤˋ:一,下:ㄒㄧㄚˋ:一"],
+            ["02. 一上_2.這是誰的", "這:ㄓㄜˋ:辵,是:ㄕˋ:日,誰:ㄕㄟˊ:言,的:ㄉㄜ˙:白,我:ㄨㄛˇ:戈,分:ㄈㄣ:刀,好:ㄏㄠˇ:女,了:ㄌㄜ˙:亅,啊:ㄚ˙:口,多:ㄉㄨㄛ:夕,個:ㄍㄜ˙:人"],
+            ["03. 一上_3.秋千", "秋:ㄑㄧㄡ:禾,千:ㄑㄧㄢ:十,和:ㄏㄢˋ:口,玩:ㄨㄢˊ:玉,陪:ㄆㄟˊ:阜,高:ㄍㄠ:高,山:ㄕㄢ:山,到:ㄉㄠˋ:刀,大:ㄉㄚˋ:大,海:ㄏㄞˇ:水,朋:ㄆㄥˊ:月,友:ㄧㄡˇ:又,們:ㄇㄣ˙:人,起:ㄑㄧˇ:走"],
+            ["04. 一上_4.小青蛙", "子:ㄗˇ:子,小:ㄒㄧㄠˇ:小,課:ㄎㄜˋ:言,兩:ㄌㄧㄤˇ:入,人:ㄖㄣˊ:人,拉:ㄌㄚ:手,看:ㄎㄢˋ:目,找:ㄓㄠˇ:手,隻:ㄓ:隹,青:ㄑㄧㄥ:青,蛙:ㄨㄚ:虫,開:ㄎㄞ:門,心:ㄒㄧㄣ:心"],
+            ["05. 一上_5.比一比", "比:ㄅㄧˇ:比,門:ㄇㄣˊ:門,裡:ㄌㄧˇ:衣,外:ㄨㄞˋ:夕,有:ㄧㄡˇ:月,什:ㄕㄜˊ:人,麼:ㄇㄜ˙:麻,不:ㄅㄨˋ:一,同:ㄊㄨㄥˊ:口,早:ㄗㄠˇ:日,晚:ㄨㄢˇ:日,王:ㄨㄤˊ:玉,主:ㄓㄨˇ:丶,又:ㄧㄡˋ:又"],
+            ["06. 一上_6.花朵", "路:ㄌㄨˋ:足,長:ㄔㄤˊ:長,白:ㄅㄞˊ:白,花:ㄏㄨㄚ:艸,紅:ㄏㄨㄥˊ:糸,走:ㄗㄡˇ:走,在:ㄗㄞˋ:土,向:ㄒㄧㄤˋ:口,說:ㄕㄨㄛ:言,朵:ㄉㄨㄛˇ:木,從:ㄘㄨㄥˊ:彳,頭:ㄊㄡˊ:頁,那:ㄋㄚˋ:邑"],
+            ["07. 一下_1.春天來了", "要:ㄧㄠˋ:襾,靜:ㄐㄧㄥˋ:青,天:ㄊㄧㄢ:大,空:ㄎㄨㄥ:穴,雲:ㄩㄣˊ:雨,水:ㄕㄨㄟˇ:水,蟲:ㄔㄨㄥˊ:虫,鳥:ㄋㄧㄠˇ:鳥,草:ㄘㄠˇ:艸,先:ㄒㄧㄢ:儿,完:ㄨㄢˊ:宀,再:ㄗㄞˋ:冂,去:ㄑㄩˋ:厶"],
+            ["08. 一下_2.唱歌", "園:ㄩㄢˊ:囗,聽:ㄊㄧㄥ:耳,沒:ㄇㄟˊ:水,正:ㄓㄥˋ:止,唱:ㄔㄤˋ:口,著:ㄓㄜ˙:艸,輕:ㄑㄧㄥ:車,快:ㄎㄨㄞˋ:心,歌:ㄍㄜ:欠,出:ㄔㄨ:凵,新:ㄒㄧㄣ:斤,芽:ㄧㄚˊ:艸,聞:ㄨㄣˊ:耳,身:ㄕㄣ:身,香:ㄒㄧㄤ:香,呢:ㄋㄜ˙:口"],
+            ["09. 一下_3.媽媽", "媽:ㄇㄚ:女,音:ㄧㄣ:音,樂:ㄩㄝˋ:木,會:ㄏㄨㄟˋ:曰,始:ㄕˇ:女,來:ㄌㄞˊ:人,重:ㄓㄨㄥˋ:里,短:ㄉㄨㄢˇ:矢,陣:ㄓㄣˋ:阜,過:ㄍㄨㄛˋ:辵,後:ㄏㄡˋ:彳,吃:ㄔ:口,菜:ㄘㄞˋ:艸,就:ㄐㄧㄡˋ:尢,桌:ㄓㄨㄛ:木,真:ㄓㄣ:目"],
+            ["10. 一下_4.回家", "鞋:ㄒㄧㄝˊ:革,回:ㄏㄨㄟˊ:囗,家:ㄐㄧㄚ:宀,把:ㄅㄚˇ:手,脫:ㄊㄨㄛ:肉,爸:ㄅㄚˋ:父,靠:ㄎㄠˋ:非,見:ㄐㄧㄢˋ:見,像:ㄒㄧㄤˋ:人,船:ㄔㄨㄢˊ:舟,港:ㄍㄤˇ:水,口:ㄎㄡˇ:口,享:ㄒㄧㄤˇ:亠,受:ㄕㄡˋ:又,溫:ㄨㄣ:水,暖:ㄋㄨㄢˇ:日"],
+            ["11. 一下_5.種子", "種:ㄓㄨㄥˇ:禾,問:ㄨㄣˋ:口,怎:ㄗㄣˇ:心,做:ㄗㄨㄛˋ:人,它:ㄊㄚ:宀,才:ㄘㄞˊ:手,需:ㄒㄩ:雨,於:ㄩˊ:方,澆:ㄐㄧㄠ:水,陽:ㄧㄤˊ:阜,光:ㄍㄨㄤ:儿,放:ㄈㄤˋ:攴,院:ㄩㄢˋ:阜,公:ㄍㄨㄥ:八,話:ㄏㄨㄚˋ:言,伴:ㄅㄢˋ:人"],
+            ["12. 一下_6.寫卡片", "奶:ㄋㄞˇ:女,跟:ㄍㄣ:足,班:ㄅㄢ:玉,床:ㄔㄨㄤˊ:广,弟:ㄉㄧˋ:弓,她:ㄊㄚ:女,酒:ㄐㄧㄡˇ:酉,拿:ㄋㄚˊ:手,卡:ㄎㄚˇ:卜,片:ㄆㄧㄢˋ:片,給:ㄍㄟˇ:糸,寫:ㄒㄧㄝˇ:宀,歡:ㄏㄨㄢ:欠,您:ㄋㄧㄣˊ:心"],
+            ["13. 一下_7.作夢", "作:ㄗㄨㄛˋ:人,夢:ㄇㄥˋ:夕,躺:ㄊㄤˇ:身,自:ㄗˋ:自,己:ㄐㄧˇ:己,變:ㄅㄧㄢˋ:言,成:ㄔㄥˊ:戈,棉:ㄇㄧㄢˊ:木,糖:ㄊㄤˊ:米,黑:ㄏㄟ:黑,鵝:ㄜˊ:鳥,更:ㄍㄥˋ:曰,得:ㄉㄜ˙:彳,漂:ㄆㄧㄠˋ:水,亮:ㄌㄧㄤˋ:亠"],
+            ["14. 一下_8.下雨", "妹:ㄇㄟˋ:女,雨:ㄩˇ:雨,雙:ㄕㄨㄤ:隹,穿:ㄔㄨㄢ:穴,滴:ㄉㄧ:水,遊:ㄧㄡˊ:辵,戲:ㄒㄧˋ:戈,顆:ㄎㄜ:頁,珍:ㄓㄣ:玉,珠:ㄓㄨ:玉,落:ㄌㄨㄛˋ:艸,面:ㄇㄧㄢˋ:面,魚:ㄩˊ:魚,缸:ㄍㄤ:缶,金:ㄐㄧㄣ:金,游:ㄧㄡˊ:水"],
+            ["15. 一下_9.彩虹", "彩:ㄘㄞˇ:彡,虹:ㄏㄨㄥˊ:虫,太:ㄊㄞˋ:大,國:ㄍㄨㄛˊ:囗,掃:ㄙㄠˇ:手,除:ㄔㄨˊ:阜,洗:ㄒㄧˇ:水,淨:ㄐㄧㄥˋ:水,馬:ㄇㄚˇ:馬,低:ㄉㄧ:人,刷:ㄕㄨㄚ:刀,樹:ㄕㄨˋ:木,葉:ㄧㄝˋ:艸,很:ㄏㄣˇ:彳,認:ㄖㄣˋ:言,送:ㄙㄨㄥˋ:辵"],
+            ["16. 一下_10.風箏", "地:ㄉㄧˋ:土,化:ㄏㄨㄚˋ:匕,趣:ㄑㄩˋ:走,線:ㄒㄧㄢˋ:糸,風:ㄈㄥ:風,箏:ㄓㄥ:竹,升:ㄕㄥ:十,神:ㄕㄣˊ:示,奇:ㄑㄧˊ:大,跑:ㄆㄠˇ:足,跳:ㄊㄧㄠˋ:足,笑:ㄒㄧㄠˋ:竹,每:ㄇㄟˇ:毋,件:ㄐㄧㄢˋ:人,事:ㄕˋ:亅,情:ㄑㄧㄥˊ:心"],
+            ["17. 一下_11.生日", "生:ㄕㄥ:生,日:ㄖˋ:日,今:ㄐㄧㄣ:人,記:ㄐㄧˋ:言,時:ㄕˊ:日,知:ㄓ:矢,道:ㄉㄠˋ:辵,嗎:ㄇㄚ˙:口,學:ㄒㄩㄝˊ:子,收:ㄕㄡ:攴,張:ㄓㄤ:弓,祝:ㄓㄨˋ:示,福:ㄈㄨˊ:示,第:ㄉㄧˋ:竹,次:ㄘˋ:欠,謝:ㄒㄧㄝˋ:言"],
+            ["18. 一下_12.休息", "想:ㄒㄧㄤˇ:心,燈:ㄉㄥ:火,前:ㄑㄧㄢˊ:刀,點:ㄉㄧㄢˇ:黑,半:ㄅㄢˋ:十,清:ㄑㄧㄥ:水,楚:ㄔㄨˇ:木,停:ㄊㄧㄥˊ:人,休:ㄒㄧㄡ:人,息:ㄒㄧˊ:心,兒:ㄦˊ:儿,吧:ㄅㄚ˙:口,幫:ㄅㄤ:巾,加:ㄐㄧㄚ:力,油:ㄧㄡˊ:水,慢:ㄇㄢˋ:心"],
+            /* 🌟 二年級上學期新增的完整課文、注音與部首 */
+            ["19. 二上_第1課", "年:ㄋㄧㄢˊ:干,希:ㄒㄧ:巾,望:ㄨㄤˋ:月,坐:ㄗㄨㄛˋ:土,位:ㄨㄟˋ:人,本:ㄅㄣˇ:木,淡:ㄉㄢˋ:水,書:ㄕㄨ:曰,老:ㄌㄠˇ:老,師:ㄕ:巾,以:ㄧˇ:人,為:ㄨㄟˊ:火,故:ㄍㄨˋ:攴,用:ㄩㄥˋ:用,力:ㄌㄧˋ:力,只:ㄓˇ:口,現:ㄒㄧㄢˋ:玉,還:ㄏㄞˊ:辵"],
+            ["20. 二上_第2課", "全:ㄑㄩㄢˊ:入,煎:ㄐㄧㄢ:火,蛋:ㄉㄢˋ:虫,圓:ㄩㄢˊ:囗,番:ㄈㄢ:田,茄:ㄑㄧㄝˊ:艸,切:ㄑㄧㄝ:刀,輪:ㄌㄨㄣˊ:車,吐:ㄊㄨˇ:口,司:ㄙ:口,夾:ㄐㄧㄚˊ:大,中:ㄓㄨㄥ:丨,方:ㄈㄤ:方,城:ㄔㄥˊ:土,堡:ㄅㄠˇ:土,接:ㄐㄧㄝ:手,畫:ㄏㄨㄚˋ:田,臉:ㄌㄧㄢˇ:肉"],
+            ["21. 二上_第3課", "巷:ㄒㄧㄤˋ:己,叔:ㄕㄨˊ:又,貓:ㄇㄠ:豸,屋:ㄨ:尸,捧:ㄆㄥˇ:手,蝴:ㄏㄨˊ:虫,蝶:ㄉㄧㄝˊ:虫,忙:ㄇㄤˊ:心,娶:ㄑㄩˇ:女,娘:ㄋㄧㄤˊ:女,黃:ㄏㄨㄤˊ:黃,筆:ㄅㄧˇ:竹,打:ㄉㄚˇ:手,扮:ㄅㄢˋ:手,樣:ㄧㄤˋ:木,越:ㄩㄝˋ:走,美:ㄇㄟˇ:羊,麗:ㄌㄧˋ:鹿"],
+            ["22. 二上_第4課", "運:ㄩㄣˋ:辵,動:ㄉㄨㄥˋ:力,飄:ㄆㄧㄠ:風,熱:ㄖㄜˋ:火,鬧:ㄋㄠˋ:鬥,舞:ㄨˇ:舛,哇:ㄨㄚ:口,往:ㄨㄤˇ:彳,容:ㄖㄨㄥˊ:宀,步:ㄅㄨˋ:止,汗:ㄏㄢˋ:水,腳:ㄐㄧㄠˇ:肉,協:ㄒㄧㄝˊ:十,聲:ㄕㄥ:耳,河:ㄏㄜˊ:水,氣:ㄑㄧˋ:气,最:ㄗㄨㄟˋ:曰,可:ㄎㄜˇ:口"],
+            ["23. 二上_第5課", "竹:ㄓㄨˊ:竹,籃:ㄌㄢˊ:竹,鄉:ㄒㄧㄤ:邑,南:ㄋㄢˊ:十,暑:ㄕㄨˇ:日,假:ㄐㄧㄚˋ:人,帶:ㄉㄞˋ:巾,等:ㄉㄥˇ:竹,跨:ㄎㄨㄚˋ:足,划:ㄏㄨㄚˊ:刀,吹:ㄔㄨㄟ:口,邊:ㄅㄧㄢ:辵,叫:ㄐㄧㄠˋ:口,原:ㄩㄢˊ:厂,近:ㄐㄧㄣˋ:辵,活:ㄏㄨㄛˊ:水,識:ㄕˋ:言"],
+            ["24. 二上_第6課", "鎮:ㄓㄣˋ:金,餅:ㄅㄧㄥˇ:食,節:ㄐㄧㄝˊ:竹,埔:ㄆㄨˇ:土,因:ㄧㄣ:囗,此:ㄘˇ:止,進:ㄐㄧㄣˋ:辵,排:ㄆㄞˊ:手,遠:ㄩㄢˇ:辵,色:ㄙㄜˋ:色,愛:ㄞˋ:心,月:ㄩㄝˋ:月,乾:ㄍㄢ:乙,甜:ㄊㄧㄢˊ:甘,客:ㄎㄜˋ:宀,買:ㄇㄞˇ:貝,親:ㄑㄧㄣ:見,如:ㄖㄨˊ:女,意:ㄧˋ:心"],
+            ["25. 二上_第7課", "衣:ㄧ:衣,胖:ㄆㄤˋ:肉,簡:ㄐㄧㄢˇ:竹,單:ㄉㄢ:口,聰:ㄘㄨㄥ:耳,明:ㄇㄧㄥˊ:日,針:ㄓㄣ:金,臣:ㄔㄣˊ:臣,東:ㄉㄨㄥ:木,西:ㄒㄧ:襾,敢:ㄍㄢˇ:攴,直:ㄓˊ:目,棒:ㄅㄤˋ:木,街:ㄐㄧㄝ:行,滿:ㄇㄢˇ:水,眼:ㄧㄢˇ:目,哪:ㄋㄚˇ:口,思:ㄙ:心"],
+            ["26. 二上_第8課", "渴:ㄎㄜˇ:水,烏:ㄨ:火,喝:ㄏㄜ:口,瓶:ㄆㄧㄥˊ:瓦,法:ㄈㄚˇ:水,森:ㄙㄣ:木,林:ㄌㄧㄣˊ:木,旅:ㄌㄩˇ:方,行:ㄒㄧㄥˊ:行,物:ㄨˋ:牛,午:ㄨˇ:十,裝:ㄓㄨㄤ:衣,許:ㄒㄩˇ:言,石:ㄕˊ:石,難:ㄋㄢˊ:隹,忘:ㄨㄤˋ:心,哈:ㄏㄚ:口,但:ㄉㄢˋ:人"],
+            ["27. 二上_第9課", "象:ㄒㄧㄤˋ:豕,操:ㄘㄠ:手,粗:ㄘㄨ:米,腿:ㄊㄨㄟˇ:肉,柱:ㄓㄨˋ:木,砍:ㄎㄢˇ:石,幾:ㄐㄧˇ:幺,部:ㄅㄨˋ:邑,搖:ㄧㄠˊ:手,沖:ㄔㄨㄥ:水,首:ㄕㄡˇ:首,牽:ㄑㄧㄢ:牛,手:ㄕㄡˇ:手,沉:ㄔㄣˊ:水,少:ㄕㄠˇ:小,沿:ㄧㄢˊ:水,然:ㄖㄢˊ:火,紀:ㄐㄧˋ:糸,竟:ㄐㄧㄥˋ:立"],
+            ["28. 二上_第10課", "雪:ㄒㄩㄝˇ:雨,梨:ㄌㄧˊ:木,夜:ㄧㄝˋ:夕,卻:ㄑㄩㄝˋ:卩,冷:ㄌㄥˇ:冫,冬:ㄉㄨㄥ:冫,臺:ㄊㄞˊ:至,季:ㄐㄧˋ:子,相:ㄒㄧㄤ:目,反:ㄈㄢˇ:又,煙:ㄧㄢ:火,火:ㄏㄨㄛˇ:火,待:ㄉㄞˋ:彳,雖:ㄙㄨㄟ:隹,春:ㄔㄨㄣ:日,貨:ㄏㄨㄛˋ:貝,期:ㄑㄧˊ:月,飯:ㄈㄢˋ:食"],
+            ["29. 二上_第11課", "皮:ㄆㄧˊ:皮,具:ㄐㄩˋ:八,飛:ㄈㄟ:飛,者:ㄓㄜˇ:老,洋:ㄧㄤˊ:水,寒:ㄏㄢˊ:宀,北:ㄅㄟˇ:匕,嘴:ㄗㄨㄟˇ:口,伸:ㄕㄣ:人,飽:ㄅㄠˇ:食,沙:ㄕㄚ:水,急:ㄐㄧˊ:心,服:ㄈㄨˊ:月,站:ㄓㄢˋ:立,翅:ㄔˋ:羽,膀:ㄅㄤˇ:肉,充:ㄔㄨㄥ:儿,念:ㄋㄧㄢˋ:心"],
+            ["30. 二上_第12課", "灰:ㄏㄨㄟ:火,涼:ㄌㄧㄤˊ:冫,牠:ㄊㄚ:牛,鼓:ㄍㄨˇ:鼓,絡:ㄌㄨㄛˋ:糸,欣:ㄒㄧㄣ:欠,發:ㄈㄚ:癶,居:ㄐㄩ:尸,冒:ㄇㄠˋ:目,冰:ㄅㄧㄥ:冫,圍:ㄨㄟˊ:囗,咪:ㄇㄧ:口,幸:ㄒㄧㄥˋ:干,團:ㄊㄨㄢˊ:囗,聚:ㄐㄩˋ:耳,愉:ㄩˊ:心,鍋:ㄍㄨㄛ:金,妙:ㄇㄧㄠˋ:女"]
+        ];
+
+        let WORD_DB = [];
+        let wordIdCounter = 1;
+        RAW_DB.forEach(group => {
+            const lessonName = group[0];
+            group[1].split(',').forEach(item => {
+                const parts = item.split(':');
+                if(parts.length >= 3) {
+                    WORD_DB.push({
+                        id: "w_" + wordIdCounter++,
+                        char: parts[0], pinyin: parts[1], radical: parts[2],
+                        strokes: STROKE_DICT[parts[0]] || "-", lesson: lessonName
+                    });
+                }
+            });
+        });
+
+        // 🌟 核心 SVG 素材
+        const SVG_CAT_SIT = `
+        <svg class="pixel-art" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30,45 C20,70 20,95 40,95 L60,95 C80,95 80,70 70,45 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="3"/>
+            <ellipse cx="40" cy="95" rx="8" ry="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+            <ellipse cx="60" cy="95" rx="8" ry="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+            <path d="M70,85 Q90,85 85,60" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+            <path d="M70,85 Q90,85 85,60" fill="none" stroke="#E2E8F0" stroke-width="10" stroke-linecap="round" z-index="-1"/>
+            <path d="M20,40 L15,15 L40,30 L60,30 L85,15 L80,40 C90,55 90,65 80,70 L20,70 C10,65 10,55 20,40 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M22,35 L19,20 L35,28 Z" fill="#FBB6CE"/><path d="M78,35 L81,20 L65,28 Z" fill="#FBB6CE"/>
+            <!-- 🌟 貓咪頭上的紫色多邊形(polygon)與黃色圓球(circle)帽子魔法已經被拿掉囉！ -->
+            <circle cx="35" cy="48" r="7" fill="#2D3748"/><circle cx="37" cy="46" r="2.5" fill="#FFFFFF"/>
+            <circle cx="65" cy="48" r="7" fill="#2D3748"/><circle cx="67" cy="46" r="2.5" fill="#FFFFFF"/>
+            <ellipse cx="25" cy="55" rx="5" ry="3" fill="#FED7E2"/><ellipse cx="75" cy="55" rx="5" ry="3" fill="#FED7E2"/>
+            <path d="M45,55 Q50,60 55,55" fill="none" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="50" cy="52" r="2" fill="#F56565"/>
+            <rect x="35" y="65" width="30" height="6" rx="3" fill="#F6E05E"/><circle cx="50" cy="72" r="5" fill="#D69E2E"/>
+        </svg>`;
+
+        const SVG_DOG_SIT = `
+        <svg class="pixel-art" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30,45 C20,70 25,95 40,95 L60,95 C75,95 80,70 70,45 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="3"/>
+            <ellipse cx="38" cy="95" rx="8" ry="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+            <ellipse cx="62" cy="95" rx="8" ry="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+            <path d="M25,35 C25,15 75,15 75,35 C85,45 90,60 80,70 L20,70 C10,60 15,45 25,35 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M25,35 Q10,45 15,65 Q25,70 30,50 Z" fill="#D6BCFA" stroke="#E2E8F0" stroke-width="2"/><path d="M75,35 Q90,45 85,65 Q75,70 70,50 Z" fill="#D6BCFA" stroke="#E2E8F0" stroke-width="2"/>
+            <path d="M25,35 C25,15 50,15 50,35 Z" fill="#E9D8FD"/>
+            <!-- 🌟 狗狗頭上的紫色多邊形(polygon)與黃色圓球(circle)帽子魔法也已經被拿掉囉！ -->
+            <circle cx="35" cy="48" r="7" fill="#2D3748"/><circle cx="37" cy="46" r="2.5" fill="#FFFFFF"/>
+            <circle cx="65" cy="48" r="7" fill="#2D3748"/><circle cx="67" cy="46" r="2.5" fill="#FFFFFF"/>
+            <ellipse cx="25" cy="55" rx="4" ry="2" fill="#FED7E2"/><ellipse cx="75" cy="55" rx="4" ry="2" fill="#FED7E2"/>
+            <ellipse cx="50" cy="58" rx="8" ry="6" fill="#4A5568"/>
+            <rect x="30" y="66" width="40" height="6" rx="3" fill="#F56565"/><circle cx="50" cy="70" r="4" fill="#ECC94B"/>
+        </svg>`;
+
+        const getPlantSVG = (isActive) => `
+        <svg class="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M25,60 L30,95 L70,95 L75,60 Z" fill="#C05621"/>
+            <rect x="20" y="50" width="60" height="10" rx="2" fill="#DD6B20"/>
+            <text x="50" y="85" font-family="sans-serif" font-weight="900" font-size="24" fill="#FBD38D" text-anchor="middle">M</text>
+            <g fill="${isActive ? '#ECC94B' : '#48BB78'}" stroke="${isActive ? '#D69E2E' : '#2F855A'}" stroke-width="3">
+                <path d="M50,55 Q20,30 30,10 Q50,20 50,55 Z" /><path d="M50,55 Q80,30 70,10 Q50,20 50,55 Z" />
+                <path d="M50,55 Q10,50 15,30 Q40,40 50,55 Z" /><path d="M50,55 Q90,50 85,30 Q60,40 50,55 Z" />
+                <path d="M50,55 Q50,5 50,5 Q60,20 50,55 Z" />
+            </g>
+        </svg>`;
+
+const getCrystalBallSVG = (isActive) => `
+        <svg class="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            ${isActive ? `
+            <path d="M35,85 Q50,95 65,85 L60,70 L40,70 Z" fill="#B7791F" stroke="#975A16" stroke-width="2"/>
+            <path d="M25,90 L75,90 L70,95 L30,95 Z" fill="#975A16"/>
+            <circle cx="50" cy="45" r="35" fill="#E6FFFA" stroke="#319795" stroke-width="3"/>
+            <circle cx="50" cy="45" r="30" fill="#B2F5EA"/>
+            <path d="M30,35 Q40,15 60,20" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+            ` : `
+            <path d="M35,85 Q50,95 65,85 L60,70 L40,70 Z" fill="#4A5568" stroke="#2D3748" stroke-width="2"/>
+            <path d="M25,90 L75,90 L70,95 L30,95 Z" fill="#2D3748"/>
+            <circle cx="50" cy="45" r="35" fill="#E2E8F0" stroke="#CBD5E0" stroke-width="3"/>
+            <path d="M30,35 Q40,15 60,20" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+            `}
+        </svg>`;
+
+        const innerCat = SVG_CAT_SIT.replace(/<svg[^>]*>|<\/svg>/g, '');
+        const innerDog = SVG_DOG_SIT.replace(/<svg[^>]*>|<\/svg>/g, '');
+        const SVG_FRAME = `
+        <svg class="w-full h-full drop-shadow-md z-0" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="8" r="3" fill="#4A5568"/>
+            <path d="M50,8 L20,35 M50,8 L80,35" stroke="#A0AEC0" stroke-width="2" fill="none"/>
+            <rect x="15" y="35" width="70" height="45" rx="3" fill="#8B4513" stroke="#5C4033" stroke-width="3"/>
+            <rect x="20" y="40" width="60" height="35" fill="#E2E8F0"/>
+            <g transform="translate(22, 43) scale(0.3)">${innerCat}</g>
+            <g transform="translate(48, 43) scale(0.3)">${innerDog}</g>
+        </svg>`;
+
+        const ENID_PRAISES = ["I saw you work very hard today, Enid.", "You kept trying, Enid, even when it was not easy.", "Enid, your reading is better because you practice.", "You stayed focused until you finished, Enid.", "Enid, I like how you do your homework carefully.", "Even when you made a mistake, Enid, you tried again."];
+        const IAN_PRAISES = ["Ian, you worked hard on your homework today.", "You didn’t stop when it got tricky, Ian.", "Ian, your reading gets better every day.", "I like how you stay focused, Ian.", "Ian, you finished what you started.", "Even when you felt tired, Ian, you kept going."];
+
+        const LEITNER_INTERVALS = { 1: 1, 2: 3, 3: 7, 4: 14 };
+        const BOX_ARCHIVE = 5;
+
+        // 🌟 新增：每個月的特別影片資料庫 (之後妳可以在這裡繼續往下加每個月的新影片)
+        const MONTHLY_VIDEOS = {
+            "2026-03": { title: "2026 March warm mud", url: "https://youtu.be/PqUACdXoHCY?si=d5UAGq6pMlolpnwp" },
+            "2026-04": { title: "2026 April Happy Birthday", url: "https://youtu.be/MUm5MhU52Cs?si=sMJ11x7gfybLfBce" },
+            "2026-05": { title: "2026 May Pirate Ride Fun", url: "https://youtu.be/Db2fudYmKHc?si=W3fwKobqWxL-IkUa" },
+            "2026-06": { title: "2026 June Dragon Boat", url: "https://youtu.be/MogzYQkk2J0" },
+            "2026-07": { title: "2026 July Elephant", url: "https://youtu.be/YS75-HrZV9g?si=qTP7KumCI_kVhPCb" },
+            "2026-08": { title: "2026 Aug Muay Thai", url: "https://youtu.be/YHxsXao9l5E?si=1jSqfkAAZzydUrVt" },
+            "2026-09": { title: "2026 Sep Pizza", url: "https://youtu.be/9lnAkcRX7iQ?si=lyQ59IeOERlud_TY" },
+            "2026-10": { title: "2026 Oct Basketball Time", url: "https://youtu.be/yNPSBY2mf3c?si=yY4MJ66C8I016Tdv" }
+        };
+
+        // ==========================================
+        // 核心邏輯 & 全域音效解鎖器
+        // ==========================================
+        let globalAudioCtx = null;
+        function unlockAudio() {
+            if (!globalAudioCtx) {
+                globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (globalAudioCtx.state === 'suspended') {
+                globalAudioCtx.resume();
+            }
+            return globalAudioCtx;
+        }
+
+        const app = {
+            currentUser: null,
+            appData: {}, 
+            currentQueue: [], 
+            currentIndex: 0,
+            sessionStats: { correct: 0, total: 0 },
+            currentMathAns: 0,
+
+            getTodayStr: () => {
+                const d = new Date();
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            },
+            addDays: (dateStr, days) => {
+                const d = new Date(dateStr);
+                d.setDate(d.getDate() + days);
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            },
+
+            getCurrentMonth: () => {
+                const d = new Date();
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+            },
+
+            initData: function() {
+                let saved = localStorage.getItem('leitner_twins_global');
+                if (saved) {
+                    this.appData = JSON.parse(saved);
+                } else {
+                    this.appData = {
+                        Enid: { wordsProgress: {}, stats: { totalPracticed: 0, mastered: 0 } },
+                        Ian:  { wordsProgress: {}, stats: { totalPracticed: 0, mastered: 0 } }
+                    };
+                }
+                
+                const currentMonth = this.getCurrentMonth();
+                ['Enid', 'Ian'].forEach(name => {
+                    if(!this.appData[name].cookies) this.appData[name].cookies = 0;
+                    if(!this.appData[name].drinks) this.appData[name].drinks = 0;
+                    if(!this.appData[name].mathTokens) this.appData[name].mathTokens = 0;
+                    if(!this.appData[name].correctStreak) this.appData[name].correctStreak = 0;
+                    if(this.appData[name].hunger === undefined) this.appData[name].hunger = 100;
+                    if(this.appData[name].happiness === undefined) this.appData[name].happiness = 100;
+                    if(this.appData[name].gems === undefined) this.appData[name].gems = 0;
+                    if(this.appData[name].stars === undefined) this.appData[name].stars = 0;
+                    if(!this.appData[name].lastPetUpdate) this.appData[name].lastPetUpdate = Date.now();                   
+                    if(!this.appData[name].petName) {
+                        this.appData[name].petName = name === 'Enid' ? 'White Cat' : 'White Dog';
+                    }
+                    if (!this.appData[name].unlockedVideos) this.appData[name].unlockedVideos = [];
+
+                    // 🌟 確保過去已獲得的歷史月份（3~9月）全部納入解鎖影片庫，防止漏掉
+                    ['2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09'].forEach(m => {
+                        if (!this.appData[name].unlockedVideos.includes(m)) {
+                            this.appData[name].unlockedVideos.push(m);
+                        }
+                    });
+
+                    // 🌟 防呆升級：只要星星滿 7 顆，確保當月影片已加入解鎖清單
+                    if (this.appData[name].stars >= 7 && !this.appData[name].unlockedVideos.includes(currentMonth)) {
+                        this.appData[name].unlockedVideos.push(currentMonth);
+                    }
+                    
+                    // 🌟 保護舊進度星星！換月時重置
+                    if (!this.appData[name].lastResetMonth) {
+                        this.appData[name].lastResetMonth = currentMonth;
+                    } else if (this.appData[name].lastResetMonth !== currentMonth) {
+                        this.appData[name].stars = 0;
+                        this.appData[name].gems = 0;
+                        this.appData[name].lastResetMonth = currentMonth;
+                    }
+                }); // 🌟 補回了剛剛不小心刪掉的括號！
+
+                this.saveData(false); // 本機立即存檔
+                document.getElementById('room-picture-frame').innerHTML = SVG_FRAME;
+                document.body.addEventListener('click', unlockAudio, { once: true });
+            },
+
+            // ☁️ 雲端同步專屬 ID（可隨網址 hash 自由替換，預設固定專屬 ID）
+            DEFAULT_SYNC_ID: "ff808181a09d98f701a1426274016d83",
+            syncTimer: null,
+            toastTimer: null,
+
+            getSyncKey: function() {
+                if (window.location.hash && window.location.hash.length > 1) {
+                    return decodeURIComponent(window.location.hash.substring(1).trim());
+                }
+                return localStorage.getItem('leitner_twins_sync_id') || this.DEFAULT_SYNC_ID;
+            },
+
+            showSyncToast: function(text, duration = 2500) {
+                const toast = document.getElementById('syncToast');
+                const toastText = document.getElementById('syncToastText');
+                if (toast && toastText) {
+                    toastText.innerText = text;
+                    toast.classList.add('active');
+                    clearTimeout(this.toastTimer);
+                    if (duration > 0) {
+                        this.toastTimer = setTimeout(() => {
+                            toast.classList.remove('active');
+                        }, duration);
+                    }
+                }
+            },
+
+            saveData: function(triggerSync = true) {
+                localStorage.setItem('leitner_twins_global', JSON.stringify(this.appData));
+                if (triggerSync) {
+                    // 防手震防頻繁請求（Debounce 1.2 秒）
+                    clearTimeout(this.syncTimer);
+                    this.syncTimer = setTimeout(() => {
+                        this.pushToCloud();
+                    }, 1200);
+                }
+            },
+
+            // ☁️ 寫入雲端
+            pushToCloud: async function() {
+                const syncId = this.getSyncKey();
+                if (!syncId) return;
+                this.showSyncToast("☁️ 雲端同步中...", 0);
+                try {
+                    const endpoint = `https://api.restful-api.dev/objects/${encodeURIComponent(syncId)}`;
+                    const response = await fetch(endpoint, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: 'Enid_Ian_Leitner_Sync_2026',
+                            data: {
+                                appData: this.appData,
+                                updatedAt: Date.now()
+                            }
+                        })
+                    });
+                    if (response.ok) {
+                        this.showSyncToast("✨ 雲端同步完成", 2000);
+                    } else {
+                        throw new Error('Sync failed with status ' + response.status);
+                    }
+                } catch (err) {
+                    console.log('雲端寫入提示（維持本機運作）:', err);
+                    this.showSyncToast("💾 進度已保存在本機", 2000);
+                }
+            },
+
+            // ☁️ 從雲端拉取與智慧合併進度
+            syncWithCloud: async function() {
+                const syncId = this.getSyncKey();
+                if (!syncId) return;
+                this.showSyncToast("☁️ 檢查最新進度...", 0);
+                try {
+                    const endpoint = `https://api.restful-api.dev/objects/${encodeURIComponent(syncId)}`;
+                    const response = await fetch(endpoint);
+                    if (response.ok) {
+                        const result = await response.json();
+                        const cloudData = (result && result.data && result.data.appData) ? result.data.appData : null;
+                        
+                        // 計算本機的打卡/學習記錄豐富度
+                        const getRecordScore = (data) => {
+                            if (!data) return 0;
+                            let score = 0;
+                            ['Enid', 'Ian'].forEach(name => {
+                                if (data[name]) {
+                                    score += (data[name].stars || 0) * 10;
+                                    score += (data[name].gems || 0);
+                                    score += Object.keys(data[name].wordsProgress || {}).length;
+                                    score += (data[name].cookies || 0);
+                                    score += (data[name].drinks || 0);
+                                }
+                            });
+                            return score;
+                        };
+
+                        const localScore = getRecordScore(this.appData);
+                        const cloudScore = getRecordScore(cloudData);
+
+                        // 🌟 移植核心保護：如果家裡本機有舊打卡記錄，且比雲端完整，立即自動推上雲端保存！
+                        if (localScore > 0 && localScore >= cloudScore) {
+                            await this.pushToCloud();
+                            this.showSyncToast("✨ 舊電腦進度已成功同步至雲端！", 3000);
+                            return;
+                        }
+
+                        // 如果雲端資料更完整（例如孩子在其他裝置打卡了），則更新至本機
+                        if (cloudData && cloudScore > localScore) {
+                            this.appData = cloudData;
+                            localStorage.setItem('leitner_twins_global', JSON.stringify(this.appData));
+                            this.initData();
+                            this.showSyncToast("✨ 已載入跨裝置最新進度", 2500);
+                            return;
+                        }
+                    }
+                    this.showSyncToast("✨ 目前進度已是最新", 2000);
+                } catch (err) {
+                    console.log('雲端讀取提示（使用本機資料）:', err);
+                    this.showSyncToast("💾 本機模式就緒", 2000);
+                }
+            },
+
+            showView: function(viewId) {
+                ['view-profile', 'view-menu', 'view-boxes', 'view-lesson-select', 'view-card', 'view-end', 'view-stats']
+                    .forEach(v => document.getElementById(v).classList.add('hidden-view'));
+                document.getElementById(viewId).classList.remove('hidden-view');
+                window.scrollTo(0, 0);
+            },
+
+            savePetName: function(element) {
+                let myData = this.appData[this.currentUser];
+                let newName = element.innerText;
+                if (newName && newName.trim() !== "") {
+                    myData.petName = newName.trim();
+                } else {
+                    element.innerText = myData.petName;
+                }
+                this.saveData();
+            },
+
+            updateTitleDisplay: function() {
+                let myData = this.appData[this.currentUser];
+                let icon = this.currentUser === 'Enid' ? '👧' : '👦';
+                let html = `${icon} ${this.currentUser}'s Pet: <span contenteditable="true" onblur="app.savePetName(this)" onkeydown="if(event.key==='Enter'){event.preventDefault(); this.blur();}" class="cursor-text hover:bg-orange-100 px-2 py-1 rounded-lg transition-colors border-b-2 border-transparent hover:border-orange-300 outline-none" spellcheck="false" title="點擊直接修改名字">${myData.petName}</span>`;
+                document.getElementById('currentUserDisplay').innerHTML = html;
+            },
+
+            selectProfile: function(name) {
+                unlockAudio();
+                this.currentUser = name;
+                this.updateTitleDisplay(); 
+                document.getElementById('btn-switch-user').classList.remove('hidden');
+                document.getElementById('switcher-avatar').innerText = name === 'Enid' ? '👦' : '👧';
+                this.showView('view-menu');
+            },
+
+            logout: function() {
+                this.currentUser = null;
+                document.getElementById('currentUserDisplay').innerText = '';
+                document.getElementById('btn-switch-user').classList.add('hidden');
+                this.showView('view-profile');
+            },
+
+            showBoxes: function() {
+                let counts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+                let myData = this.appData[this.currentUser];
+                
+                WORD_DB.forEach(word => {
+                    const idChar = word.id + '_write_char';
+                    const idPinyin = word.id + '_write_pinyin';
+                    if (myData.wordsProgress[idChar] && myData.wordsProgress[idChar].box >= 1 && myData.wordsProgress[idChar].box <= 4) {
+                        counts[myData.wordsProgress[idChar].box]++;
+                    }
+                    if (myData.wordsProgress[idPinyin] && myData.wordsProgress[idPinyin].box >= 1 && myData.wordsProgress[idPinyin].box <= 4) {
+                        counts[myData.wordsProgress[idPinyin].box]++;
+                    }
+                });
+                document.getElementById('box-count-1').innerText = counts[1];
+                document.getElementById('box-count-2').innerText = counts[2];
+                document.getElementById('box-count-3').innerText = counts[3];
+                document.getElementById('box-count-4').innerText = counts[4];
+                this.showView('view-boxes');
+            },
+
+            startBoxReview: function(boxNum) {
+                let words = [];
+                let myData = this.appData[this.currentUser].wordsProgress;
+                
+                WORD_DB.forEach(word => {
+                    const idChar = word.id + '_write_char';
+                    if (myData[idChar] && myData[idChar].box === boxNum) {
+                        words.push({ word: word, testType: 'write_char', testId: idChar });
+                    }
+                    const idPinyin = word.id + '_write_pinyin';
+                    if (myData[idPinyin] && myData[idPinyin].box === boxNum) {
+                        words.push({ word: word, testType: 'write_pinyin', testId: idPinyin });
+                    }
+                });
+                if (words.length === 0) {
+                    this.showModal('Empty Box!', `目前 <b>Box ${boxNum}</b> 裡面沒有需要複習的生字，太棒了！`, '✨');
+                    return;
+                }
+
+                let queue = words.sort(() => Math.random() - 0.5);
+                this.lastCardOrigin = 'boxes';
+                document.getElementById('phase-badge').classList.add('hidden'); 
+                this.startQueue(queue, `記憶寶盒：Box ${boxNum}`);
+            },
+
+            showLessonSelect: function() {
+                const lessonList = document.getElementById('lesson-list');
+                lessonList.innerHTML = ''; 
+                const lessons = [...new Set(WORD_DB.map(w => w.lesson))].sort();
+                
+                // 🌟 魔法步驟一：自動把課程依據「一上、一下、二上」分門別類！
+                const semesters = {};
+                lessons.forEach(lesson => {
+                    let match = lesson.match(/(一上|一下|二上|二下)/); // 抓取學期名稱
+                    let semName = match ? match[0] : "其他";
+                    if (!semesters[semName]) semesters[semName] = [];
+                    semesters[semName].push(lesson);
+                });
+
+                // 🌟 魔法步驟二：幫每個學期製作一個專屬的「折疊資料夾」
+                for (const [sem, semLessons] of Object.entries(semesters)) {
+                    // 1. 製作「點擊可以展開」的主按鈕
+                    const groupBtn = document.createElement('button');
+                    groupBtn.className = "card-pop w-full bg-orange-100 border-4 border-orange-300 text-orange-800 font-bold py-4 px-5 rounded-2xl shadow-sm text-left flex justify-between items-center text-2xl mt-4 mb-2 hover:bg-orange-200 transition-all";
+                    
+                    // 🌟 小魔法：如果是「二上」，預設箭頭朝上 (180度)，否則朝下 (0度)
+                    let arrowStyle = (sem === '二上') ? 'rotate(180deg)' : 'rotate(0deg)';
+                    groupBtn.innerHTML = `<span>📚 ${sem} 複習清單</span> <span class="transform transition-transform duration-300" style="transform: ${arrowStyle};">▼</span>`;
+                    
+                    // 2. 製作裡面放課文的「抽屜」
+                    const drawer = document.createElement('div');
+                    
+                    // 🌟 小魔法：如果是「二上」，預設展開(flex)；其他的預設收起(hidden)
+                    let displayClass = (sem === '二上') ? 'flex' : 'hidden';
+                    drawer.className = `${displayClass} flex-col gap-3 pl-4 md:pl-6 border-l-4 border-orange-200 mb-4 ml-2`; 
+                    
+                    semLessons.forEach(lesson => {
+                        const btn = document.createElement('button');
+                        btn.className = "card-pop w-full bg-white border-4 border-gray-200 hover:bg-orange-50 text-gray-700 font-bold py-3 md:py-4 px-4 rounded-xl shadow-sm text-left flex justify-between items-center text-lg md:text-xl";
+                        
+                        // 把前面落落長的 "01. 一上_" 拿掉，只留課名，畫面更乾淨清爽！
+                        let shortName = lesson.includes('_') ? lesson.split('_')[1] : lesson;
+                        let lessonWords = WORD_DB.filter(w => w.lesson === lesson);
+                        let totalItems = lessonWords.length * 2;
+                        let inBoxItems = 0;
+                        let myData = app.appData[app.currentUser];
+
+                        lessonWords.forEach(w => {
+                            if (myData.wordsProgress[w.id + '_write_char']?.box >= 1) inBoxItems++;
+                            if (myData.wordsProgress[w.id + '_write_pinyin']?.box >= 1) inBoxItems++;
+                        });
+
+                        let badgeHtml = '';
+                        if (inBoxItems === 0) {
+                            badgeHtml = `<span class="text-xs md:text-sm font-bold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">🆕 未開始</span>`;
+                        } else if (inBoxItems < totalItems) {
+                            badgeHtml = `<span class="text-xs md:text-sm font-bold text-orange-600 bg-orange-100 px-2.5 py-1 rounded-full">⏳ 剩餘 ${totalItems - inBoxItems} 題</span>`;
+                        } else {
+                            badgeHtml = `<span class="text-xs md:text-sm font-bold text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-full">🌟 已通關</span>`;
+                        }
+
+                        btn.innerHTML = `<span>📖 ${shortName}</span> <div class="flex items-center gap-2">${badgeHtml} <span class="text-orange-500">▶</span></div>`; 
+                        btn.onclick = () => app.startLessonMode(lesson);
+                        drawer.appendChild(btn);
+                    });
+
+                    // 3. 設定點擊主按鈕時的開關動畫
+                    groupBtn.onclick = function() {
+                        const isHidden = drawer.classList.contains('hidden');
+                        if (isHidden) {
+                            drawer.classList.remove('hidden');
+                            drawer.classList.add('flex'); // 打開抽屜
+                            this.querySelector('span:last-child').style.transform = 'rotate(180deg)'; // 箭頭轉上去
+                        } else {
+                            drawer.classList.add('hidden');
+                            drawer.classList.remove('flex'); // 關閉抽屜
+                            this.querySelector('span:last-child').style.transform = 'rotate(0deg)'; // 箭頭轉下來
+                        }
+                    };
+
+                    // 將按鈕和抽屜組合起來放進畫面上
+                    lessonList.appendChild(groupBtn);
+                    lessonList.appendChild(drawer);
+                }
+                
+                this.showView('view-lesson-select');
+            },
+
+            startLessonMode: function(lessonName) {
+                let words = WORD_DB.filter(w => w.lesson === lessonName);
+                if (words.length === 0) return;
+
+                let myData = this.appData[this.currentUser];
+                let unpracticedChar = [];
+                let unpracticedPinyin = [];
+
+                words.forEach(w => {
+                    const idChar = w.id + '_write_char';
+                    const idPinyin = w.id + '_write_pinyin';
+                    const progChar = myData.wordsProgress[idChar];
+                    const progPinyin = myData.wordsProgress[idPinyin];
+
+                    if (!progChar || !progChar.box || progChar.box === 0) {
+                        unpracticedChar.push(w);
+                    }
+                    if (!progPinyin || !progPinyin.box || progPinyin.box === 0) {
+                        unpracticedPinyin.push(w);
+                    }
+                });
+
+                let queue = [];
+                let shortName = lessonName.includes('_') ? lessonName.split('_')[1] : lessonName;
+                let totalItems = words.length * 2;
+
+                if (unpracticedChar.length > 0 || unpracticedPinyin.length > 0) {
+                    // 🌟 尚有未入盒生字（BOX 0）：只出尚未完成的字
+                    unpracticedChar.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                        word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
+                    }));
+                    unpracticedPinyin.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                        word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
+                    }));
+                    this.lastCardOrigin = 'lesson';
+                    document.getElementById('phase-badge').classList.remove('hidden');
+                    this.startQueue(queue, `單課練習：${shortName} (剩餘 ${queue.length}/${totalItems} 題)`);
+                } else {
+                    // 🌟 本課已全數通關（皆已入盒）：啟動全課溫習
+                    words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                        word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
+                    }));
+                    words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                        word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
+                    }));
+                    this.lastCardOrigin = 'lesson';
+                    document.getElementById('phase-badge').classList.remove('hidden');
+                    this.startQueue(queue, `全課溫習：${shortName} (共 ${totalItems} 題)`);
+                }
+            },
+
+            exitCardSession: function() {
+                if (this.lastCardOrigin === 'lesson') {
+                    this.showLessonSelect();
+                } else if (this.lastCardOrigin === 'boxes') {
+                    this.showBoxes();
+                } else {
+                    this.showView('view-menu');
+                }
+            },
+
+            startQueue: function(queue, modeTitle) {
+                this.currentQueue = queue;
+                this.currentIndex = 0;
+                this.sessionStats = { correct: 0, total: queue.length };
+                document.getElementById('card-mode-title').innerText = modeTitle;
+                this.showNextCard();
+                this.showView('view-card');
+            },
+
+            showNextCard: function() {
+                if (this.currentIndex >= this.currentQueue.length) {
+                    this.finishSession();
+                    return;
+                }
+
+                const currentItem = this.currentQueue[this.currentIndex];
+                const word = currentItem.word;
+                const testType = currentItem.testType; 
+
+                document.getElementById('card-progress').innerText = `${this.currentIndex + 1} / ${this.currentQueue.length}`;
+                if (currentItem.phase) {
+                    const badge = document.getElementById('phase-badge');
+                    badge.innerText = currentItem.phase === 1 ? "【階段 1】先學國字：看注音，寫國字" : "【階段 2】換考注音：看國字，寫注音";
+                }
+
+                document.getElementById('btn-show-answer').classList.remove('hidden');
+                document.getElementById('btn-show-answer').innerText = '👀 點我看解答'; /* 🌟 確保換下一題時，按鈕會變回原狀！ */
+                document.getElementById('answer-details').classList.add('hidden');
+                document.getElementById('answer-details').classList.remove('flex');
+                const qInstruction = document.getElementById('question-instruction');
+                const qDisplay = document.getElementById('question-display');
+
+                if (testType === 'write_char') {
+                    qInstruction.style.display = 'none'; /* 🌟 把提示文字隱藏起來，空間就會完全釋放出來囉！ */
+                    /* 🌟 用魔法找出聲調（˙ˊˇˋ），幫它們穿上名為 tone-mark 的披風 */
+                    qDisplay.innerHTML = word.pinyin.replace(/([˙ˊˇˋ])/g, '<span class="tone-mark">$1</span>');
+                } else {
+                    qInstruction.style.display = 'none'; /* 🌟 把提示文字隱藏起來，空間就會完全釋放出來囉！ */
+                    qDisplay.innerText = word.char;
+                }
+
+                document.getElementById('ans-char').innerText = word.char;
+                document.getElementById('ans-pinyin').innerText = word.pinyin;
+                document.getElementById('ans-radical').innerText = word.radical;
+                document.getElementById('ans-strokes').innerText = word.strokes; 
+            },
+
+            revealAnswer: function() {
+                let btn = document.getElementById('btn-show-answer');
+                let details = document.getElementById('answer-details');
+                
+                if (details.classList.contains('hidden')) {
+                    // 如果目前是隱藏的，就打開解答，並把按鈕文字換成收起
+                    details.classList.remove('hidden');
+                    details.classList.add('flex');
+                    btn.innerText = '🙈 收起解答';
+                } else {
+                    // 如果目前是打開的，就收起解答，並把按鈕文字改回來
+                    details.classList.add('hidden');
+                    details.classList.remove('flex');
+                    btn.innerText = '👀 點我看解答';
+                }
+            },
+
+            /* 🌟 評分核心邏輯 */
+            gradeAnswer: function(isCorrect, isDirectMaster = false, isKeep = false) {
+                unlockAudio();
+                const item = this.currentQueue[this.currentIndex];
+                const testId = item.testId; 
+                const today = this.getTodayStr();
+                
+                let myData = this.appData[this.currentUser];
+                let record = myData.wordsProgress[testId] || { box: 0, nextReview: today };
+
+                let justMastered = false;
+                const wasAlreadyMastered = (record.box === BOX_ARCHIVE);
+                if (isDirectMaster) {
+                    record.box = BOX_ARCHIVE;
+                    record.nextReview = null;
+                    this.sessionStats.correct++; 
+                    justMastered = true;
+                    this.giveRewards();
+                } else if (isKeep) {
+                    /* 🌟 如果是 Box 5 則退回 Box 4 重新複習；如果是 Box 0 則進 Box 1；其餘留在原 Box */
+                    if (record.box === 0) {
+                        record.box = 1;
+                    } else if (record.box === BOX_ARCHIVE) {
+                        record.box = 4;
+                    }
+                    record.nextReview = this.addDays(today, LEITNER_INTERVALS[record.box] || 1);
+                    this.sessionStats.correct++;
+                    this.giveRewards();
+                } else if (isCorrect) {
+                    /* 🌟 BOX 0 答對直接進 BOX 2！其餘 Box 逐級晉升至 Box 5 */
+                    record.box = record.box === 0 ? 2 : Math.min(record.box + 1, BOX_ARCHIVE);
+                    if (record.box === BOX_ARCHIVE) {
+                        record.nextReview = null;
+                        if (!wasAlreadyMastered) {
+                            justMastered = true;
+                        }
+                    } else {
+                        record.nextReview = this.addDays(today, LEITNER_INTERVALS[record.box]);
+                    }
+                    this.sessionStats.correct++;
+                    this.giveRewards();
+                } else {
+                    /* 🌟 BOX 0 或 BOX 1 答錯進 BOX 1；BOX 5 答錯退回 BOX 4；其餘降一級 */
+                    if (record.box === 0 || record.box === 1) {
+                        record.box = 1;
+                    } else if (record.box === BOX_ARCHIVE) {
+                        record.box = 4;
+                    } else {
+                        record.box = Math.max(1, record.box - 1);
+                    }
+                    record.nextReview = today; 
+                }
+
+                myData.wordsProgress[testId] = record;
+                this.saveData();
+
+                if (justMastered) {
+                    this.fireConfetti(true);
+                    this.showPraiseModal();
+                } else {
+                    this.currentIndex++;
+                    setTimeout(() => this.showNextCard(), 150);
+                }
+            },
+
+            giveRewards: function() {
+                let myData = this.appData[this.currentUser];
+                myData.cookies++; 
+                
+                myData.mathCounter = (myData.mathCounter || 0) + 1;
+                if (myData.mathCounter >= 3) {
+                    myData.mathTokens = (myData.mathTokens || 0) + 1;
+                    myData.mathCounter = 0;
+                }
+
+                myData.strokeCounter = (myData.strokeCounter || 0) + 1;
+                if (myData.strokeCounter >= 4) {
+                    myData.strokeTokens = (myData.strokeTokens || 0) + 1;
+                    myData.strokeCounter = 0;
+                }
+            },
+
+            addGems: function(amount) {
+                let myData = this.appData[this.currentUser];
+                if (!myData.gems) myData.gems = 0;
+                if (!myData.stars) myData.stars = 0;
+
+                myData.gems += amount;
+                
+                while (myData.gems >= 50) {
+                    myData.gems -= 50;
+                    myData.stars += 1;
+                    this.fireConfetti(true);
+                    this.playMasterySound();
+
+                    const currentMonth = this.getCurrentMonth();
+                    
+                    // 1. 如果影片還沒加進下方清單，就加進去
+                    if (myData.stars >= 7 && !myData.unlockedVideos.includes(currentMonth)) {
+                        myData.unlockedVideos.push(currentMonth);
+                        const videoContainer = document.getElementById('video-collection-list');
+                        const videoInfo = MONTHLY_VIDEOS[currentMonth];
+                        if (videoContainer && videoInfo) {
+                            if (videoContainer.innerHTML.includes('還沒有收集到')) videoContainer.innerHTML = '';
+                            videoContainer.prepend(this.makeVideoButton(videoInfo));
+                        }
+                    }
+
+                    // 2. 🌟 剛好拿到第 7 顆星的瞬間，必定啟動相框光芒與恭喜通知！
+                    if (myData.stars === 7) {
+                        const frameEl = document.getElementById('room-picture-frame');
+                        if (frameEl) {
+                            frameEl.classList.add('rainbow-glow');
+                            frameEl.style.cursor = 'pointer';
+                            const currentVideoUrl = MONTHLY_VIDEOS[currentMonth] ? MONTHLY_VIDEOS[currentMonth].url : '';
+                            frameEl.onclick = function() {
+                                if(currentVideoUrl) window.open(currentVideoUrl, '_blank');
+                            };
+                        }
+
+                        setTimeout(() => {
+                            this.showModal('🎬 Video Unlocked!', 'Awesome! You collected all 7 stars! ⭐⭐⭐⭐⭐⭐⭐<br><br>Keep shining, little superstar 💛', '✨');
+                        }, 500);
+                    }
+                }
+
+                this.updateStarUI();
+                this.saveData();
+            },
+
+            updateStarUI: function() {
+                let myData = this.appData[this.currentUser];
+                if (!myData) return;
+                let gemBar = document.getElementById('ui-gem-bar');
+                if (gemBar) {
+                    let gemPercent = Math.min(100, ((myData.gems || 0) / 50) * 100);
+                    gemBar.style.width = gemPercent + '%';
+                    document.getElementById('ui-gem-text').innerText = `week mission: 💎 ${myData.gems || 0}/50`;
+
+                    let displayStars = (myData.stars || 0) > 7 ? 7 : (myData.stars || 0);
+                    for (let i = 1; i <= 7; i++) {
+                        let starEl = document.getElementById(`ui-star-${i}`);
+                        if (starEl) {
+                            if (i <= displayStars) {
+                                starEl.classList.remove('grayscale', 'opacity-40');
+                                starEl.classList.add('drop-shadow-lg', 'scale-110');
+                            } else {
+                                starEl.classList.add('grayscale', 'opacity-40');
+                                starEl.classList.remove('drop-shadow-lg', 'scale-110');
+                            }
+                            if (i === 7) {
+                                if ((myData.stars || 0) > 7) {
+                                    starEl.innerHTML = `⭐<span class="font-sans font-black text-orange-600 text-xs md:text-sm ml-1 bg-white rounded-full px-1 shadow-sm border-2 border-orange-200 inline-block" style="transform: rotate(12deg);">x${myData.stars}</span>`;
+                                } else {
+                                    starEl.innerHTML = `⭐`;
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            makeVideoButton: function(videoInfo) {
+                const btn = document.createElement('button');
+                btn.className = "card-pop w-full bg-pink-50 hover:bg-pink-100 border-4 border-pink-300 text-pink-700 font-bold py-3 md:py-4 px-4 md:px-6 rounded-2xl flex items-center justify-between text-lg md:text-xl shadow-sm";
+                btn.innerHTML = `<span>📺 ${videoInfo.title}</span> <span class="text-2xl">▶️</span>`;
+                btn.onclick = () => window.open(videoInfo.url, '_blank');
+                return btn;
+            },
+
+            cleanWaste: function(el, type) {
+                unlockAudio();
+                let myData = this.appData[this.currentUser];
+                const countKey = type === 'poop' ? 'activePoops' : 'activePeeps';
+                if (myData[countKey] > 0) {
+                    myData[countKey]--;
+                    this.addGems(1);
+                    this.saveData();
+                    el.remove();
+                    this.playBeep();
+                    this.roomSpeech(type === 'poop' ? "All clean! ✨\n(+1 Gem 💎)" : "Wipe wipe! ✨\n(+1 Gem 💎)", "normal");
+                }
+            },
+
+            renderWaste: function() {
+                let myData = this.appData[this.currentUser];
+                [
+                    { id: 'poop-container', key: 'activePoops', emoji: '💩', type: 'poop' },
+                    { id: 'peep-container', key: 'activePeeps', emoji: '💦', type: 'peep' }
+                ].forEach(({ id, key, emoji, type }) => {
+                    let container = document.getElementById(id);
+                    if (!container) return;
+                    container.innerHTML = '';
+                    if (!myData[key]) myData[key] = 0;
+                    for (let i = 0; i < myData[key]; i++) {
+                        let el = document.createElement('div');
+                        el.innerHTML = emoji;
+                        el.className = 'absolute text-3xl md:text-5xl cursor-pointer hover:scale-125 transition-transform filter drop-shadow-md pointer-events-auto';
+                        el.style.left = (10 + Math.random() * 75) + '%';
+                        el.style.top  = (10 + Math.random() * 60) + '%';
+                        el.onclick = function() { app.cleanWaste(this, type); };
+                        container.appendChild(el);
+                    }
+                });
+            },
+
+            updatePetStatus: function() {
+                const now = Date.now();
+                let myData = this.appData[this.currentUser];
+                myData.lastPetUpdate = now;
+                this.saveData();
+            },
+
+            showStats: function() {
+                this.updatePetStatus();
+                const isEnid = this.currentUser === 'Enid';
+                let myData = this.appData[this.currentUser];
+                
+                this.updateStarUI();
+
+                // 🌟 修復完畢的乾淨開門精靈
+                const frameEl = document.getElementById('room-picture-frame');
+                const currentMonth = this.getCurrentMonth();
+                const currentVideoUrl = MONTHLY_VIDEOS[currentMonth] ? MONTHLY_VIDEOS[currentMonth].url : '';
+                
+                if (myData.stars >= 7) {
+                    if (!myData.unlockedVideos) myData.unlockedVideos = [];
+                    if (!myData.unlockedVideos.includes(currentMonth)) {
+                        myData.unlockedVideos.push(currentMonth);
+                        this.saveData(); 
+                    }
+
+                    frameEl.classList.add('rainbow-glow'); 
+                    frameEl.onclick = function() {
+                        if(currentVideoUrl) window.open(currentVideoUrl, '_blank');
+                    };
+                    frameEl.style.cursor = 'pointer';
+                    frameEl.title = "點擊觀看本月特別影片！";
+                } else {
+                    frameEl.classList.remove('rainbow-glow'); 
+                    frameEl.onclick = null;
+                    frameEl.style.cursor = 'default';
+                    frameEl.title = "";
+                }
+
+                this.renderWaste();
+
+                document.getElementById('room-pet-container').innerHTML = isEnid ? SVG_CAT_SIT : SVG_DOG_SIT;
+                document.getElementById('ui-cookies-count').innerText = myData.cookies;
+                document.getElementById('ui-drinks-count').innerText = myData.drinks;
+                document.getElementById('ui-drink-icon').innerText = isEnid ? "🥛" : "🥤";
+
+                const plantContainer = document.getElementById('m-plant');
+                const hasMath = myData.mathTokens > 0;
+                plantContainer.innerHTML = getPlantSVG(hasMath);
+                if(hasMath) plantContainer.classList.add('plant-active');
+                else plantContainer.classList.remove('plant-active');
+
+                const ballContainer = document.getElementById('crystal-ball');
+                const hasStroke = myData.strokeTokens > 0;
+                ballContainer.innerHTML = getCrystalBallSVG(hasStroke);
+                if(hasStroke) ballContainer.classList.add('plant-active');
+                else ballContainer.classList.remove('plant-active');
+
+                let counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+                let validTotal = 0;
+                WORD_DB.forEach(word => {
+                    const idChar = word.id + '_write_char';
+                    const idPinyin = word.id + '_write_pinyin';
+                    [idChar, idPinyin].forEach(id => {
+                        if (myData.wordsProgress[id]) {
+                            validTotal++;
+                            let b = myData.wordsProgress[id].box;
+                            if (b >= 1 && b <= 5) counts[b]++;
+                        }
+                    });
+                });
+                
+                document.getElementById('stat-total').innerText = validTotal;
+                document.getElementById('stat-mastered').innerText = counts[5];
+                document.getElementById('stat-box1').innerText = `${counts[1]}`;
+                document.getElementById('stat-box2').innerText = `${counts[2]}`;
+                document.getElementById('stat-box3').innerText = `${counts[3]}`;
+                document.getElementById('stat-box4').innerText = `${counts[4]}`;
+
+                const videoContainer = document.getElementById('video-collection-list');
+                if (videoContainer) {
+                    videoContainer.innerHTML = '';
+                    if (myData.unlockedVideos && myData.unlockedVideos.length > 0) {
+                        // 依照月份由新到舊排序（例如 10月 -> 9月 -> 8月 ...）
+                        const sortedVideos = [...new Set(myData.unlockedVideos)].sort().reverse();
+                        sortedVideos.forEach(monthKey => {
+                            const videoInfo = MONTHLY_VIDEOS[monthKey];
+                            if (videoInfo) videoContainer.appendChild(this.makeVideoButton(videoInfo));
+                        });
+                    } else {
+                        videoContainer.innerHTML = '<p class="text-gray-400 font-bold text-center py-4 text-lg">還沒有收集到影片喔！趕快集滿7顆星星吧！🌟</p>';
+                    }
+                }
+
+                this.showView('view-stats');
+            },
+
+            roomSpeech: function(text, bounceType = 'normal') {
+                const speech = document.getElementById('room-speech');
+                speech.innerText = text;
+                speech.classList.remove('opacity-0');
+                
+                const pet = document.getElementById('room-pet-container').querySelector('svg');
+                if(pet) {
+                    const animationClass = (bounceType === 'mega') ? 'pet-mega-bounce' : 'pet-bounce';
+                    pet.classList.add(animationClass);
+                    const dur = (bounceType === 'mega') ? 800 : 400;
+                    setTimeout(() => pet.classList.remove(animationClass), dur);
+                }
+
+                clearTimeout(this.speechTimer);
+                this.speechTimer = setTimeout(() => speech.classList.add('opacity-0'), 3000);
+            },
+
+            playBeep: function() {
+                try {
+                    const ctx = unlockAudio();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, ctx.currentTime);
+                    osc.connect(gain); gain.connect(ctx.destination);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                    osc.start(); osc.stop(ctx.currentTime + 0.1);
+                } catch(e) {}
+            },
+
+            playGorgeousSound: function() {
+                try {
+                    const ctx = unlockAudio();
+                    const playNote = (freq, startTime, duration) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine'; 
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.frequency.setValueAtTime(freq, startTime);
+                        gain.gain.setValueAtTime(0, startTime);
+                        gain.gain.linearRampToValueAtTime(0.2, startTime + 0.05);
+                        gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration); 
+                        osc.start(startTime); osc.stop(startTime + duration);
+                    };
+                    const now = ctx.currentTime;
+                    playNote(523.25, now, 0.5);
+                    playNote(659.25, now + 0.1, 0.5); 
+                    playNote(783.99, now + 0.2, 0.5); 
+                    playNote(1046.50, now + 0.3, 0.8);
+                } catch(e) {}
+            },
+
+            playMasterySound: function() {
+                try {
+                    const ctx = unlockAudio();
+                    const playNote = (freq, type, startTime, duration) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = type; 
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.frequency.setValueAtTime(freq, startTime);
+                        gain.gain.setValueAtTime(0, startTime);
+                        gain.gain.linearRampToValueAtTime(0.15, startTime + 0.05);
+                        gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration); 
+                        osc.start(startTime); osc.stop(startTime + duration);
+                    };
+                    const now = ctx.currentTime;
+                    playNote(392.00, 'square', now, 0.15);
+                    playNote(523.25, 'square', now + 0.15, 0.15);
+                    playNote(659.25, 'square', now + 0.30, 0.15);
+                    playNote(783.99, 'square', now + 0.45, 0.15);
+                    playNote(1046.50, 'square', now + 0.60, 0.8);
+                    playNote(523.25, 'sine', now + 0.60, 0.8);
+                    playNote(659.25, 'sine', now + 0.60, 0.8);
+                } catch(e) {}
+            },
+
+            feedCookie: function(amount) {
+                unlockAudio();
+                let myData = this.appData[this.currentUser];
+                if (myData.cookies <= 0) return; 
+
+                myData.cookies -= 1;
+                
+                if (!myData.poopCounter) myData.poopCounter = 0;
+                if (!myData.activePoops) myData.activePoops = 0;
+                myData.poopCounter += 1;
+                if (myData.poopCounter >= 5) {
+                    myData.activePoops += 1;
+                    myData.poopCounter = 0;
+                    this.renderWaste();
+                }
+
+                this.addGems(1);
+                this.saveData();
+                
+                document.getElementById('ui-cookies-count').innerText = myData.cookies;
+                this.playBeep();
+                this.roomSpeech("Yummy! 🍪\n(+1 Gem 💎)", "normal");
+            },
+
+            drinkEnergy: function(amount) {
+                unlockAudio();
+                let myData = this.appData[this.currentUser];
+                if (myData.drinks <= 0) return;
+
+                myData.drinks -= 1;
+                
+                if (!myData.peepCounter) myData.peepCounter = 0;
+                if (!myData.activePeeps) myData.activePeeps = 0;
+                myData.peepCounter += 1;
+                if (myData.peepCounter >= 5) {
+                    myData.activePeeps += 1;
+                    myData.peepCounter = 0;
+                    this.renderWaste();
+                }
+                
+                this.addGems(2);
+                this.saveData();
+                document.getElementById('ui-drinks-count').innerText = myData.drinks;
+                this.playGorgeousSound();
+                this.roomSpeech("Power up! ++++++ ⚡\n(+2 Gems 💎)", "mega");
+            },
+
+            startMathQuest: function() {
+                unlockAudio();
+                let myData = this.appData[this.currentUser];
+                if (myData.mathTokens <= 0) return; 
+
+                let a = Math.floor(Math.random() * 8) + 2;
+                let b = Math.floor(Math.random() * 8) + 2;
+                this.currentMathAns = a * b;
+
+                document.getElementById('math-question').innerText = `${a} x ${b} = ?`;
+                document.getElementById('math-answer-input').value = '';
+                document.getElementById('math-feedback').innerText = '';
+                document.getElementById('math-modal').classList.remove('hidden-view');
+                
+                setTimeout(() => document.getElementById('math-answer-input').focus(), 100);
+            },
+
+            checkMathAnswer: function() {
+                const inputEl = document.getElementById('math-answer-input');
+                const inputVal = inputEl.value.trim();
+                const feedback = document.getElementById('math-feedback');
+                
+                if (inputVal === '') {
+                    feedback.innerText = "Please enter a number!";
+                    inputEl.focus(); return;
+                }
+
+                const input = parseInt(inputVal, 10);
+                if (input === this.currentMathAns) {
+                    let myData = this.appData[this.currentUser];
+                    myData.mathTokens = Math.max(0, myData.mathTokens - 1);
+                    
+                    if (!this.appData['Enid']) this.appData['Enid'] = { drinks: 0 };
+                    if (!this.appData['Ian']) this.appData['Ian'] = { drinks: 0 };
+
+                    this.appData['Enid'].drinks += 1;
+                    this.appData['Ian'].drinks += 1;
+                    this.saveData();
+
+                    this.fireConfetti(true);
+                    this.playMasterySound();
+                    document.getElementById('math-modal').classList.add('hidden-view');
+                    this.showModal('Team Success! ✨', 'Both Enid\'s cat and Ian\'s dog got a power drink! 🥛🥤', '🤝');
+                    this.showStats();
+                } else {
+                    feedback.innerText = "Oops! Try again!";
+                    inputEl.value = '';
+                    inputEl.focus();
+                }
+            },
+
+            startStrokeQuest: function() {
+                unlockAudio();
+                let myData = this.appData[this.currentUser];
+                if (!myData.strokeTokens || myData.strokeTokens <= 0) return;
+                const wordObj = WORD_DB[Math.floor(Math.random() * WORD_DB.length)];
+                this.currentStrokeAns = wordObj.strokes;
+
+                document.getElementById('stroke-question').innerText = wordObj.char;
+                document.getElementById('stroke-answer-input').value = '';
+                document.getElementById('stroke-feedback').innerText = '';
+                document.getElementById('stroke-modal').classList.remove('hidden-view');
+                
+                setTimeout(() => document.getElementById('stroke-answer-input').focus(), 100);
+            },
+
+            checkStrokeAnswer: function() {
+                const inputEl = document.getElementById('stroke-answer-input');
+                const inputVal = inputEl.value.trim();
+                const feedback = document.getElementById('stroke-feedback');
+                
+                if (inputVal === '') {
+                    feedback.innerText = "Please enter a number!";
+                    inputEl.focus(); return;
+                }
+
+                const input = parseInt(inputVal, 10);
+                if (input === parseInt(this.currentStrokeAns, 10)) {
+                    let myData = this.appData[this.currentUser];
+                    myData.strokeTokens = Math.max(0, myData.strokeTokens - 1);
+                    
+                    this.addGems(3);
+                    this.saveData();
+
+                    this.fireConfetti(true);
+                    this.playMasterySound();
+                    document.getElementById('stroke-modal').classList.add('hidden-view');
+                    this.showModal('Crystal Magic! ✨', 'You got the strokes right!<br><br><span class="text-purple-600 font-bold">You found 3 Gems! 💎💎💎</span>', '🔮');
+                    this.roomSpeech("Crystal power! ✨\n(+3 Gems 💎)", "mega");
+                    this.showStats();
+
+                } else {
+                    feedback.innerText = "Oops! Try again!";
+                    inputEl.value = '';
+                    inputEl.focus();
+                }
+            },
+
+            showPraiseModal: function() {
+                const isEnid = this.currentUser === 'Enid';
+                const phrases = isEnid ? ENID_PRAISES : IAN_PRAISES;
+                const randomPraise = phrases[Math.floor(Math.random() * phrases.length)];
+                let myData = this.appData[this.currentUser];
+                const petName = myData.petName || (isEnid ? "White Cat" : "White Dog");
+                document.getElementById('praise-text').innerText = `${randomPraise}\n\n— ${petName} 🐾`;
+                document.getElementById('praise-pet-container').innerHTML = isEnid ? SVG_CAT_SIT : SVG_DOG_SIT;
+                
+                this.playMasterySound();
+                document.getElementById('praise-modal').classList.remove('hidden-view');
+            },
+
+            closePraiseAndContinue: function() {
+                document.getElementById('praise-modal').classList.add('hidden-view');
+                this.currentIndex++;
+                this.showNextCard();
+            },
+
+            showModal: function(title, text, icon = '✨') {
+                document.getElementById('modal-title').innerText = title;
+                document.getElementById('modal-text').innerHTML = text; 
+                document.getElementById('modal-icon').innerText = icon;
+                document.getElementById('custom-modal').classList.remove('hidden-view');
+            },
+
+            finishSession: function() {
+                const rate = Math.round((this.sessionStats.correct / this.sessionStats.total) * 100);
+                document.getElementById('end-message').innerText = `本次答對率：${rate}% (${this.sessionStats.correct}/${this.sessionStats.total})`;
+                if (rate >= 80) {
+                    this.fireConfetti(true);
+                    this.playMasterySound();
+                }
+                this.showView('view-end');
+            },
+
+            fireConfetti: function(big = false) {
+                if(typeof confetti === 'function') {
+                    if (big) {
+                        confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, zIndex: 9999 });
+                    } else {
+                        confetti({ particleCount: 50, spread: 40, origin: { y: 0.8 }, zIndex: 9999 });
+                    }
+                }
+            },
+            generateBackup: function() {
+                try {
+                    const dataStr = JSON.stringify(this.appData);
+                    const encodedData = LZString.compressToBase64(dataStr);
+                    document.getElementById('backup-code-input').value = encodedData;
+                    alert("✅ 備份密碼產生成功！現在密碼變得很短，可以輕鬆貼到 WeChat 囉！");
+                } catch (e) { 
+                    alert("產生密碼時發生錯誤，請稍後再試。");
+                }
+            },
+
+            restoreBackup: function() {
+                const code = document.getElementById('backup-code-input').value.trim();
+                if (!code) { alert("❌ 請先貼上密碼！"); return; }
+                if (confirm(`確定要還原嗎？這會覆蓋掉目前所有的學習進度喔！`)) {
+                    try {
+                        let parsedData;
+                        let decompressed = LZString.decompressFromBase64(code);
+                        if (decompressed) {
+                            parsedData = JSON.parse(decompressed);
+                        } else {
+                            parsedData = JSON.parse(decodeURIComponent(atob(code)));
+                        }
+
+                        if (parsedData && parsedData.Enid && parsedData.Ian) {
+                            this.appData = parsedData;
+                            this.saveData();
+                            alert("🎉 學習紀錄成功恢復囉！畫面將為您重新整理載入。");
+                            window.location.reload(); 
+                        } else { 
+                            throw new Error("格式不正確");
+                        }
+                    } catch (e) { 
+                        alert("密碼不對喔，請檢查是否複製完整。");
+                    }
+                }
+            }
+       }; // 🌟 這個是整個 app 大包裝的關門括號！
+
+        // 🍂 秋天落葉飄落動畫
+        function createAutumnLeaves() {
+            const container = document.getElementById('flower-container');
+            container.innerHTML = '';
+
+            if (!document.getElementById('autumn-leaf-style')) {
+                const style = document.createElement('style');
+                style.id = 'autumn-leaf-style';
+                style.innerHTML = `
+                @keyframes leaf-fall {
+                    0%   { transform: translateY(-10vh) translateX(0)     rotate(0deg);   opacity: 0; }
+                    10%  { opacity: 1; }
+                    30%  { transform: translateY(25vh)  translateX(25px)  rotate(60deg);  }
+                    60%  { transform: translateY(60vh)  translateX(-20px) rotate(120deg); }
+                    90%  { opacity: 1; }
+                    100% { transform: translateY(110vh) translateX(10px)  rotate(200deg); opacity: 0; }
+                }
+                .leaf-outer {
+                    position: absolute; top: -10%; z-index: -1; pointer-events: none;
+                    animation: leaf-fall linear infinite;
+                    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.12));
+                }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // 🍁 卡通楓葉（橘紅色，五裂）
+            const mapleSVG = `<svg viewBox="0 0 80 90" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <path d="M40,6 L46,22 L62,16 L55,30 L70,34 L56,42 L60,58 L40,52 L20,58 L24,42 L10,34 L25,30 L18,16 L34,22 Z"
+                      fill="#E8541A" stroke="#C03A0A" stroke-width="2.5" stroke-linejoin="round"/>
+                <line x1="40" y1="22" x2="40" y2="52" stroke="#C03A0A" stroke-width="1.5" opacity="0.5"/>
+                <line x1="40" y1="38" x2="26" y2="50" stroke="#C03A0A" stroke-width="1"   opacity="0.4"/>
+                <line x1="40" y1="38" x2="54" y2="50" stroke="#C03A0A" stroke-width="1"   opacity="0.4"/>
+                <rect x="37.5" y="54" width="5" height="18" rx="2.5" fill="#8B5E3C"/>
+            </svg>`;
+
+            // 🌿 卡通橡樹葉（金黃棕，波浪輪廓）
+            const oakSVG = `<svg viewBox="0 0 80 90" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <path d="M40,8 C45,8 52,12 54,18 C59,15 65,17 63,23 C68,25 70,33 65,36
+                         C69,41 68,49 62,49 C62,55 58,62 53,65 C49,68 44,70 40,70
+                         C36,70 31,68 27,65 C22,62 18,55 18,49 C12,49 11,41 15,36
+                         C10,33 12,25 17,23 C15,17 21,15 26,18 C28,12 35,8 40,8 Z"
+                      fill="#D4921A" stroke="#A0620A" stroke-width="2.5"/>
+                <line x1="40" y1="14" x2="40" y2="68" stroke="#A0620A" stroke-width="1.5" opacity="0.5"/>
+                <line x1="40" y1="28" x2="24" y2="38" stroke="#A0620A" stroke-width="1"   opacity="0.4"/>
+                <line x1="40" y1="28" x2="56" y2="38" stroke="#A0620A" stroke-width="1"   opacity="0.4"/>
+                <line x1="40" y1="44" x2="22" y2="50" stroke="#A0620A" stroke-width="1"   opacity="0.4"/>
+                <line x1="40" y1="44" x2="58" y2="50" stroke="#A0620A" stroke-width="1"   opacity="0.4"/>
+                <rect x="37.5" y="70" width="5" height="16" rx="2.5" fill="#8B5E3C"/>
+            </svg>`;
+
+            for (let i = 0; i < 14; i++) {
+                let wrapper = document.createElement('div');
+                wrapper.className = 'leaf-outer';
+                wrapper.innerHTML = Math.random() > 0.5 ? mapleSVG : oakSVG;
+                let size = Math.random() * 25 + 30; // 30~55px
+                wrapper.style.width  = size + 'px';
+                wrapper.style.height = size + 'px';
+                wrapper.style.left = (Math.random() * 90 + 5) + '%';
+                wrapper.style.animationDuration = (Math.random() * 6 + 8) + 's';
+                wrapper.style.animationDelay    = (Math.random() * 10) + 's';
+                container.appendChild(wrapper);
+            }
+        }
+
+        window.onload = function() {
+            app.initData();
+            app.showView('view-profile');
+            createAutumnLeaves(); // 🍂 啟動秋天落葉魔法！
+            app.syncWithCloud();  // ☁️ 開啟時自動與雲端確認並同步最新進度！
+        };
+    </script>
+</body>
+</html>
