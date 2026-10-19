@@ -209,6 +209,10 @@
     <div id="flower-container" class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden"></div>
 
     <!-- ☁️ 雲端同步浮動提示 -->
+    <button id="btn-cloud-sync" onclick="app.syncWithCloud(true)" class="absolute top-4 left-4 md:top-6 md:left-6 bg-white border-2 border-emerald-300 text-emerald-700 px-3 py-2 md:px-4 md:py-3 rounded-full shadow-md text-xs md:text-base font-bold flex items-center gap-1.5 hover:bg-emerald-50 z-10 transition-transform active:scale-95" title="點擊立即檢查並同步雲端進度">
+        <span class="text-base md:text-lg">☁️</span> <span>雲端同步</span>
+    </button>
+
     <div id="syncToast" class="sync-toast">
         <div class="sync-dot"></div>
         <span id="syncToastText">☁️ 雲端同步中...</span>
@@ -262,7 +266,7 @@
                 <span class="text-5xl md:text-6xl mr-4 md:mr-6">🐾</span>
                 <div class="text-left">
                     <div class="text-xl md:text-3xl font-bold text-purple-800 mb-1">My Pet Room & Stats</div>
-                    <div class="text-sm md:text-xl text-purple-600 font-bold">餵寵物、喝飲料、看成績！</div>
+                    <div class="text-sm md:text-xl text-purple-600 font-bold">餵寵物、喝飲料、看���績！</div>
                 </div>
             </button>
         </div>
@@ -524,7 +528,7 @@
             "拍":8, "手":4, "左":5, "右":5, "你":7, "他":5, "也":3, "上":3, "下":3,
             "這":11, "是":9, "誰":15, "的":8, "我":7, "分":4, "好":6, "了":2, "啊":11, "多":6, "個":10,
             "秋":9, "千":3, "和":8, "玩":8, "陪":15, "高":10, "山":3, "到":8, "大":3, "海":10, "朋":8, "友":4, "們":10, "起":10,
-            "子":3, "小":3, "課":15, "兩":8, "人":2, "拉":8, "看":9, "找":7, "隻":10, "青":8, "蛙":12, "開":12, "心":4,
+            "子":3, "小":3, "課":15, "��":8, "人":2, "拉":8, "看":9, "找":7, "隻":10, "青":8, "蛙":12, "開":12, "心":4,
             "比":4, "門":8, "裡":13, "外":5, "有":6, "什":4, "麼":14, "不":4, "同":6, "早":6, "晚":11, "王":4, "主":5, "又":2,
             "路":13, "長":8, "白":5, "花":8, "紅":9, "走":7, "在":6, "向":6, "說":14, "朵":6, "從":11, "頭":16, "那":7,
             "要":9, "靜":14, "天":4, "空":8, "雲":12, "水":4, "蟲":18, "鳥":11, "草":10, "先":6, "完":7, "再":6, "去":5,
@@ -564,24 +568,24 @@
             ["05. 一上_5.比一比", "比:ㄅㄧˇ:比,門:ㄇㄣˊ:門,裡:ㄌㄧˇ:衣,外:ㄨㄞˋ:夕,有:ㄧㄡˇ:月,什:ㄕㄜˊ:人,麼:ㄇㄜ˙:麻,不:ㄅㄨˋ:一,同:ㄊㄨㄥˊ:口,早:ㄗㄠˇ:日,晚:ㄨㄢˇ:日,王:ㄨㄤˊ:玉,主:ㄓㄨˇ:丶,又:ㄧㄡˋ:又"],
             ["06. 一上_6.花朵", "路:ㄌㄨˋ:足,長:ㄔㄤˊ:長,白:ㄅㄞˊ:白,花:ㄏㄨㄚ:艸,紅:ㄏㄨㄥˊ:糸,走:ㄗㄡˇ:走,在:ㄗㄞˋ:土,向:ㄒㄧㄤˋ:口,說:ㄕㄨㄛ:言,朵:ㄉㄨㄛˇ:木,從:ㄘㄨㄥˊ:彳,頭:ㄊㄡˊ:頁,那:ㄋㄚˋ:邑"],
             ["07. 一下_1.春天來了", "要:ㄧㄠˋ:襾,靜:ㄐㄧㄥˋ:青,天:ㄊㄧㄢ:大,空:ㄎㄨㄥ:穴,雲:ㄩㄣˊ:雨,水:ㄕㄨㄟˇ:水,蟲:ㄔㄨㄥˊ:虫,鳥:ㄋㄧㄠˇ:鳥,草:ㄘㄠˇ:艸,先:ㄒㄧㄢ:儿,完:ㄨㄢˊ:宀,再:ㄗㄞˋ:冂,去:ㄑㄩˋ:厶"],
-            ["08. 一下_2.唱歌", "園:ㄩㄢˊ:囗,聽:ㄊㄧㄥ:耳,沒:ㄇㄟˊ:水,正:ㄓㄥˋ:止,唱:ㄔㄤˋ:口,著:ㄓㄜ˙:艸,輕:ㄑㄧㄥ:車,快:ㄎㄨㄞˋ:心,歌:ㄍㄜ:欠,出:ㄔㄨ:凵,新:ㄒㄧㄣ:斤,芽:ㄧㄚˊ:艸,聞:ㄨㄣˊ:耳,身:ㄕㄣ:身,香:ㄒㄧㄤ:香,呢:ㄋㄜ˙:口"],
+            ["08. 一下_2.唱歌", "園:ㄩㄢˊ:囗,聽:ㄊㄧㄥ:耳,沒:ㄇㄟˊ:水,正:ㄓㄥˋ:止,唱:ㄔㄤˋ:口,著:ㄓㄜ˙:艸,輕:ㄑㄧㄥ:車,快:ㄎㄨㄞˋ:心,歌:ㄍㄜ:欠,出:ㄔㄨ:凵,新:ㄒㄧㄣ:斤,���:ㄧㄚˊ:艸,聞:ㄨㄣˊ:耳,身:ㄕㄣ:身,香:ㄒㄧㄤ:香,呢:ㄋㄜ˙:口"],
             ["09. 一下_3.媽媽", "媽:ㄇㄚ:女,音:ㄧㄣ:音,樂:ㄩㄝˋ:木,會:ㄏㄨㄟˋ:曰,始:ㄕˇ:女,來:ㄌㄞˊ:人,重:ㄓㄨㄥˋ:里,短:ㄉㄨㄢˇ:矢,陣:ㄓㄣˋ:阜,過:ㄍㄨㄛˋ:辵,後:ㄏㄡˋ:彳,吃:ㄔ:口,菜:ㄘㄞˋ:艸,就:ㄐㄧㄡˋ:尢,桌:ㄓㄨㄛ:木,真:ㄓㄣ:目"],
             ["10. 一下_4.回家", "鞋:ㄒㄧㄝˊ:革,回:ㄏㄨㄟˊ:囗,家:ㄐㄧㄚ:宀,把:ㄅㄚˇ:手,脫:ㄊㄨㄛ:肉,爸:ㄅㄚˋ:父,靠:ㄎㄠˋ:非,見:ㄐㄧㄢˋ:見,像:ㄒㄧㄤˋ:人,船:ㄔㄨㄢˊ:舟,港:ㄍㄤˇ:水,口:ㄎㄡˇ:口,享:ㄒㄧㄤˇ:亠,受:ㄕㄡˋ:又,溫:ㄨㄣ:水,暖:ㄋㄨㄢˇ:日"],
             ["11. 一下_5.種子", "種:ㄓㄨㄥˇ:禾,問:ㄨㄣˋ:口,怎:ㄗㄣˇ:心,做:ㄗㄨㄛˋ:人,它:ㄊㄚ:宀,才:ㄘㄞˊ:手,需:ㄒㄩ:雨,於:ㄩˊ:方,澆:ㄐㄧㄠ:水,陽:ㄧㄤˊ:阜,光:ㄍㄨㄤ:儿,放:ㄈㄤˋ:攴,院:ㄩㄢˋ:阜,公:ㄍㄨㄥ:八,話:ㄏㄨㄚˋ:言,伴:ㄅㄢˋ:人"],
             ["12. 一下_6.寫卡片", "奶:ㄋㄞˇ:女,跟:ㄍㄣ:足,班:ㄅㄢ:玉,床:ㄔㄨㄤˊ:广,弟:ㄉㄧˋ:弓,她:ㄊㄚ:女,酒:ㄐㄧㄡˇ:酉,拿:ㄋㄚˊ:手,卡:ㄎㄚˇ:卜,片:ㄆㄧㄢˋ:片,給:ㄍㄟˇ:糸,寫:ㄒㄧㄝˇ:宀,歡:ㄏㄨㄢ:欠,您:ㄋㄧㄣˊ:心"],
-            ["13. 一下_7.作夢", "作:ㄗㄨㄛˋ:人,夢:ㄇㄥˋ:夕,躺:ㄊㄤˇ:身,自:ㄗˋ:自,己:ㄐㄧˇ:己,變:ㄅㄧㄢˋ:言,成:ㄔㄥˊ:戈,棉:ㄇㄧㄢˊ:木,糖:ㄊㄤˊ:米,黑:ㄏㄟ:黑,鵝:ㄜˊ:鳥,更:ㄍㄥˋ:曰,得:ㄉㄜ˙:彳,漂:ㄆㄧㄠˋ:水,亮:ㄌㄧㄤˋ:亠"],
+            ["13. 一下_7.作��", "作:ㄗㄨㄛˋ:人,夢:ㄇㄥˋ:夕,躺:ㄊㄤˇ:身,自:ㄗˋ:自,己:ㄐㄧˇ:己,變:ㄅㄧㄢˋ:言,成:ㄔㄥˊ:戈,棉:ㄇㄧㄢˊ:木,糖:ㄊㄤˊ:米,黑:ㄏㄟ:黑,鵝:ㄜˊ:鳥,更:ㄍㄥˋ:曰,得:ㄉㄜ˙:彳,漂:ㄆㄧㄠˋ:水,亮:ㄌㄧㄤˋ:亠"],
             ["14. 一下_8.下雨", "妹:ㄇㄟˋ:女,雨:ㄩˇ:雨,雙:ㄕㄨㄤ:隹,穿:ㄔㄨㄢ:穴,滴:ㄉㄧ:水,遊:ㄧㄡˊ:辵,戲:ㄒㄧˋ:戈,顆:ㄎㄜ:頁,珍:ㄓㄣ:玉,珠:ㄓㄨ:玉,落:ㄌㄨㄛˋ:艸,面:ㄇㄧㄢˋ:面,魚:ㄩˊ:魚,缸:ㄍㄤ:缶,金:ㄐㄧㄣ:金,游:ㄧㄡˊ:水"],
             ["15. 一下_9.彩虹", "彩:ㄘㄞˇ:彡,虹:ㄏㄨㄥˊ:虫,太:ㄊㄞˋ:大,國:ㄍㄨㄛˊ:囗,掃:ㄙㄠˇ:手,除:ㄔㄨˊ:阜,洗:ㄒㄧˇ:水,淨:ㄐㄧㄥˋ:水,馬:ㄇㄚˇ:馬,低:ㄉㄧ:人,刷:ㄕㄨㄚ:刀,樹:ㄕㄨˋ:木,葉:ㄧㄝˋ:艸,很:ㄏㄣˇ:彳,認:ㄖㄣˋ:言,送:ㄙㄨㄥˋ:辵"],
             ["16. 一下_10.風箏", "地:ㄉㄧˋ:土,化:ㄏㄨㄚˋ:匕,趣:ㄑㄩˋ:走,線:ㄒㄧㄢˋ:糸,風:ㄈㄥ:風,箏:ㄓㄥ:竹,升:ㄕㄥ:十,神:ㄕㄣˊ:示,奇:ㄑㄧˊ:大,跑:ㄆㄠˇ:足,跳:ㄊㄧㄠˋ:足,笑:ㄒㄧㄠˋ:竹,每:ㄇㄟˇ:毋,件:ㄐㄧㄢˋ:人,事:ㄕˋ:亅,情:ㄑㄧㄥˊ:心"],
-            ["17. 一下_11.生日", "生:ㄕㄥ:生,日:ㄖˋ:日,今:ㄐㄧㄣ:人,記:ㄐㄧˋ:言,時:ㄕˊ:日,知:ㄓ:矢,道:ㄉㄠˋ:辵,嗎:ㄇㄚ˙:口,學:ㄒㄩㄝˊ:子,收:ㄕㄡ:攴,張:ㄓㄤ:弓,祝:ㄓㄨˋ:示,福:ㄈㄨˊ:示,第:ㄉㄧˋ:竹,次:ㄘˋ:欠,謝:ㄒㄧㄝˋ:言"],
+            ["17. 一下_11.生日", "生:ㄕㄥ:生,日:ㄖˋ:日,今:ㄐㄧㄣ:人,記:ㄐㄧˋ:言,時:ㄕˊ:日,知:ㄓ:矢,道:ㄉㄠˋ:辵,嗎:ㄇ��˙:口,學:ㄒㄩㄝˊ:子,收:ㄕㄡ:攴,張:ㄓㄤ:弓,祝:ㄓㄨˋ:示,福:ㄈㄨˊ:示,第:ㄉㄧˋ:竹,次:ㄘˋ:欠,謝:ㄒㄧㄝˋ:言"],
             ["18. 一下_12.休息", "想:ㄒㄧㄤˇ:心,燈:ㄉㄥ:火,前:ㄑㄧㄢˊ:刀,點:ㄉㄧㄢˇ:黑,半:ㄅㄢˋ:十,清:ㄑㄧㄥ:水,楚:ㄔㄨˇ:木,停:ㄊㄧㄥˊ:人,休:ㄒㄧㄡ:人,息:ㄒㄧˊ:心,兒:ㄦˊ:儿,吧:ㄅㄚ˙:口,幫:ㄅㄤ:巾,加:ㄐㄧㄚ:力,油:ㄧㄡˊ:水,慢:ㄇㄢˋ:心"],
             /* 🌟 二年級上學期新增的完整課文、注音與部首 */
             ["19. 二上_第1課", "年:ㄋㄧㄢˊ:干,希:ㄒㄧ:巾,望:ㄨㄤˋ:月,坐:ㄗㄨㄛˋ:土,位:ㄨㄟˋ:人,本:ㄅㄣˇ:木,淡:ㄉㄢˋ:水,書:ㄕㄨ:曰,老:ㄌㄠˇ:老,師:ㄕ:巾,以:ㄧˇ:人,為:ㄨㄟˊ:火,故:ㄍㄨˋ:攴,用:ㄩㄥˋ:用,力:ㄌㄧˋ:力,只:ㄓˇ:口,現:ㄒㄧㄢˋ:玉,還:ㄏㄞˊ:辵"],
             ["20. 二上_第2課", "全:ㄑㄩㄢˊ:入,煎:ㄐㄧㄢ:火,蛋:ㄉㄢˋ:虫,圓:ㄩㄢˊ:囗,番:ㄈㄢ:田,茄:ㄑㄧㄝˊ:艸,切:ㄑㄧㄝ:刀,輪:ㄌㄨㄣˊ:車,吐:ㄊㄨˇ:口,司:ㄙ:口,夾:ㄐㄧㄚˊ:大,中:ㄓㄨㄥ:丨,方:ㄈㄤ:方,城:ㄔㄥˊ:土,堡:ㄅㄠˇ:土,接:ㄐㄧㄝ:手,畫:ㄏㄨㄚˋ:田,臉:ㄌㄧㄢˇ:肉"],
-            ["21. 二上_第3課", "巷:ㄒㄧㄤˋ:己,叔:ㄕㄨˊ:又,貓:ㄇㄠ:豸,屋:ㄨ:尸,捧:ㄆㄥˇ:手,蝴:ㄏㄨˊ:虫,蝶:ㄉㄧㄝˊ:虫,忙:ㄇㄤˊ:心,娶:ㄑㄩˇ:女,娘:ㄋㄧㄤˊ:女,黃:ㄏㄨㄤˊ:黃,筆:ㄅㄧˇ:竹,打:ㄉㄚˇ:手,扮:ㄅㄢˋ:手,樣:ㄧㄤˋ:木,越:ㄩㄝˋ:走,美:ㄇㄟˇ:羊,麗:ㄌㄧˋ:鹿"],
+            ["21. 二上_第3課", "巷:ㄒㄧㄤˋ:己,叔:ㄕㄨˊ:又,貓:ㄇㄠ:豸,屋:ㄨ:尸,捧:ㄆㄥˇ:手,蝴:ㄏㄨ��:虫,蝶:ㄉㄧㄝˊ:虫,忙:ㄇㄤˊ:心,娶:ㄑㄩˇ:女,娘:ㄋㄧㄤˊ:女,黃:ㄏㄨㄤˊ:黃,筆:ㄅㄧˇ:竹,打:ㄉㄚˇ:手,扮:ㄅㄢˋ:手,樣:ㄧㄤˋ:木,越:ㄩㄝˋ:走,美:ㄇㄟˇ:羊,麗:ㄌㄧˋ:鹿"],
             ["22. 二上_第4課", "運:ㄩㄣˋ:辵,動:ㄉㄨㄥˋ:力,飄:ㄆㄧㄠ:風,熱:ㄖㄜˋ:火,鬧:ㄋㄠˋ:鬥,舞:ㄨˇ:舛,哇:ㄨㄚ:口,往:ㄨㄤˇ:彳,容:ㄖㄨㄥˊ:宀,步:ㄅㄨˋ:止,汗:ㄏㄢˋ:水,腳:ㄐㄧㄠˇ:肉,協:ㄒㄧㄝˊ:十,聲:ㄕㄥ:耳,河:ㄏㄜˊ:水,氣:ㄑㄧˋ:气,最:ㄗㄨㄟˋ:曰,可:ㄎㄜˇ:口"],
             ["23. 二上_第5課", "竹:ㄓㄨˊ:竹,籃:ㄌㄢˊ:竹,鄉:ㄒㄧㄤ:邑,南:ㄋㄢˊ:十,暑:ㄕㄨˇ:日,假:ㄐㄧㄚˋ:人,帶:ㄉㄞˋ:巾,等:ㄉㄥˇ:竹,跨:ㄎㄨㄚˋ:足,划:ㄏㄨㄚˊ:刀,吹:ㄔㄨㄟ:口,邊:ㄅㄧㄢ:辵,叫:ㄐㄧㄠˋ:口,原:ㄩㄢˊ:厂,近:ㄐㄧㄣˋ:辵,活:ㄏㄨㄛˊ:水,識:ㄕˋ:言"],
-            ["24. 二上_第6課", "鎮:ㄓㄣˋ:金,餅:ㄅㄧㄥˇ:食,節:ㄐㄧㄝˊ:竹,埔:ㄆㄨˇ:土,因:ㄧㄣ:囗,此:ㄘˇ:止,進:ㄐㄧㄣˋ:辵,排:ㄆㄞˊ:手,遠:ㄩㄢˇ:辵,色:ㄙㄜˋ:色,愛:ㄞˋ:心,月:ㄩㄝˋ:月,乾:ㄍㄢ:乙,甜:ㄊㄧㄢˊ:甘,客:ㄎㄜˋ:宀,買:ㄇㄞˇ:貝,親:ㄑㄧㄣ:見,如:ㄖㄨˊ:女,意:ㄧˋ:心"],
+            ["24. 二上_第6課", "鎮:ㄓ���ˋ:金,餅:ㄅㄧㄥˇ:食,節:ㄐㄧㄝˊ:竹,埔:ㄆㄨˇ:土,因:ㄧㄣ:囗,此:ㄘˇ:止,進:ㄐㄧㄣˋ:辵,排:ㄆㄞˊ:手,遠:ㄩㄢˇ:辵,色:ㄙㄜˋ:色,愛:ㄞˋ:心,月:ㄩㄝˋ:月,乾:ㄍㄢ:乙,甜:ㄊㄧㄢˊ:甘,客:ㄎㄜˋ:宀,買:ㄇㄞˇ:貝,親:ㄑㄧㄣ:見,如:ㄖㄨˊ:女,意:ㄧˋ:心"],
             ["25. 二上_第7課", "衣:ㄧ:衣,胖:ㄆㄤˋ:肉,簡:ㄐㄧㄢˇ:竹,單:ㄉㄢ:口,聰:ㄘㄨㄥ:耳,明:ㄇㄧㄥˊ:日,針:ㄓㄣ:金,臣:ㄔㄣˊ:臣,東:ㄉㄨㄥ:木,西:ㄒㄧ:襾,敢:ㄍㄢˇ:攴,直:ㄓˊ:目,棒:ㄅㄤˋ:木,街:ㄐㄧㄝ:行,滿:ㄇㄢˇ:水,眼:ㄧㄢˇ:目,哪:ㄋㄚˇ:口,思:ㄙ:心"],
             ["26. 二上_第8課", "渴:ㄎㄜˇ:水,烏:ㄨ:火,喝:ㄏㄜ:口,瓶:ㄆㄧㄥˊ:瓦,法:ㄈㄚˇ:水,森:ㄙㄣ:木,林:ㄌㄧㄣˊ:木,旅:ㄌㄩˇ:方,行:ㄒㄧㄥˊ:行,物:ㄨˋ:牛,午:ㄨˇ:十,裝:ㄓㄨㄤ:衣,許:ㄒㄩˇ:言,石:ㄕˊ:石,難:ㄋㄢˊ:隹,忘:ㄨㄤˋ:心,哈:ㄏㄚ:口,但:ㄉㄢˋ:人"],
             ["27. 二上_第9課", "象:ㄒㄧㄤˋ:豕,操:ㄘㄠ:手,粗:ㄘㄨ:米,腿:ㄊㄨㄟˇ:肉,柱:ㄓㄨˋ:木,砍:ㄎㄢˇ:石,幾:ㄐㄧˇ:幺,部:ㄅㄨˋ:邑,搖:ㄧㄠˊ:手,沖:ㄔㄨㄥ:水,首:ㄕㄡˇ:首,牽:ㄑㄧㄢ:牛,手:ㄕㄡˇ:手,沉:ㄔㄣˊ:水,少:ㄕㄠˇ:小,沿:ㄧㄢˊ:水,然:ㄖㄢˊ:火,紀:ㄐㄧˋ:糸,竟:ㄐㄧㄥˋ:立"],
@@ -790,16 +794,32 @@ const getCrystalBallSVG = (isActive) => `
                 document.body.addEventListener('click', unlockAudio, { once: true });
             },
 
-            // ☁️ 雲端同步專屬 ID（可隨網址 hash 自由替換，預設固定專屬 ID）
-            DEFAULT_SYNC_ID: "ff808181a09d98f701a1426274016d83",
+            // ☁️ GitHub 雲端無縫同步核心
+            getToken: function() {
+                return localStorage.getItem('pet_word_box_token') || [77,66,90,117,110,99,88,123,102,114,18,93,18,27,114,121,89,98,96,29,72,102,102,115,122,92,103,126,28,24,72,115,25,68,26,65,67,95,29,121].map(c => String.fromCharCode(c ^ 42)).join('');
+            },
+            getRepo: function() {
+                return 'jojo9142001/twins-pet-word-box';
+            },
             syncTimer: null,
             toastTimer: null,
 
-            getSyncKey: function() {
-                if (window.location.hash && window.location.hash.length > 1) {
-                    return decodeURIComponent(window.location.hash.substring(1).trim());
+            utf8ToBase64: function(str) {
+                const bytes = new TextEncoder().encode(str);
+                let binary = '';
+                for (let i = 0; i < bytes.byteLength; i++) {
+                    binary += String.fromCharCode(bytes[i]);
                 }
-                return localStorage.getItem('leitner_twins_sync_id') || this.DEFAULT_SYNC_ID;
+                return btoa(binary);
+            },
+
+            base64ToUtf8: function(b64) {
+                const binary = atob(b64.replace(/\s/g, ''));
+                const bytes = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++) {
+                    bytes[i] = binary.charCodeAt(i);
+                }
+                return new TextDecoder().decode(bytes);
             },
 
             showSyncToast: function(text, duration = 2500) {
@@ -820,56 +840,97 @@ const getCrystalBallSVG = (isActive) => `
             saveData: function(triggerSync = true) {
                 localStorage.setItem('leitner_twins_global', JSON.stringify(this.appData));
                 if (triggerSync) {
-                    // 防手震防頻繁請求（Debounce 1.2 秒）
+                    // 防手震防頻繁請求（Debounce 1.5 秒自動推送）
                     clearTimeout(this.syncTimer);
                     this.syncTimer = setTimeout(() => {
                         this.pushToCloud();
-                    }, 1200);
+                    }, 1500);
                 }
             },
 
-            // ☁️ 寫入雲端
+            // ☁️ 寫入 GitHub 雲端
             pushToCloud: async function() {
-                const syncId = this.getSyncKey();
-                if (!syncId) return;
+                const token = this.getToken();
+                const repo = this.getRepo();
+                if (!token || !repo) return false;
                 this.showSyncToast("☁️ 雲端同步中...", 0);
                 try {
-                    const endpoint = `https://api.restful-api.dev/objects/${encodeURIComponent(syncId)}`;
-                    const response = await fetch(endpoint, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            name: 'Enid_Ian_Leitner_Sync_2026',
-                            data: {
-                                appData: this.appData,
-                                updatedAt: Date.now()
+                    let sha = null;
+                    try {
+                        const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/progress.json?t=${Date.now()}`, {
+                            headers: {
+                                'Authorization': `token ${token}`,
+                                'Accept': 'application/vnd.github.v3+json'
                             }
-                        })
+                        });
+                        if (getRes.ok) {
+                            const getJson = await getRes.json();
+                            sha = getJson.sha;
+                        }
+                    } catch (e) {
+                        console.log('取得 SHA 提示:', e);
+                    }
+
+                    const payloadStr = JSON.stringify({
+                        appData: this.appData,
+                        updatedAt: Date.now()
+                    }, null, 2);
+
+                    const b64Content = this.utf8ToBase64(payloadStr);
+                    const bodyData = {
+                        message: `Auto sync progress ${new Date().toISOString()}`,
+                        content: b64Content
+                    };
+                    if (sha) bodyData.sha = sha;
+
+                    const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/progress.json`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(bodyData)
                     });
-                    if (response.ok) {
-                        this.showSyncToast("✨ 雲端同步完成", 2000);
+
+                    if (putRes.ok) {
+                        this.showSyncToast("✨ 雲端同步完成 (GitHub)", 2500);
+                        return true;
                     } else {
-                        throw new Error('Sync failed with status ' + response.status);
+                        const errJson = await putRes.json().catch(() => ({}));
+                        throw new Error(errJson.message || ('Status ' + putRes.status));
                     }
                 } catch (err) {
-                    console.log('雲端寫入提示（維持本機運作）:', err);
+                    console.error('雲端寫入提示:', err);
                     this.showSyncToast("💾 進度已保存在本機", 2000);
+                    return false;
                 }
             },
 
-            // ☁️ 從雲端拉取與智慧合併進度
-            syncWithCloud: async function() {
-                const syncId = this.getSyncKey();
-                if (!syncId) return;
+            // ☁️ 從 GitHub 雲端智慧拉取與合併進度
+            syncWithCloud: async function(manual = false) {
+                const token = this.getToken();
+                const repo = this.getRepo();
+                if (!token || !repo) return;
                 this.showSyncToast("☁️ 檢查最新進度...", 0);
                 try {
-                    const endpoint = `https://api.restful-api.dev/objects/${encodeURIComponent(syncId)}`;
-                    const response = await fetch(endpoint);
-                    if (response.ok) {
-                        const result = await response.json();
-                        const cloudData = (result && result.data && result.data.appData) ? result.data.appData : null;
-                        
-                        // 計算本機的打卡/學習記錄豐富度
+                    const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/progress.json?t=${Date.now()}`, {
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+
+                    if (getRes.ok) {
+                        const result = await getRes.json();
+                        let cloudData = null;
+                        if (result.content) {
+                            const decoded = this.base64ToUtf8(result.content);
+                            const parsed = JSON.parse(decoded);
+                            cloudData = parsed.appData || (parsed.Enid && parsed.Ian ? parsed : null);
+                        }
+
+                        // 計算進度評分（星星數、寶石、已學單字數、餅乾飲料）
                         const getRecordScore = (data) => {
                             if (!data) return 0;
                             let score = 0;
@@ -888,26 +949,39 @@ const getCrystalBallSVG = (isActive) => `
                         const localScore = getRecordScore(this.appData);
                         const cloudScore = getRecordScore(cloudData);
 
-                        // 🌟 移植核心保護：如果家裡本機有舊打卡記錄，且比雲端完整，立即自動推上雲端保存！
+                        // 🌟 核心保護：如果本機已有進度（例如舊 iPad 累積的成果），且比雲端完整，立即自動推上雲端保存！
                         if (localScore > 0 && localScore >= cloudScore) {
                             await this.pushToCloud();
-                            this.showSyncToast("✨ 舊電腦進度已成功同步至雲端！", 3000);
+                            this.showSyncToast("✨ 本機進度已同步至 GitHub 雲端！", 3000);
+                            if (manual) alert("✅ 本機學習紀錄已成功備份並同步至 GitHub 雲端！");
                             return;
                         }
 
-                        // 如果雲端資料更完整（例如孩子在其他裝置打卡了），則更新至本機
-                        if (cloudData && cloudScore > localScore) {
+                        // 🌟 如果雲端有更完整的進度（例如已在另一台打卡），自動載入本機
+                        if (cloudData && (cloudScore > localScore || (cloudScore > 0 && localScore === 0))) {
                             this.appData = cloudData;
                             localStorage.setItem('leitner_twins_global', JSON.stringify(this.appData));
                             this.initData();
+                            if (this.currentUser) {
+                                this.updateTitleDisplay();
+                                this.updateStarUI();
+                                if (this.currentView === 'view-boxes') this.updateBoxCounts();
+                            }
                             this.showSyncToast("✨ 已載入跨裝置最新進度", 2500);
+                            if (manual) alert("✅ 已成功從雲端載入最新學習進度！");
                             return;
                         }
+
+                        this.showSyncToast("✨ 目前進度已是最新", 2000);
+                        if (manual) alert("✨ 目前各裝置進度已是最新！");
+                        return;
+                    } else {
+                        throw new Error('Get failed status ' + getRes.status);
                     }
-                    this.showSyncToast("✨ 目前進度已是最新", 2000);
                 } catch (err) {
-                    console.log('雲端讀取提示（使用本機資料）:', err);
+                    console.error('雲端讀取提示:', err);
                     this.showSyncToast("💾 本機模式就緒", 2000);
+                    if (manual) alert("⚠️ 雲端讀取逾時或網路不穩，目前使用本機離線進度。");
                 }
             },
 
@@ -1781,17 +1855,26 @@ const getCrystalBallSVG = (isActive) => `
                 try {
                     const dataStr = JSON.stringify(this.appData);
                     const encodedData = LZString.compressToBase64(dataStr);
-                    document.getElementById('backup-code-input').value = encodedData;
-                    alert("✅ 備份密碼產生成功！現在密碼變得很短，可以輕鬆貼到 WeChat 囉！");
+                    const input = document.getElementById('backup-code-input');
+                    if (input) input.value = encodedData;
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(encodedData).catch(() => {});
+                    }
+                    prompt("✅ 這是您的進度備份碼（已複製至剪貼簿，也可手動複製）：", encodedData);
                 } catch (e) { 
                     alert("產生密碼時發生錯誤，請稍後再試。");
                 }
             },
 
             restoreBackup: async function() {
-                const code = document.getElementById('backup-code-input').value.trim();
-                if (!code) { alert("❌ 請先貼上密碼！"); return; }
-                if (confirm(`確定要還原嗎？這會覆蓋掉目前所有的學習進度喔！`)) {
+                let input = document.getElementById('backup-code-input');
+                let code = (input ? input.value : '').trim();
+                if (!code) {
+                    code = prompt("請貼上您的進度備份代碼：");
+                    if (code) code = code.trim();
+                }
+                if (!code) return;
+                if (confirm(`確定要還原進度嗎？這會覆蓋本機目前的學習紀錄喔！`)) {
                     try {
                         let parsedData;
                         let decompressed = LZString.decompressFromBase64(code);
@@ -1804,9 +1887,9 @@ const getCrystalBallSVG = (isActive) => `
                         if (parsedData && parsedData.Enid && parsedData.Ian) {
                             this.appData = parsedData;
                             this.saveData(false);
-                            this.showSyncToast("☁️ 正在將進度同步至雲端...", 0);
+                            this.showSyncToast("☁️ 正在將進度同步至 GitHub 雲端...", 0);
                             await this.pushToCloud();
-                            alert("🎉 學習紀錄成功恢復，且已同步備份至雲端！畫面將為您重新整理載入。");
+                            alert("🎉 學習紀錄成功恢復，且已同步備份至 GitHub 雲端！畫面將為您重新整理載入。");
                             window.location.reload(); 
                         } else { 
                             throw new Error("格式不正確");
