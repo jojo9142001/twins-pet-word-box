@@ -4473,6 +4473,10 @@
         "w_357_write_char": {
           "box": 2,
           "nextReview": "2026-10-24"
+        },
+        "w_348_write_char": {
+          "box": 1,
+          "nextReview": "2026-10-21"
         }
       },
       "stats": {
@@ -4509,5 +4513,5 @@
       "lastResetMonth": "2026-10"
     }
   },
-  "updatedAt": 1792588631853
+  "updatedAt": 1792588768437
 }
