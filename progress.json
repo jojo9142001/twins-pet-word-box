@@ -2292,12 +2292,12 @@
       "mathTokens": 496,
       "correctStreak": 0,
       "lastPetUpdate": 1792588186538,
-      "activePoops": 1,
+      "activePoops": 0,
       "mathCounter": 0,
       "strokeCounter": 3,
       "strokeTokens": 221,
       "poopCounter": 4,
-      "gems": 33,
+      "gems": 34,
       "stars": 7,
       "petName": "Heartcute💕🩵",
       "hunger": 100,
@@ -4497,5 +4497,5 @@
       "lastResetMonth": "2026-10"
     }
   },
-  "updatedAt": 1792588199828
+  "updatedAt": 1792588202810
 }
