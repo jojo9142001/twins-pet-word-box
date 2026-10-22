@@ -3635,8 +3635,8 @@
           "nextReview": "2026-07-03"
         },
         "w_239_write_char": {
-          "box": 4,
-          "nextReview": "2026-07-03"
+          "box": 3,
+          "nextReview": "2026-10-22"
         },
         "w_251_write_char": {
           "box": 4,
@@ -4633,5 +4633,5 @@
       "lastResetMonth": "2026-10"
     }
   },
-  "updatedAt": 1792677659721
+  "updatedAt": 1792677697828
 }
