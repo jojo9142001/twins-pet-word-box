@@ -706,7 +706,8 @@ const getCrystalBallSVG = (isActive) => `
             "2026-07": { title: "2026 July Elephant", url: "https://youtu.be/YS75-HrZV9g?si=qTP7KumCI_kVhPCb" },
             "2026-08": { title: "2026 Aug Muay Thai", url: "https://youtu.be/YHxsXao9l5E?si=1jSqfkAAZzydUrVt" },
             "2026-09": { title: "2026 Sep Pizza", url: "https://youtu.be/9lnAkcRX7iQ?si=lyQ59IeOERlud_TY" },
-            "2026-10": { title: "2026 Oct Basketball Time", url: "https://youtu.be/yNPSBY2mf3c?si=yY4MJ66C8I016Tdv" }
+            "2026-10": { title: "2026 Oct Basketball Time", url: "https://youtu.be/yNPSBY2mf3c?si=yY4MJ66C8I016Tdv" },
+            "2026-11": { title: "2026 Nov Little Reporters", url: "https://youtu.be/9ac2z5reS8Y?si=7jvUXItzdmWEgOw2" }
         };
 
         // ==========================================
@@ -774,7 +775,7 @@ const getCrystalBallSVG = (isActive) => `
                     if (!this.appData[name].unlockedVideos) this.appData[name].unlockedVideos = [];
 
                     // 🌟 確保過去已獲得的歷史月份（3~9月）全部納入解鎖影片庫，防止漏掉
-                    ['2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09'].forEach(m => {
+                    ['2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10'].forEach(m => {
                         if (!this.appData[name].unlockedVideos.includes(m)) {
                             this.appData[name].unlockedVideos.push(m);
                         }
