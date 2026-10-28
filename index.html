@@ -516,6 +516,33 @@
         </div>
     </div>
 
+        <!-- 選擇單課練習模式的彈出對話框 -->
+    <div id="lesson-mode-modal" class="hidden-view fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 px-4">
+        <div class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full text-center shadow-2xl border-4 border-orange-300">
+            <h3 id="lesson-modal-title" class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-2"></h3>
+            <p class="text-gray-500 font-bold text-sm md:text-base mb-6">請選擇本課挑戰模式：</p>
+            <div class="space-y-4">
+                <button onclick="app.startLessonModeWithChoice('learn')" class="card-pop w-full bg-orange-50 hover:bg-orange-100 border-4 border-orange-300 rounded-2xl p-4 text-left flex items-center shadow-sm">
+                    <span class="text-4xl mr-3">🌱</span>
+                    <div>
+                        <div class="text-xl md:text-2xl font-bold text-orange-800">生字初學</div>
+                        <div class="text-xs md:text-sm text-orange-600 font-bold">按步就班學習，答對逐級晉升！</div>
+                    </div>
+                </button>
+                <button onclick="app.startLessonModeWithChoice('screen')" class="card-pop w-full bg-indigo-50 hover:bg-indigo-100 border-4 border-indigo-300 rounded-2xl p-4 text-left flex items-center shadow-sm">
+                    <span class="text-4xl mr-3">🎯</span>
+                    <div>
+                        <div class="text-xl md:text-2xl font-bold text-indigo-800">弱點快篩</div>
+                        <div class="text-xs md:text-sm text-indigo-600 font-bold">會寫直接精通畢業，不會的進 Box 1！</div>
+                    </div>
+                </button>
+            </div>
+            <button onclick="document.getElementById('lesson-mode-modal').classList.add('hidden-view')" class="mt-6 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-base md:text-lg py-2.5 px-8 rounded-full shadow-sm">
+                返回
+            </button>
+        </div>
+    </div>
+
     <div id="custom-modal" class="hidden-view fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 px-4">
         <div class="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full text-center shadow-2xl border-8 border-yellow-400">
             <div id="modal-icon" class="text-6xl md:text-7xl mb-4">✨</div>
@@ -1075,6 +1102,7 @@ const getCrystalBallSVG = (isActive) => `
 
                 let queue = words.sort(() => Math.random() - 0.5);
                 this.lastCardOrigin = 'boxes';
+                this.currentLessonMode = 'boxReview';
                 document.getElementById('phase-badge').classList.add('hidden'); 
                 this.startQueue(queue, `記憶寶盒：Box ${boxNum}`);
             },
@@ -1136,7 +1164,7 @@ const getCrystalBallSVG = (isActive) => `
                         }
 
                         btn.innerHTML = `<span>📖 ${shortName}</span> <div class="flex items-center gap-2">${badgeHtml} <span class="text-orange-500">▶</span></div>`; 
-                        btn.onclick = () => app.startLessonMode(lesson);
+                        btn.onclick = () => app.openLessonModeDialog(lesson);
                         drawer.appendChild(btn);
                     });
 
@@ -1162,54 +1190,82 @@ const getCrystalBallSVG = (isActive) => `
                 this.showView('view-lesson-select');
             },
 
+            openLessonModeDialog: function(lessonName) {
+                this.selectedLesson = lessonName;
+                let shortName = lessonName.includes('_') ? lessonName.split('_')[1] : lessonName;
+                document.getElementById('lesson-modal-title').innerText = shortName;
+                document.getElementById('lesson-mode-modal').classList.remove('hidden-view');
+            },
+
             startLessonMode: function(lessonName) {
+                this.openLessonModeDialog(lessonName);
+            },
+
+            startLessonModeWithChoice: function(mode) {
+                document.getElementById('lesson-mode-modal').classList.add('hidden-view');
+                const lessonName = this.selectedLesson;
+                if (!lessonName) return;
+                this.currentLessonMode = mode;
+
                 let words = WORD_DB.filter(w => w.lesson === lessonName);
                 if (words.length === 0) return;
 
                 let myData = this.appData[this.currentUser];
-                let unpracticedChar = [];
-                let unpracticedPinyin = [];
-
-                words.forEach(w => {
-                    const idChar = w.id + '_write_char';
-                    const idPinyin = w.id + '_write_pinyin';
-                    const progChar = myData.wordsProgress[idChar];
-                    const progPinyin = myData.wordsProgress[idPinyin];
-
-                    if (!progChar || !progChar.box || progChar.box === 0) {
-                        unpracticedChar.push(w);
-                    }
-                    if (!progPinyin || !progPinyin.box || progPinyin.box === 0) {
-                        unpracticedPinyin.push(w);
-                    }
-                });
-
                 let queue = [];
                 let shortName = lessonName.includes('_') ? lessonName.split('_')[1] : lessonName;
                 let totalItems = words.length * 2;
 
-                if (unpracticedChar.length > 0 || unpracticedPinyin.length > 0) {
-                    // 🌟 尚有未入盒生字（BOX 0）：只出尚未完成的字
-                    unpracticedChar.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                if (mode === 'screen') {
+                    // 🎯 弱點快篩模式：全課考注音與國字，答對直通 Box 5 精通，答錯打入 Box 1 每天複習！
+                    words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
                         word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
                     }));
-                    unpracticedPinyin.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                    words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
                         word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
                     }));
                     this.lastCardOrigin = 'lesson';
                     document.getElementById('phase-badge').classList.remove('hidden');
-                    this.startQueue(queue, `單課練習：${shortName} (剩餘 ${queue.length}/${totalItems} 題)`);
+                    this.startQueue(queue, `🎯 弱點快篩：${shortName} (共 ${totalItems} 題)`);
                 } else {
-                    // 🌟 本課已全數通關（皆已入盒）：啟動全課溫習
-                    words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
-                        word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
-                    }));
-                    words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
-                        word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
-                    }));
-                    this.lastCardOrigin = 'lesson';
-                    document.getElementById('phase-badge').classList.remove('hidden');
-                    this.startQueue(queue, `全課溫習：${shortName} (共 ${totalItems} 題)`);
+                    // 🌱 生字初學模式：原始循序漸進邏輯
+                    let unpracticedChar = [];
+                    let unpracticedPinyin = [];
+
+                    words.forEach(w => {
+                        const idChar = w.id + '_write_char';
+                        const idPinyin = w.id + '_write_pinyin';
+                        const progChar = myData.wordsProgress[idChar];
+                        const progPinyin = myData.wordsProgress[idPinyin];
+
+                        if (!progChar || !progChar.box || progChar.box === 0) {
+                            unpracticedChar.push(w);
+                        }
+                        if (!progPinyin || !progPinyin.box || progPinyin.box === 0) {
+                            unpracticedPinyin.push(w);
+                        }
+                    });
+
+                    if (unpracticedChar.length > 0 || unpracticedPinyin.length > 0) {
+                        unpracticedChar.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                            word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
+                        }));
+                        unpracticedPinyin.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                            word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
+                        }));
+                        this.lastCardOrigin = 'lesson';
+                        document.getElementById('phase-badge').classList.remove('hidden');
+                        this.startQueue(queue, `🌱 生字初學：${shortName} (剩餘 ${queue.length}/${totalItems} 題)`);
+                    } else {
+                        words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                            word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
+                        }));
+                        words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                            word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
+                        }));
+                        this.lastCardOrigin = 'lesson';
+                        document.getElementById('phase-badge').classList.remove('hidden');
+                        this.startQueue(queue, `🌱 生字溫習：${shortName} (共 ${totalItems} 題)`);
+                    }
                 }
             },
 
@@ -1245,7 +1301,8 @@ const getCrystalBallSVG = (isActive) => `
                 document.getElementById('card-progress').innerText = `${this.currentIndex + 1} / ${this.currentQueue.length}`;
                 if (currentItem.phase) {
                     const badge = document.getElementById('phase-badge');
-                    badge.innerText = currentItem.phase === 1 ? "【階段 1】先學國字：看注音，寫國字" : "【階段 2】換考注音：看國字，寫注音";
+                    const modePrefix = this.currentLessonMode === 'screen' ? '🎯 弱點快篩' : '🌱 生字練習';
+                    badge.innerText = currentItem.phase === 1 ? `【${modePrefix}】階段 1：看注音，寫國字` : `【${modePrefix}】階段 2：看國字，寫注音`;
                 }
 
                 document.getElementById('btn-show-answer').classList.remove('hidden');
@@ -1299,45 +1356,61 @@ const getCrystalBallSVG = (isActive) => `
 
                 let justMastered = false;
                 const wasAlreadyMastered = (record.box === BOX_ARCHIVE);
-                if (isDirectMaster) {
-                    record.box = BOX_ARCHIVE;
-                    record.nextReview = null;
-                    this.sessionStats.correct++; 
-                    justMastered = true;
-                    this.giveRewards();
-                } else if (isKeep) {
-                    /* 🌟 如果是 Box 5 則退回 Box 4 重新複習；如果是 Box 0 則進 Box 1；其餘留在原 Box */
-                    if (record.box === 0) {
-                        record.box = 1;
-                    } else if (record.box === BOX_ARCHIVE) {
-                        record.box = 4;
-                    }
-                    record.nextReview = this.addDays(today, LEITNER_INTERVALS[record.box] || 1);
-                    this.sessionStats.correct++;
-                    this.giveRewards();
-                } else if (isCorrect) {
-                    /* 🌟 BOX 0 答對直接進 BOX 2！其餘 Box 逐級晉升至 Box 5 */
-                    record.box = record.box === 0 ? 2 : Math.min(record.box + 1, BOX_ARCHIVE);
-                    if (record.box === BOX_ARCHIVE) {
+                if (this.currentLessonMode === 'screen') {
+                    // 🎯 弱點快篩專屬邏輯：
+                    // 會寫（答對）：直接進 Box 5 精通畢業！從此不進 Box 1~4 重複複習
+                    // 不會寫（答錯）：直接打入 Box 1 每天密集複習！
+                    if (isCorrect || isDirectMaster) {
+                        record.box = BOX_ARCHIVE;
                         record.nextReview = null;
                         if (!wasAlreadyMastered) {
                             justMastered = true;
                         }
+                        this.sessionStats.correct++;
+                        this.giveRewards();
                     } else {
-                        record.nextReview = this.addDays(today, LEITNER_INTERVALS[record.box]);
-                    }
-                    this.sessionStats.correct++;
-                    this.giveRewards();
-                } else {
-                    /* 🌟 BOX 0 或 BOX 1 答錯進 BOX 1；BOX 5 答錯退回 BOX 4；其餘降一級 */
-                    if (record.box === 0 || record.box === 1) {
                         record.box = 1;
-                    } else if (record.box === BOX_ARCHIVE) {
-                        record.box = 4;
-                    } else {
-                        record.box = Math.max(1, record.box - 1);
+                        record.nextReview = today;
                     }
-                    record.nextReview = today; 
+                } else {
+                    // 🌱 標準模式（初學或記憶寶盒複習）：維持標準 Leitner 五箱晉升機制
+                    if (isDirectMaster) {
+                        record.box = BOX_ARCHIVE;
+                        record.nextReview = null;
+                        this.sessionStats.correct++; 
+                        justMastered = true;
+                        this.giveRewards();
+                    } else if (isKeep) {
+                        if (record.box === 0) {
+                            record.box = 1;
+                        } else if (record.box === BOX_ARCHIVE) {
+                            record.box = 4;
+                        }
+                        record.nextReview = this.addDays(today, LEITNER_INTERVALS[record.box] || 1);
+                        this.sessionStats.correct++;
+                        this.giveRewards();
+                    } else if (isCorrect) {
+                        record.box = record.box === 0 ? 2 : Math.min(record.box + 1, BOX_ARCHIVE);
+                        if (record.box === BOX_ARCHIVE) {
+                            record.nextReview = null;
+                            if (!wasAlreadyMastered) {
+                                justMastered = true;
+                            }
+                        } else {
+                            record.nextReview = this.addDays(today, LEITNER_INTERVALS[record.box]);
+                        }
+                        this.sessionStats.correct++;
+                        this.giveRewards();
+                    } else {
+                        if (record.box === 0 || record.box === 1) {
+                            record.box = 1;
+                        } else if (record.box === BOX_ARCHIVE) {
+                            record.box = 4;
+                        } else {
+                            record.box = Math.max(1, record.box - 1);
+                        }
+                        record.nextReview = today; 
+                    }
                 }
 
                 myData.wordsProgress[testId] = record;
