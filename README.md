@@ -26,6 +26,7 @@
 ### 3. 🎬 每月特別影片獎勵（Monthly Movie Hall）
 - **每週挑戰與星星累積**：每累積 50 顆寶石兌換 1 顆星星。
 - **集滿 7 顆星大獎**：每月達成 7 星任務，即解鎖當月客製化家庭回憶或主題特別影片！
+  - 11月：`2026 Nov Little Reporters` 📸 📰
   - 10月：`2026 Oct Basketball Time` 🏀
   - 9月：`2026 Sep Pizza` 🍕
   - 8月：`2026 Aug Muay Thai` 🥊
