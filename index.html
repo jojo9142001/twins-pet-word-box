@@ -435,7 +435,7 @@
 
         <div id="view-end" class="hidden-view flex flex-col items-center text-center py-10">
             <div class="text-7xl md:text-8xl mb-8">🎉</div>
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">任務完成！</h2>
+            <h2 id="end-title" class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">任務完成！</h2>
             <p id="end-message" class="text-2xl md:text-3xl text-gray-600 mb-12 font-bold"></p>
             <button onclick="app.showView('view-menu')" class="card-pop bg-blue-500 hover:bg-blue-600 text-white font-bold text-2xl md:text-3xl px-10 md:px-12 py-4 md:py-5 rounded-full shadow-xl">
                 返回主選單
@@ -799,8 +799,45 @@ const getCrystalBallSVG = (isActive) => `
             <g transform="translate(48, 43) scale(0.3)">${innerDog}</g>
         </svg>`;
 
-        const ENID_PRAISES = ["I saw you work very hard today, Enid.", "You kept trying, Enid, even when it was not easy.", "Enid, your reading is better because you practice.", "You stayed focused until you finished, Enid.", "Enid, I like how you do your homework carefully.", "Even when you made a mistake, Enid, you tried again."];
-        const IAN_PRAISES = ["Ian, you worked hard on your homework today.", "You didn’t stop when it got tricky, Ian.", "Ian, your reading gets better every day.", "I like how you stay focused, Ian.", "Ian, you finished what you started.", "Even when you felt tired, Ian, you kept going."];
+        const ENID_PRAISES = [
+            // 🐾 方向 A：超萌貓咪生活視角 (Heartcute 的心聲)
+            "Purr~ You just powered up my paws, Enid! Keep scratching my ears! 🐾",
+            "Meow! That tricky word didn't stand a chance against your sharp eyes, Enid! ✨",
+            "Even while napping, Heartcute knew you could nail that word, Enid! 🐱",
+            "Pawsome! Heartcute is rolling on the floor with purrs of joy for you! 💕",
+            
+            // ⚔️ 方向 B：RPG 冒險隊友並肩作戰
+            "Critical hit, Enid! Boss word defeated! Our cat-power just leveled up! ⚔️",
+            "Whoa, magic master Enid! You just unlocked a legendary memory shield! 🛡️",
+            "Double combo! You cracked that tough radical like an expert adventurer! 🌟",
+            "Epic spell cast! You sent that difficult character straight into mastery! 🪄",
+            
+            // 🌸 方向 C：成長心態與溫暖幽默
+            "Are you secretly a word ninja, Enid? Heartcute wants to learn your secret! 🥷",
+            "Your brain muscles are looking super strong today, Enid! Keep shining! 💖",
+            "Mistakes were just stepping stones—look at how brightly you shine right now! 🌸",
+            "Heartcute loves how you never give up, even when words get tricky! 🎀"
+        ];
+
+        const IAN_PRAISES = [
+            // 🐶 方向 A：超萌狗狗生活視角 (Ian 活潑小狗的心聲)
+            "Woof woof! My tail is wagging at supersonic speed for you, Ian! 🐶💨",
+            "I dropped my favorite toy bone just to give you two high-paws, Ian! 🦴",
+            "Ian, you caught that word faster than my flying frisbee! Good boy! 🎾",
+            "Ruff! Puppy zoomies activated! You are my favorite champion, Ian! 🐾",
+            
+            // ⚔️ 方向 B：RPG 冒險隊友並肩作戰
+            "Direct hit, Ian! You smashed through that difficult word like a brave knight! ⚔️",
+            "Level up, Ian! Our adventure party gained +100 Word Power! 🚀",
+            "Dragon-slayer Ian! You conquered that monster character with ease! 🛡️",
+            "Super combo! Your memory radar detected the right strokes instantly! ⚡",
+            
+            // ⭐ 方向 C：成長心態與溫暖幽默
+            "Are you a secret superhero, Ian? Even puppy goggles can't hide your greatness! 🦸‍♂️",
+            "Whoa, Ian! Your brain power just blasted through the roof today! 💥",
+            "You kept pushing through the tough challenges, Ian—that's true champion spirit! 🏆",
+            "Puppy high-five! You make learning look like the best game ever! ⭐"
+        ];
 
         const LEITNER_INTERVALS = { 1: 1, 2: 3, 3: 7, 4: 14 };
         const BOX_ARCHIVE = 5;
@@ -1477,18 +1514,19 @@ const getCrystalBallSVG = (isActive) => `
                 let justMastered = false;
                 const wasAlreadyMastered = (record.box === BOX_ARCHIVE);
                 if (this.currentLessonMode === 'screen') {
-                    // 🎯 弱點快篩專屬邏輯：
-                    // 會寫（答對）：直接進 Box 5 精通畢業！從此不進 Box 1~4 重複複習
-                    // 不會寫（答錯）：直接打入 Box 1 每天密集複習！
+                    // 🎯 弱點快篩專屬邏輯（精準保護既有進度）：
+                    // 1. 若該生字原本就在 Box 1~4 中，絕對不保送 Box 5，維持既有 Box 排程不變！
+                    // 2. 若該生字尚未進入寶盒 (box === 0)，代表孩子本來就會，直接標記為 Box 5 免進 Box 1 佔用複習時間！
+                    // 3. 快篩過程絕不觸發精熟彈窗與彩帶干擾，節奏流暢一氣呵成！
                     if (isCorrect || isDirectMaster) {
-                        record.box = BOX_ARCHIVE;
-                        record.nextReview = null;
-                        if (!wasAlreadyMastered) {
-                            justMastered = true;
+                        if (record.box === 0) {
+                            record.box = BOX_ARCHIVE;
+                            record.nextReview = null;
                         }
                         this.sessionStats.correct++;
                         this.giveRewards();
                     } else {
+                        // 答錯：精準打入 Box 1，安排每日密集複習！
                         record.box = 1;
                         record.nextReview = today;
                     }
@@ -1546,6 +1584,7 @@ const getCrystalBallSVG = (isActive) => `
             },
 
             giveRewards: function() {
+                this.playCookieSound(); // 🍪 清脆明亮的獲得餅乾音效！
                 let myData = this.appData[this.currentUser];
                 myData.cookies++; 
                 
@@ -1836,6 +1875,54 @@ const getCrystalBallSVG = (isActive) => `
                 } catch(e) {}
             },
 
+            playCookieSound: function() {
+                try {
+                    const ctx = unlockAudio();
+                    const now = ctx.currentTime;
+                    const playTone = (freq, start, dur) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, start);
+                        gain.gain.setValueAtTime(0.15, start);
+                        gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(start);
+                        osc.stop(start + dur);
+                    };
+                    playTone(987.77, now, 0.08); // B5 (清脆叮)
+                    playTone(1318.51, now + 0.05, 0.12); // E6 (清爽鈴)
+                } catch(e) {}
+            },
+
+            playVictoryFanfare: function() {
+                try {
+                    const ctx = unlockAudio();
+                    const now = ctx.currentTime;
+                    const playNote = (freq, start, dur, type = 'triangle', vol = 0.15) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = type;
+                        osc.frequency.setValueAtTime(freq, start);
+                        gain.gain.setValueAtTime(0, start);
+                        gain.gain.linearRampToValueAtTime(vol, start + 0.02);
+                        gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(start);
+                        osc.stop(start + dur);
+                    };
+                    // 勝利凱旋號角：C5 -> E5 -> G5 -> C6 (和弦延長)
+                    playNote(523.25, now, 0.14, 'triangle', 0.16);
+                    playNote(659.25, now + 0.13, 0.14, 'triangle', 0.16);
+                    playNote(783.99, now + 0.26, 0.18, 'triangle', 0.18);
+                    playNote(1046.50, now + 0.42, 0.65, 'sine', 0.22);
+                    playNote(523.25, now + 0.42, 0.65, 'triangle', 0.12);
+                    playNote(659.25, now + 0.42, 0.65, 'triangle', 0.12);
+                } catch(e) {}
+            },
+
             playMasterySound: function() {
                 try {
                     const ctx = unlockAudio();
@@ -2033,12 +2120,33 @@ const getCrystalBallSVG = (isActive) => `
             },
 
             finishSession: function() {
+                this.playVictoryFanfare();
+                this.fireConfetti(true);
+                // 額外兩側多重噴射彩帶
+                setTimeout(() => { if (typeof confetti === 'function') confetti({ particleCount: 70, angle: 60, spread: 50, origin: { x: 0 } }); }, 200);
+                setTimeout(() => { if (typeof confetti === 'function') confetti({ particleCount: 70, angle: 120, spread: 50, origin: { x: 1 } }); }, 350);
+
                 const rate = Math.round((this.sessionStats.correct / this.sessionStats.total) * 100);
-                document.getElementById('end-message').innerText = `本次答對率：${rate}% (${this.sessionStats.correct}/${this.sessionStats.total})`;
-                if (rate >= 80) {
-                    this.fireConfetti(true);
-                    this.playMasterySound();
+                let title = '🎉 任務完成！';
+                let subtitle = '';
+                
+                if (this.currentLessonMode === 'screen') {
+                    title = '🎯 弱點快篩完成！';
+                    subtitle = `本次答對率：<span class="text-indigo-600 font-extrabold">${rate}%</span> (${this.sessionStats.correct}/${this.sessionStats.total})<br>` +
+                               `<span class="text-sm md:text-base text-gray-600 font-bold block mt-2">✨ 不會的生字已送入 Box 1 每日練習，原本各箱進度安全保留！</span>`;
+                } else if (this.currentLessonMode === 'boxReview') {
+                    title = '📦 寶盒複習完成！';
+                    subtitle = `複習答對率：<span class="text-emerald-600 font-extrabold">${rate}%</span> (${this.sessionStats.correct}/${this.sessionStats.total})<br>` +
+                               `<span class="text-sm md:text-base text-gray-600 font-bold block mt-2">⭐ 答對生字已向更高的寶盒邁進！</span>`;
+                } else {
+                    title = '🌱 生字練習完成！';
+                    subtitle = `本次答對率：<span class="text-orange-600 font-extrabold">${rate}%</span> (${this.sessionStats.correct}/${this.sessionStats.total})<br>` +
+                               `<span class="text-sm md:text-base text-gray-600 font-bold block mt-2">💪 努力練習就是超能力，繼續保持！</span>`;
                 }
+                
+                const endTitleEl = document.getElementById('end-title');
+                if (endTitleEl) endTitleEl.innerText = title;
+                document.getElementById('end-message').innerHTML = subtitle;
                 this.showView('view-end');
             },
 
