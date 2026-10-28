@@ -29,6 +29,60 @@
         }
 
         /* 🌟 聲調小精靈的專屬位置：跳出隊伍，往右上方移動到注音旁邊！ */
+        
+        /* 🌟 課本級標準注音盒（徹底修復二、三、四聲與輕聲位置） */
+        .bopomofo-box {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            user-select: none;
+            line-height: 1;
+        }
+        .bopomofo-box-lg {
+            font-size: 5rem;
+        }
+        @media (min-width: 768px) {
+            .bopomofo-box-lg {
+                font-size: 6.8rem;
+            }
+        }
+        .bopomofo-box-sm {
+            font-size: 2.2rem;
+        }
+        .bopomofo-col {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.05;
+        }
+        .bopomofo-symbol {
+            display: inline-block;
+            position: relative;
+            text-align: center;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', sans-serif;
+            font-weight: bold;
+        }
+        .bopomofo-side-tone {
+            position: absolute;
+            top: -0.05em;
+            right: -0.65em;
+            font-size: 0.65em;
+            line-height: 1;
+            font-weight: 900;
+            color: #C2410C;
+        }
+        .bopomofo-light-tone {
+            display: block;
+            text-align: center;
+            font-size: 0.65em;
+            line-height: 0.4;
+            margin-bottom: 0.15em;
+            font-weight: 900;
+            color: #C2410C;
+        }
+
         .tone-mark {
             position: absolute;
             transform: translate(0.8em, -0.5em); /* 🌟 把 0.3em 變大成 0.8em（往右多走幾步），-0.8em 改成 -0.5em（高度稍微對齊） */
@@ -556,6 +610,7 @@
 
     <script>
         const STROKE_DICT = {
+            /* 二上認讀字筆畫 */ "矮":13, "餐":16, "醬":17, "模":14, "牆":17, "賽":17, "拔":8, "碗":13, "轉":18, "柿":9, "裳":14, "慌":12, "熊":14, "鴉":15, "曹":11, "秤":10, "灣":25, "綻":14, "戴":17, "扁":9, "聊":11,
             /* 一年級原本的筆畫資料 */
             "一":1, "二":2, "三":3, "四":5, "五":4, "六":4, "七":2, "八":2, "九":2, "十":2,
             "拍":8, "手":4, "左":5, "右":5, "你":7, "他":5, "也":3, "上":3, "下":3,
@@ -613,18 +668,18 @@
             ["17. 一下_11.生日", "生:ㄕㄥ:生,日:ㄖˋ:日,今:ㄐㄧㄣ:人,記:ㄐㄧˋ:言,時:ㄕˊ:日,知:ㄓ:矢,道:ㄉㄠˋ:辵,嗎:ㄇㄚ˙:口,學:ㄒㄩㄝˊ:子,收:ㄕㄡ:攴,張:ㄓㄤ:弓,祝:ㄓㄨˋ:示,福:ㄈㄨˊ:示,第:ㄉㄧˋ:竹,次:ㄘˋ:欠,謝:ㄒㄧㄝˋ:言"],
             ["18. 一下_12.休息", "想:ㄒㄧㄤˇ:心,燈:ㄉㄥ:火,前:ㄑㄧㄢˊ:刀,點:ㄉㄧㄢˇ:黑,半:ㄅㄢˋ:十,清:ㄑㄧㄥ:水,楚:ㄔㄨˇ:木,停:ㄊㄧㄥˊ:人,休:ㄒㄧㄡ:人,息:ㄒㄧˊ:心,兒:ㄦˊ:儿,吧:ㄅㄚ˙:口,幫:ㄅㄤ:巾,加:ㄐㄧㄚ:力,油:ㄧㄡˊ:水,慢:ㄇㄢˋ:心"],
             /* 🌟 二年級上學期新增的完整課文、注音與部首 */
-            ["19. 二上_第1課", "年:ㄋㄧㄢˊ:干,希:ㄒㄧ:巾,望:ㄨㄤˋ:月,坐:ㄗㄨㄛˋ:土,位:ㄨㄟˋ:人,本:ㄅㄣˇ:木,淡:ㄉㄢˋ:水,書:ㄕㄨ:曰,老:ㄌㄠˇ:老,師:ㄕ:巾,以:ㄧˇ:人,為:ㄨㄟˊ:火,故:ㄍㄨˋ:攴,用:ㄩㄥˋ:用,力:ㄌㄧˋ:力,只:ㄓˇ:口,現:ㄒㄧㄢˋ:玉,還:ㄏㄞˊ:辵"],
-            ["20. 二上_第2課", "全:ㄑㄩㄢˊ:入,煎:ㄐㄧㄢ:火,蛋:ㄉㄢˋ:虫,圓:ㄩㄢˊ:囗,番:ㄈㄢ:田,茄:ㄑㄧㄝˊ:艸,切:ㄑㄧㄝ:刀,輪:ㄌㄨㄣˊ:車,吐:ㄊㄨˇ:口,司:ㄙ:口,夾:ㄐㄧㄚˊ:大,中:ㄓㄨㄥ:丨,方:ㄈㄤ:方,城:ㄔㄥˊ:土,堡:ㄅㄠˇ:土,接:ㄐㄧㄝ:手,畫:ㄏㄨㄚˋ:田,臉:ㄌㄧㄢˇ:肉"],
-            ["21. 二上_第3課", "巷:ㄒㄧㄤˋ:己,叔:ㄕㄨˊ:又,貓:ㄇㄠ:豸,屋:ㄨ:尸,捧:ㄆㄥˇ:手,蝴:ㄏㄨˊ:虫,蝶:ㄉㄧㄝˊ:虫,忙:ㄇㄤˊ:心,娶:ㄑㄩˇ:女,娘:ㄋㄧㄤˊ:女,黃:ㄏㄨㄤˊ:黃,筆:ㄅㄧˇ:竹,打:ㄉㄚˇ:手,扮:ㄅㄢˋ:手,樣:ㄧㄤˋ:木,越:ㄩㄝˋ:走,美:ㄇㄟˇ:羊,麗:ㄌㄧˋ:鹿"],
-            ["22. 二上_第4課", "運:ㄩㄣˋ:辵,動:ㄉㄨㄥˋ:力,飄:ㄆㄧㄠ:風,熱:ㄖㄜˋ:火,鬧:ㄋㄠˋ:鬥,舞:ㄨˇ:舛,哇:ㄨㄚ:口,往:ㄨㄤˇ:彳,容:ㄖㄨㄥˊ:宀,步:ㄅㄨˋ:止,汗:ㄏㄢˋ:水,腳:ㄐㄧㄠˇ:肉,協:ㄒㄧㄝˊ:十,聲:ㄕㄥ:耳,河:ㄏㄜˊ:水,氣:ㄑㄧˋ:气,最:ㄗㄨㄟˋ:曰,可:ㄎㄜˇ:口"],
-            ["23. 二上_第5課", "竹:ㄓㄨˊ:竹,籃:ㄌㄢˊ:竹,鄉:ㄒㄧㄤ:邑,南:ㄋㄢˊ:十,暑:ㄕㄨˇ:日,假:ㄐㄧㄚˋ:人,帶:ㄉㄞˋ:巾,等:ㄉㄥˇ:竹,跨:ㄎㄨㄚˋ:足,划:ㄏㄨㄚˊ:刀,吹:ㄔㄨㄟ:口,邊:ㄅㄧㄢ:辵,叫:ㄐㄧㄠˋ:口,原:ㄩㄢˊ:厂,近:ㄐㄧㄣˋ:辵,活:ㄏㄨㄛˊ:水,識:ㄕˋ:言"],
-            ["24. 二上_第6課", "鎮:ㄓㄣˋ:金,餅:ㄅㄧㄥˇ:食,節:ㄐㄧㄝˊ:竹,埔:ㄆㄨˇ:土,因:ㄧㄣ:囗,此:ㄘˇ:止,進:ㄐㄧㄣˋ:辵,排:ㄆㄞˊ:手,遠:ㄩㄢˇ:辵,色:ㄙㄜˋ:色,愛:ㄞˋ:心,月:ㄩㄝˋ:月,乾:ㄍㄢ:乙,甜:ㄊㄧㄢˊ:甘,客:ㄎㄜˋ:宀,買:ㄇㄞˇ:貝,親:ㄑㄧㄣ:見,如:ㄖㄨˊ:女,意:ㄧˋ:心"],
-            ["25. 二上_第7課", "衣:ㄧ:衣,胖:ㄆㄤˋ:肉,簡:ㄐㄧㄢˇ:竹,單:ㄉㄢ:口,聰:ㄘㄨㄥ:耳,明:ㄇㄧㄥˊ:日,針:ㄓㄣ:金,臣:ㄔㄣˊ:臣,東:ㄉㄨㄥ:木,西:ㄒㄧ:襾,敢:ㄍㄢˇ:攴,直:ㄓˊ:目,棒:ㄅㄤˋ:木,街:ㄐㄧㄝ:行,滿:ㄇㄢˇ:水,眼:ㄧㄢˇ:目,哪:ㄋㄚˇ:口,思:ㄙ:心"],
-            ["26. 二上_第8課", "渴:ㄎㄜˇ:水,烏:ㄨ:火,喝:ㄏㄜ:口,瓶:ㄆㄧㄥˊ:瓦,法:ㄈㄚˇ:水,森:ㄙㄣ:木,林:ㄌㄧㄣˊ:木,旅:ㄌㄩˇ:方,行:ㄒㄧㄥˊ:行,物:ㄨˋ:牛,午:ㄨˇ:十,裝:ㄓㄨㄤ:衣,許:ㄒㄩˇ:言,石:ㄕˊ:石,難:ㄋㄢˊ:隹,忘:ㄨㄤˋ:心,哈:ㄏㄚ:口,但:ㄉㄢˋ:人"],
-            ["27. 二上_第9課", "象:ㄒㄧㄤˋ:豕,操:ㄘㄠ:手,粗:ㄘㄨ:米,腿:ㄊㄨㄟˇ:肉,柱:ㄓㄨˋ:木,砍:ㄎㄢˇ:石,幾:ㄐㄧˇ:幺,部:ㄅㄨˋ:邑,搖:ㄧㄠˊ:手,沖:ㄔㄨㄥ:水,首:ㄕㄡˇ:首,牽:ㄑㄧㄢ:牛,手:ㄕㄡˇ:手,沉:ㄔㄣˊ:水,少:ㄕㄠˇ:小,沿:ㄧㄢˊ:水,然:ㄖㄢˊ:火,紀:ㄐㄧˋ:糸,竟:ㄐㄧㄥˋ:立"],
-            ["28. 二上_第10課", "雪:ㄒㄩㄝˇ:雨,梨:ㄌㄧˊ:木,夜:ㄧㄝˋ:夕,卻:ㄑㄩㄝˋ:卩,冷:ㄌㄥˇ:冫,冬:ㄉㄨㄥ:冫,臺:ㄊㄞˊ:至,季:ㄐㄧˋ:子,相:ㄒㄧㄤ:目,反:ㄈㄢˇ:又,煙:ㄧㄢ:火,火:ㄏㄨㄛˇ:火,待:ㄉㄞˋ:彳,雖:ㄙㄨㄟ:隹,春:ㄔㄨㄣ:日,貨:ㄏㄨㄛˋ:貝,期:ㄑㄧˊ:月,飯:ㄈㄢˋ:食"],
-            ["29. 二上_第11課", "皮:ㄆㄧˊ:皮,具:ㄐㄩˋ:八,飛:ㄈㄟ:飛,者:ㄓㄜˇ:老,洋:ㄧㄤˊ:水,寒:ㄏㄢˊ:宀,北:ㄅㄟˇ:匕,嘴:ㄗㄨㄟˇ:口,伸:ㄕㄣ:人,飽:ㄅㄠˇ:食,沙:ㄕㄚ:水,急:ㄐㄧˊ:心,服:ㄈㄨˊ:月,站:ㄓㄢˋ:立,翅:ㄔˋ:羽,膀:ㄅㄤˇ:肉,充:ㄔㄨㄥ:儿,念:ㄋㄧㄢˋ:心"],
-            ["30. 二上_第12課", "灰:ㄏㄨㄟ:火,涼:ㄌㄧㄤˊ:冫,牠:ㄊㄚ:牛,鼓:ㄍㄨˇ:鼓,絡:ㄌㄨㄛˋ:糸,欣:ㄒㄧㄣ:欠,發:ㄈㄚ:癶,居:ㄐㄩ:尸,冒:ㄇㄠˋ:目,冰:ㄅㄧㄥ:冫,圍:ㄨㄟˊ:囗,咪:ㄇㄧ:口,幸:ㄒㄧㄥˋ:干,團:ㄊㄨㄢˊ:囗,聚:ㄐㄩˋ:耳,愉:ㄩˊ:心,鍋:ㄍㄨㄛ:金,妙:ㄇㄧㄠˋ:女"]
+            ["19. 二上_第1課", "希:ㄒㄧ:巾,師:ㄕ:巾,位:ㄨㄟˋ:人,以:ㄧˇ:人,年:ㄋㄧㄢˊ:干,望:ㄨㄤˋ:月,坐:ㄗㄨㄛˋ:土,本:ㄅㄣˇ:木,淡:ㄉㄢˋ:水,書:ㄕㄨ:曰,老:ㄌㄠˇ:老,為:ㄨㄟˊ:火,故:ㄍㄨˋ:攴,用:ㄩㄥˋ:用,力:ㄌㄧˋ:力,只:ㄓˇ:口,現:ㄒㄧㄢˋ:玉,還:ㄏㄞˊ:辵,聲:ㄕㄥ:耳:read,矮:ㄞˇ:矢:read"],
+            ["20. 二上_第2課", "番:ㄈㄢ:田,畫:ㄏㄨㄚˋ:田,司:ㄙ:口,吐:ㄊㄨˇ:口,城:ㄔㄥˊ:土,堡:ㄅㄠˇ:土,全:ㄑㄩㄢˊ:入,蛋:ㄉㄢˋ:虫,煎:ㄐㄧㄢ:火,圓:ㄩㄢˊ:囗,茄:ㄑㄧㄝˊ:艸,切:ㄑㄧㄝ:刀,輪:ㄌㄨㄣˊ:車,夾:ㄐㄧㄚˊ:大,中:ㄓㄨㄥ:丨,方:ㄈㄤ:方,接:ㄐㄧㄝ:手,臉:ㄌㄧㄢˇ:肉,餐:ㄘㄢ:食:read,醬:ㄐㄧㄤˋ:酉:read"],
+            ["21. 二上_第3課", "捧:ㄆㄥˇ:手,打:ㄉㄚˇ:手,扮:ㄅㄢˋ:手,蝴:ㄏㄨˊ:虫,蝶:ㄉㄧㄝˊ:虫,娶:ㄑㄩˇ:女,娘:ㄋㄧㄤˊ:女,樣:ㄧㄤˋ:木,巷:ㄒㄧㄤˋ:己,叔:ㄕㄨˊ:又,貓:ㄇㄠ:豸,屋:ㄨ:尸,忙:ㄇㄤˊ:心,黃:ㄏㄨㄤˊ:黃,筆:ㄅㄧˇ:竹,越:ㄩㄝˋ:走,美:ㄇㄟˇ:羊,麗:ㄌㄧˋ:鹿,模:ㄇㄛˊ:木:read,牆:ㄑㄧㄤˊ:爿:read"],
+            ["22. 二上_第4課", "哇:ㄨㄚ:口,可:ㄎㄜˇ:口,汗:ㄏㄢˋ:水,河:ㄏㄜˊ:水,運:ㄩㄣˋ:辵,動:ㄉㄨㄥˋ:力,飄:ㄆㄧㄠ:風,熱:ㄖㄜˋ:火,鬧:ㄋㄠˋ:鬥,舞:ㄨˇ:舛,往:ㄨㄤˇ:彳,容:ㄖㄨㄥˊ:宀,步:ㄅㄨˋ:止,腳:ㄐㄧㄠˇ:肉,協:ㄒㄧㄝˊ:十,聲:ㄕㄥ:耳,氣:ㄑㄧˋ:气,最:ㄗㄨㄟˋ:曰,賽:ㄙㄞˋ:貝:read,拔:ㄅㄚˊ:手:read"],
+            ["23. 二上_第5課", "竹:ㄓㄨˊ:竹,籃:ㄌㄢˊ:竹,等:ㄉㄥˇ:竹,吹:ㄔㄨㄟ:口,叫:ㄐㄧㄠˋ:口,邊:ㄅㄧㄢ:辵,近:ㄐㄧㄣˋ:辵,鄉:ㄒㄧㄤ:邑,南:ㄋㄢˊ:十,暑:ㄕㄨˇ:日,假:ㄐㄧㄚˋ:人,帶:ㄉㄞˋ:巾,跨:ㄎㄨㄚˋ:足,划:ㄏㄨㄚˊ:刀,原:ㄩㄢˊ:厂,捕:ㄅㄨˇ:手,活:ㄏㄨㄛˊ:水,識:ㄕˋ:言,碗:ㄨㄢˇ:石:read,轉:ㄓㄨㄢˇ:車:read"],
+            ["24. 二上_第6課", "進:ㄐㄧㄣˋ:辵,遠:ㄩㄢˇ:辵,愛:ㄞˋ:心,意:ㄧˋ:心,鎮:ㄓㄣˋ:金,餅:ㄅㄧㄥˇ:食,節:ㄐㄧㄝˊ:竹,因:ㄧㄣ:囗,此:ㄘˇ:止,排:ㄆㄞˊ:手,色:ㄙㄜˋ:色,月:ㄩㄝˋ:月,乾:ㄍㄢ:乙,甜:ㄊㄧㄢˊ:甘,客:ㄎㄜˋ:宀,買:ㄇㄞˇ:貝,親:ㄑㄧㄣ:見,如:ㄖㄨˊ:女,柿:ㄕˋ:木:read,埔:ㄆㄨˇ:土:read"],
+            ["25. 二上_第7課", "單:ㄉㄢ:口,哪:ㄋㄚˇ:口,東:ㄉㄨㄥ:木,棒:ㄅㄤˋ:木,直:ㄓˊ:目,眼:ㄧㄢˇ:目,衣:ㄧ:衣,思:ㄙ:心,胖:ㄆㄤˋ:肉,針:ㄓㄣ:金,簡:ㄐㄧㄢˇ:竹,聰:ㄘㄨㄥ:耳,明:ㄇㄧㄥˊ:日,臣:ㄔㄣˊ:臣,敢:ㄍㄢˇ:攴,西:ㄒㄧ:襾,街:ㄐㄧㄝ:行,滿:ㄇㄢˇ:水,裳:˙ㄕㄤ:衣:read,慌:ㄏㄨㄤ:心:read"],
+            ["26. 二上_第8課", "渴:ㄎㄜˇ:水,法:ㄈㄚˇ:水,喝:ㄏㄜ:口,哈:ㄏㄚ:口,森:ㄙㄣ:木,林:ㄌㄧㄣˊ:木,鳥:ㄋㄧㄠˇ:鳥,瓶:ㄆㄧㄥˊ:瓦,物:ㄨˋ:牛,旅:ㄌㄩˇ:方,行:ㄒㄧㄥˊ:行,午:ㄨˇ:十,裝:ㄓㄨㄤ:衣,許:ㄒㄩˇ:言,石:ㄕˊ:石,難:ㄋㄢˊ:隹,忘:ㄨㄤˋ:心,但:ㄉㄢˋ:人,熊:ㄒㄩㄥˊ:火:read,鴉:ㄧㄚ:鳥:read"],
+            ["27. 二上_第9課", "操:ㄘㄠ:手,搖:ㄧㄠˊ:手,沖:ㄔㄨㄥ:水,沉:ㄔㄣˊ:水,沿:ㄧㄢˊ:水,象:ㄒㄧㄤˋ:豕,粗:ㄘㄨ:米,腿:ㄊㄨㄟˇ:肉,柱:ㄓㄨˋ:木,砍:ㄎㄢˇ:石,幾:ㄐㄧˇ:幺,部:ㄅㄨˋ:邑,首:ㄕㄡˇ:首,牽:ㄑㄧㄢ:牛,少:ㄕㄠˇ:小,然:ㄖㄢˊ:火,紀:ㄐㄧˋ:糸,竟:ㄐㄧㄥˋ:立,曹:ㄘㄠˊ:曰:read,秤:ㄔㄥˋ:禾:read"],
+            ["28. 二上_第10課", "冷:ㄌㄥˇ:冫,冬:ㄉㄨㄥ:冫,煙:ㄧㄢ:火,火:ㄏㄨㄛˇ:火,雪:ㄒㄩㄝˇ:雨,梨:ㄌㄧˊ:木,夜:ㄧㄝˋ:夕,卻:ㄑㄩㄝˋ:卩,臺:ㄊㄞˊ:至,季:ㄐㄧˋ:子,相:ㄒㄧㄤ:目,反:ㄈㄢˇ:又,待:ㄉㄞˋ:彳,雖:ㄙㄨㄟ:隹,春:ㄔㄨㄣ:日,貨:ㄏㄨㄛˋ:貝,期:ㄑㄧˊ:月,飯:ㄈㄢˋ:食,灣:ㄨㄢ:水:read,綻:ㄓㄢˋ:糸:read"],
+            ["29. 二上_第11課", "洋:ㄧㄤˊ:水,沙:ㄕㄚ:水,急:ㄐㄧˊ:心,念:ㄋㄧㄢˋ:心,皮:ㄆㄧˊ:皮,具:ㄐㄩˋ:八,飛:ㄈㄟ:飛,者:ㄓㄜˇ:老,寒:ㄏㄢˊ:宀,北:ㄅㄟˇ:匕,嘴:ㄗㄨㄟˇ:口,伸:ㄕㄣ:人,飽:ㄅㄠˇ:食,服:ㄈㄨˊ:月,站:ㄓㄢˋ:立,翅:ㄔˋ:羽,膀:ㄅㄤˇ:肉,充:ㄔㄨㄥ:儿,戴:ㄉㄞˋ:戈:read,扁:ㄅㄧㄢˇ:戶:read"],
+            ["30. 二上_第12課", "圍:ㄨㄟˊ:囗,團:ㄊㄨㄢˊ:囗,聚:ㄐㄩˋ:耳,灰:ㄏㄨㄟ:火,涼:ㄌㄧㄤˊ:冫,牠:ㄊㄚ:牛,鼓:ㄍㄨˇ:鼓,絡:ㄌㄨㄛˋ:糸,欣:ㄒㄧㄣ:欠,發:ㄈㄚ:癶,居:ㄐㄩ:尸,冒:ㄇㄠˋ:目,冰:ㄅㄧㄥ:冫,咪:ㄇㄧ:口,幸:ㄒㄧㄥˋ:干,愉:ㄩˊ:心,鍋:ㄍㄨㄛ:金,妙:ㄇㄧㄠˋ:女,聊:ㄌㄧㄠˊ:耳:read"]
         ];
 
         let WORD_DB = [];
@@ -637,7 +692,8 @@
                     WORD_DB.push({
                         id: "w_" + wordIdCounter++,
                         char: parts[0], pinyin: parts[1], radical: parts[2],
-                        strokes: STROKE_DICT[parts[0]] || "-", lesson: lessonName
+                        strokes: STROKE_DICT[parts[0]] || "-", lesson: lessonName,
+                        isReadWord: (parts[3] === 'read')
                     });
                 }
             });
@@ -749,6 +805,38 @@ const getCrystalBallSVG = (isActive) => `
                 globalAudioCtx.resume();
             }
             return globalAudioCtx;
+        }
+
+        
+        // 🌟 課本級精準注音排版解析器（聲調精準定位於末字右上角，輕聲於正上方）
+        function renderBopomofoHTML(pinyin, isLarge = true) {
+            if (!pinyin) return '';
+            let tone = '';
+            let isLightTone = false;
+            let cleanSymbols = [];
+
+            for (let char of pinyin) {
+                if (char === '˙') {
+                    tone = '˙';
+                    isLightTone = true;
+                } else if (['ˊ', 'ˇ', 'ˋ'].includes(char)) {
+                    tone = char;
+                } else {
+                    cleanSymbols.push(char);
+                }
+            }
+
+            let symbolsHtml = cleanSymbols.map((sym, index) => {
+                const isLast = (index === cleanSymbols.length - 1);
+                if (isLast && tone && !isLightTone) {
+                    return `<span class="bopomofo-symbol relative">${sym}<span class="bopomofo-side-tone">${tone}</span></span>`;
+                }
+                return `<span class="bopomofo-symbol">${sym}</span>`;
+            }).join('');
+
+            let lightToneHtml = isLightTone ? `<span class="bopomofo-light-tone">˙</span>` : '';
+
+            return `<div class="bopomofo-box ${isLarge ? 'bopomofo-box-lg' : 'bopomofo-box-sm'}">${lightToneHtml}<div class="bopomofo-col">${symbolsHtml}</div></div>`;
         }
 
         const app = {
@@ -1145,12 +1233,12 @@ const getCrystalBallSVG = (isActive) => `
                         // 把前面落落長的 "01. 一上_" 拿掉，只留課名，畫面更乾淨清爽！
                         let shortName = lesson.includes('_') ? lesson.split('_')[1] : lesson;
                         let lessonWords = WORD_DB.filter(w => w.lesson === lesson);
-                        let totalItems = lessonWords.length * 2;
+                        let totalItems = lessonWords.reduce((sum, w) => sum + (w.isReadWord ? 1 : 2), 0);
                         let inBoxItems = 0;
                         let myData = app.appData[app.currentUser];
 
                         lessonWords.forEach(w => {
-                            if (myData.wordsProgress[w.id + '_write_char']?.box >= 1) inBoxItems++;
+                            if (!w.isReadWord && myData.wordsProgress[w.id + '_write_char']?.box >= 1) inBoxItems++;
                             if (myData.wordsProgress[w.id + '_write_pinyin']?.box >= 1) inBoxItems++;
                         });
 
@@ -1216,8 +1304,8 @@ const getCrystalBallSVG = (isActive) => `
                 let totalItems = words.length * 2;
 
                 if (mode === 'screen') {
-                    // 🎯 弱點快篩模式：全課考注音與國字，答對直通 Box 5 精通，答錯打入 Box 1 每天複習！
-                    words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                    // 🎯 弱點快篩模式：一般生字雙向考；認讀字只考看國字寫注音！
+                    words.filter(w => !w.isReadWord).sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
                         word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
                     }));
                     words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
@@ -1225,9 +1313,9 @@ const getCrystalBallSVG = (isActive) => `
                     }));
                     this.lastCardOrigin = 'lesson';
                     document.getElementById('phase-badge').classList.remove('hidden');
-                    this.startQueue(queue, `🎯 弱點快篩：${shortName} (共 ${totalItems} 題)`);
+                    this.startQueue(queue, `🎯 弱點快篩：${shortName} (共 ${queue.length} 題)`);
                 } else {
-                    // 🌱 生字初學模式：原始循序漸進邏輯
+                    // 🌱 生字初學模式：循序漸進
                     let unpracticedChar = [];
                     let unpracticedPinyin = [];
 
@@ -1237,8 +1325,8 @@ const getCrystalBallSVG = (isActive) => `
                         const progChar = myData.wordsProgress[idChar];
                         const progPinyin = myData.wordsProgress[idPinyin];
 
-                        if (!progChar || !progChar.box || progChar.box === 0) {
-                            unpracticedChar.push(w);
+                        if (!w.isReadWord) {
+                            if (!progChar || !progChar.box || progChar.box === 0) unpracticedChar.push(w);
                         }
                         if (!progPinyin || !progPinyin.box || progPinyin.box === 0) {
                             unpracticedPinyin.push(w);
@@ -1254,9 +1342,10 @@ const getCrystalBallSVG = (isActive) => `
                         }));
                         this.lastCardOrigin = 'lesson';
                         document.getElementById('phase-badge').classList.remove('hidden');
+                        let totalItems = words.reduce((sum, w) => sum + (w.isReadWord ? 1 : 2), 0);
                         this.startQueue(queue, `🌱 生字初學：${shortName} (剩餘 ${queue.length}/${totalItems} 題)`);
                     } else {
-                        words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                        words.filter(w => !w.isReadWord).sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
                             word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
                         }));
                         words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
@@ -1264,7 +1353,7 @@ const getCrystalBallSVG = (isActive) => `
                         }));
                         this.lastCardOrigin = 'lesson';
                         document.getElementById('phase-badge').classList.remove('hidden');
-                        this.startQueue(queue, `🌱 生字溫習：${shortName} (共 ${totalItems} 題)`);
+                        this.startQueue(queue, `🌱 生字溫習：${shortName} (共 ${queue.length} 題)`);
                     }
                 }
             },
@@ -1301,8 +1390,12 @@ const getCrystalBallSVG = (isActive) => `
                 document.getElementById('card-progress').innerText = `${this.currentIndex + 1} / ${this.currentQueue.length}`;
                 if (currentItem.phase) {
                     const badge = document.getElementById('phase-badge');
-                    const modePrefix = this.currentLessonMode === 'screen' ? '🎯 弱點快篩' : '🌱 生字練習';
-                    badge.innerText = currentItem.phase === 1 ? `【${modePrefix}】階段 1：看注音，寫國字` : `【${modePrefix}】階段 2：看國字，寫注音`;
+                    if (currentItem.word.isReadWord) {
+                        badge.innerText = "【📖 認讀字】看國字，寫注音（熟讀即可）";
+                    } else {
+                        const modePrefix = this.currentLessonMode === 'screen' ? '🎯 弱點快篩' : '🌱 生字練習';
+                        badge.innerText = currentItem.phase === 1 ? `【${modePrefix}】階段 1：看注音，寫國字` : `【${modePrefix}】階段 2：看國字，寫注音`;
+                    }
                 }
 
                 document.getElementById('btn-show-answer').classList.remove('hidden');
@@ -1313,18 +1406,17 @@ const getCrystalBallSVG = (isActive) => `
                 const qDisplay = document.getElementById('question-display');
 
                 if (testType === 'write_char') {
-                    qInstruction.style.display = 'none'; /* 🌟 把提示文字隱藏起來，空間就會完全釋放出來囉！ */
-                    /* 🌟 用魔法找出聲調（˙ˊˇˋ），幫它們穿上名為 tone-mark 的披風 */
-                    qDisplay.innerHTML = word.pinyin.replace(/([˙ˊˇˋ])/g, '<span class="tone-mark">$1</span>');
+                    qInstruction.style.display = 'none';
+                    qDisplay.innerHTML = renderBopomofoHTML(word.pinyin, true);
                 } else {
-                    qInstruction.style.display = 'none'; /* 🌟 把提示文字隱藏起來，空間就會完全釋放出來囉！ */
+                    qInstruction.style.display = 'none';
                     qDisplay.innerText = word.char;
                 }
 
                 document.getElementById('ans-char').innerText = word.char;
-                document.getElementById('ans-pinyin').innerText = word.pinyin;
+                document.getElementById('ans-pinyin').innerHTML = renderBopomofoHTML(word.pinyin, false);
                 document.getElementById('ans-radical').innerText = word.radical;
-                document.getElementById('ans-strokes').innerText = word.strokes; 
+                document.getElementById('ans-strokes').innerText = word.strokes;
             },
 
             revealAnswer: function() {
