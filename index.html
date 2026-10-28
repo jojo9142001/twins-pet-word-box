@@ -285,7 +285,7 @@
 <body class="min-h-screen flex flex-col items-center justify-start py-8 px-4 relative overflow-x-hidden">
 
     <!-- 🌸 新增：這是裝滿康乃馨的隱形大籃子，固定在最背景 -->
-    <div id="flower-container" class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden"></div>
+    <div id="flower-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
 
     <!-- ☁️ 雲端同步浮動提示 -->
     <button id="btn-cloud-sync" onclick="app.syncWithCloud(true)" class="absolute top-4 left-4 md:top-6 md:left-6 bg-white border-2 border-emerald-300 text-emerald-700 px-3 py-2 md:px-4 md:py-3 rounded-full shadow-md text-xs md:text-base font-bold flex items-center gap-1.5 hover:bg-emerald-50 z-10 transition-transform active:scale-95" title="點擊立即檢查並同步雲端進度">
@@ -2209,67 +2209,116 @@ const getCrystalBallSVG = (isActive) => `
             }
        }; // 🌟 這個是整個 app 大包裝的關門括號！
 
-        // 🍂 秋天落葉飄落動畫
-        function createAutumnLeaves() {
+        // 🎄 聖誕冬日童話飄落動畫（可愛雪人、拐杖糖、晶瑩雪花）
+        function createChristmasSnow() {
             const container = document.getElementById('flower-container');
+            if (!container) return;
             container.innerHTML = '';
 
-            if (!document.getElementById('autumn-leaf-style')) {
+            if (!document.getElementById('christmas-snow-style')) {
                 const style = document.createElement('style');
-                style.id = 'autumn-leaf-style';
+                style.id = 'christmas-snow-style';
                 style.innerHTML = `
-                @keyframes leaf-fall {
-                    0%   { transform: translateY(-10vh) translateX(0)     rotate(0deg);   opacity: 0; }
-                    10%  { opacity: 1; }
-                    30%  { transform: translateY(25vh)  translateX(25px)  rotate(60deg);  }
-                    60%  { transform: translateY(60vh)  translateX(-20px) rotate(120deg); }
-                    90%  { opacity: 1; }
-                    100% { transform: translateY(110vh) translateX(10px)  rotate(200deg); opacity: 0; }
+                @keyframes christmas-drift {
+                    0%   { transform: translateY(-12vh) translateX(0)     rotate(0deg);   opacity: 0; }
+                    10%  { opacity: 0.9; }
+                    30%  { transform: translateY(25vh)  translateX(25px)  rotate(15deg);  }
+                    60%  { transform: translateY(60vh)  translateX(-20px) rotate(-12deg); }
+                    90%  { opacity: 0.9; }
+                    100% { transform: translateY(112vh) translateX(15px)  rotate(25deg);  opacity: 0; }
                 }
-                .leaf-outer {
-                    position: absolute; top: -10%; z-index: -1; pointer-events: none;
-                    animation: leaf-fall linear infinite;
-                    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.12));
+                .snow-outer {
+                    position: absolute; top: -10%; z-index: 0; pointer-events: none;
+                    animation: christmas-drift linear infinite;
+                    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); opacity: 0.9;
                 }
                 `;
                 document.head.appendChild(style);
             }
 
-            // 🍁 卡通楓葉（橘紅色，五裂）
-            const mapleSVG = `<svg viewBox="0 0 80 90" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                <path d="M40,6 L46,22 L62,16 L55,30 L70,34 L56,42 L60,58 L40,52 L20,58 L24,42 L10,34 L25,30 L18,16 L34,22 Z"
-                      fill="#E8541A" stroke="#C03A0A" stroke-width="2.5" stroke-linejoin="round"/>
-                <line x1="40" y1="22" x2="40" y2="52" stroke="#C03A0A" stroke-width="1.5" opacity="0.5"/>
-                <line x1="40" y1="38" x2="26" y2="50" stroke="#C03A0A" stroke-width="1"   opacity="0.4"/>
-                <line x1="40" y1="38" x2="54" y2="50" stroke="#C03A0A" stroke-width="1"   opacity="0.4"/>
-                <rect x="37.5" y="54" width="5" height="18" rx="2.5" fill="#8B5E3C"/>
+            // ⛄ 可愛聖誕雪人
+            const snowmanSVG = `<svg viewBox="0 0 100 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="85" r="30" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2.5"/>
+                <circle cx="50" cy="76" r="3" fill="#334155"/>
+                <circle cx="50" cy="88" r="3" fill="#334155"/>
+                <path d="M22,76 L8,68 M12,70 L6,74" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M78,76 L92,68 M88,70 L94,74" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="50" cy="46" r="22" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2.5"/>
+                <circle cx="43" cy="42" r="2.5" fill="#1E293B"/>
+                <circle cx="57" cy="42" r="2.5" fill="#1E293B"/>
+                <polygon points="48,46 50,49 32,49" fill="#EA580C" stroke="#C2410C" stroke-width="0.8"/>
+                <path d="M34,58 Q50,65 66,58 Q50,68 34,58 Z" fill="#DC2626" stroke="#B91C1C" stroke-width="1.5"/>
+                <path d="M56,62 L60,82 L52,83 L48,63 Z" fill="#DC2626" stroke="#B91C1C" stroke-width="1.5"/>
+                <line x1="53" y1="83" x2="59" y2="83" stroke="#FEF08A" stroke-width="2" stroke-linecap="round"/>
+                <path d="M34,32 Q50,22 66,32 L66,28 Q50,16 34,28 Z" fill="#DC2626"/>
+                <path d="M38,28 Q50,8 74,18 Q62,26 62,28 Z" fill="#DC2626"/>
+                <circle cx="76" cy="18" r="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+                <rect x="32" y="27" width="36" height="7" rx="3.5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
             </svg>`;
 
-            // 🌿 卡通橡樹葉（金黃棕，波浪輪廓）
-            const oakSVG = `<svg viewBox="0 0 80 90" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                <path d="M40,8 C45,8 52,12 54,18 C59,15 65,17 63,23 C68,25 70,33 65,36
-                         C69,41 68,49 62,49 C62,55 58,62 53,65 C49,68 44,70 40,70
-                         C36,70 31,68 27,65 C22,62 18,55 18,49 C12,49 11,41 15,36
-                         C10,33 12,25 17,23 C15,17 21,15 26,18 C28,12 35,8 40,8 Z"
-                      fill="#D4921A" stroke="#A0620A" stroke-width="2.5"/>
-                <line x1="40" y1="14" x2="40" y2="68" stroke="#A0620A" stroke-width="1.5" opacity="0.5"/>
-                <line x1="40" y1="28" x2="24" y2="38" stroke="#A0620A" stroke-width="1"   opacity="0.4"/>
-                <line x1="40" y1="28" x2="56" y2="38" stroke="#A0620A" stroke-width="1"   opacity="0.4"/>
-                <line x1="40" y1="44" x2="22" y2="50" stroke="#A0620A" stroke-width="1"   opacity="0.4"/>
-                <line x1="40" y1="44" x2="58" y2="50" stroke="#A0620A" stroke-width="1"   opacity="0.4"/>
-                <rect x="37.5" y="70" width="5" height="16" rx="2.5" fill="#8B5E3C"/>
+            // 🍬 經典聖誕拐杖糖 (獨立 clipPath ID，防止衝突)
+            const candyCaneSVG = (id) => `<svg viewBox="0 0 100 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <clipPath id="cane-clip-${id}">
+                        <path d="M42,112 L42,42 C42,20 62,12 74,24 C86,36 78,54 68,54 C62,54 58,48 58,42 C58,34 66,28 72,32 C74,34 72,38 70,38" 
+                              fill="none" stroke="black" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+                    </clipPath>
+                </defs>
+                <path d="M42,112 L42,42 C42,20 62,12 74,24 C86,36 78,54 68,54 C62,54 58,48 58,42 C58,34 66,28 72,32 C74,34 72,38 70,38" 
+                      fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+                <g clip-path="url(#cane-clip-${id})">
+                    <line x1="20" y1="118" x2="65" y2="95" stroke="#DC2626" stroke-width="7"/>
+                    <line x1="20" y1="98"  x2="65" y2="75" stroke="#DC2626" stroke-width="7"/>
+                    <line x1="20" y1="78"  x2="65" y2="55" stroke="#DC2626" stroke-width="7"/>
+                    <line x1="20" y1="58"  x2="65" y2="35" stroke="#DC2626" stroke-width="7"/>
+                    <line x1="30" y1="36"  x2="75" y2="15" stroke="#DC2626" stroke-width="7"/>
+                    <line x1="50" y1="20"  x2="90" y2="8"  stroke="#DC2626" stroke-width="7"/>
+                    <line x1="65" y1="28"  x2="95" y2="38" stroke="#DC2626" stroke-width="7"/>
+                    <line x1="55" y1="48"  x2="85" y2="58" stroke="#DC2626" stroke-width="7"/>
+                </g>
+                <path d="M42,112 L42,42 C42,20 62,12 74,24 C86,36 78,54 68,54 C62,54 58,48 58,42 C58,34 66,28 72,32 C74,34 72,38 70,38" 
+                      fill="none" stroke="#CBD5E1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M42,65 Q30,52 24,62 Q30,72 42,68 Z" fill="#16A34A" stroke="#15803D" stroke-width="1.5"/>
+                <path d="M42,65 Q54,52 60,62 Q54,72 42,68 Z" fill="#16A34A" stroke="#15803D" stroke-width="1.5"/>
+                <path d="M40,68 L32,84 L40,80 L44,84 Z" fill="#16A34A"/>
+                <path d="M44,68 L52,84 L46,80 L42,84 Z" fill="#16A34A"/>
+                <circle cx="42" cy="66" r="4.5" fill="#EAB308" stroke="#CA8A04" stroke-width="1"/>
             </svg>`;
 
-            for (let i = 0; i < 14; i++) {
+            // ❄️ 晶瑩雪花
+            const snowflakeSVG = `<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#93C5FD" stroke-width="3.5" stroke-linecap="round">
+                    <line x1="50" y1="12" x2="50" y2="88"/>
+                    <line x1="17" y1="31" x2="83" y2="69"/>
+                    <line x1="17" y1="69" x2="83" y2="31"/>
+                    <path d="M42,22 L50,30 L58,22" fill="none"/>
+                    <path d="M42,78 L50,70 L58,78" fill="none"/>
+                    <path d="M22,40 L31,40 L31,31" fill="none"/>
+                    <path d="M78,60 L69,60 L69,69" fill="none"/>
+                    <path d="M22,60 L31,60 L31,69" fill="none"/>
+                    <path d="M78,40 L69,40 L69,31" fill="none"/>
+                </g>
+                <circle cx="50" cy="50" r="5" fill="#BFDBFE" stroke="#60A5FA" stroke-width="2"/>
+            </svg>`;
+
+            // 隨機分布 16 個飄落裝飾
+            for (let i = 0; i < 22; i++) {
                 let wrapper = document.createElement('div');
-                wrapper.className = 'leaf-outer';
-                wrapper.innerHTML = Math.random() > 0.5 ? mapleSVG : oakSVG;
-                let size = Math.random() * 25 + 30; // 30~55px
+                wrapper.className = 'snow-outer';
+                const r = i % 3;
+                if (r === 0) {
+                    wrapper.innerHTML = snowmanSVG;
+                } else if (r === 1) {
+                    wrapper.innerHTML = candyCaneSVG(i);
+                } else {
+                    wrapper.innerHTML = snowflakeSVG;
+                }
+                let size = Math.random() * 20 + 32; // 32~52px
                 wrapper.style.width  = size + 'px';
                 wrapper.style.height = size + 'px';
                 wrapper.style.left = (Math.random() * 90 + 5) + '%';
-                wrapper.style.animationDuration = (Math.random() * 6 + 8) + 's';
-                wrapper.style.animationDelay    = (Math.random() * 10) + 's';
+                wrapper.style.animationDuration = (Math.random() * 6 + 9) + 's';
+                wrapper.style.animationDelay    = (-Math.random() * 12) + 's';
                 container.appendChild(wrapper);
             }
         }
@@ -2277,7 +2326,7 @@ const getCrystalBallSVG = (isActive) => `
         window.onload = function() {
             app.initData();
             app.showView('view-profile');
-            createAutumnLeaves(); // 🍂 啟動秋天落葉魔法！
+            createChristmasSnow(); // 🎄 啟動聖誕冬日童話飄落魔法！
             app.syncWithCloud();  // ☁️ 開啟時自動與雲端確認並同步最新進度！
         };
     </script>
