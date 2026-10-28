@@ -19,74 +19,99 @@
         .card-pop:active { transform: scale(0.95); }
         .hidden-view { display: none !important; }
         
-        .super-large-text {
-            font-size: 9rem;
-            line-height: 1.2;
-            font-weight: bold;
-            color: #4A5568;
-            writing-mode: vertical-rl;
-            text-orientation: upright; /* 🌟 加上這行，讓注音符號跟聲調乖乖正面站好！ */
-        }
-
-        /* 🌟 聲調小精靈的專屬位置：跳出隊伍，往右上方移動到注音旁邊！ */
-        
-        /* 🌟 課本級標準注音盒（徹底修復二、三、四聲與輕聲位置） */
-        .bopomofo-box {
+        /* 🌟 純天然直排注音盒（絕不使用 writing-mode，不旋轉、不跑版、聲調完美定位） */
+        .bopomofo-container {
             display: inline-flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
+            line-height: 1.05;
             user-select: none;
+        }
+
+        .bopomofo-light-tone {
+            font-size: 2.2rem;
+            line-height: 0.5;
+            margin-bottom: 0.2rem;
+            color: #EA580C;
+            font-weight: 900;
+        }
+
+        .bopomofo-row {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            font-size: 4.8rem;
+            font-weight: 800;
+            color: #4338CA;
+            height: 1.15em;
             line-height: 1;
         }
-        .bopomofo-box-lg {
-            font-size: 5rem;
-        }
         @media (min-width: 768px) {
-            .bopomofo-box-lg {
-                font-size: 6.8rem;
+            .bopomofo-row {
+                font-size: 5.8rem;
             }
         }
-        .bopomofo-box-sm {
-            font-size: 2.2rem;
+
+        .bopomofo-tone-mark {
+            position: absolute;
+            left: 100%;
+            top: 0.05em;
+            margin-left: 0.08em;
+            font-size: 0.55em;
+            font-weight: 900;
+            color: #EA580C;
+            line-height: 1;
         }
-        .bopomofo-col {
+
+        /* 小型解答注音盒 (放在解答卡片中) */
+        .bopomofo-container-sm {
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            line-height: 1.05;
-        }
-        .bopomofo-symbol {
-            display: inline-block;
-            position: relative;
-            text-align: center;
-            font-family: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', sans-serif;
-            font-weight: bold;
-        }
-        .bopomofo-side-tone {
-            position: absolute;
-            top: -0.05em;
-            right: -0.65em;
-            font-size: 0.65em;
+            justify-content: center;
             line-height: 1;
-            font-weight: 900;
-            color: #C2410C;
+            user-select: none;
         }
-        .bopomofo-light-tone {
-            display: block;
-            text-align: center;
-            font-size: 0.65em;
-            line-height: 0.4;
-            margin-bottom: 0.15em;
+        .bopomofo-container-sm .bopomofo-light-tone {
+            font-size: 1.1rem;
+            margin-bottom: 0.1rem;
+            color: #EA580C;
             font-weight: 900;
-            color: #C2410C;
+        }
+        .bopomofo-container-sm .bopomofo-row {
+            font-size: 2rem;
+            height: 1.1em;
+            color: #2563EB;
+            font-weight: 800;
+        }
+        @media (min-width: 768px) {
+            .bopomofo-container-sm .bopomofo-row {
+                font-size: 2.4rem;
+            }
+        }
+        .bopomofo-container-sm .bopomofo-tone-mark {
+            position: absolute;
+            left: 100%;
+            top: 0.05em;
+            margin-left: 0.08em;
+            font-size: 0.55em;
+            color: #EA580C;
+            font-weight: 900;
         }
 
-        .tone-mark {
-            position: absolute;
-            transform: translate(0.8em, -0.5em); /* 🌟 把 0.3em 變大成 0.8em（往右多走幾步），-0.8em 改成 -0.5em（高度稍微對齊） */
-            font-size: 0.75em; /* 把聲調稍微縮小一點點，比例更好看 */
+        .single-hanzi-display {
+            font-size: 7.5rem;
+            font-weight: 800;
+            color: #4338CA;
+            line-height: 1;
+            user-select: none;
+        }
+        @media (min-width: 768px) {
+            .single-hanzi-display {
+                font-size: 9rem;
+            }
         }
 
         /* 寵物大小使用響應式調整，避免手機版太擠 */
@@ -369,7 +394,7 @@
 
             <div class="text-center w-full flex flex-col justify-center items-center bg-gray-50 rounded-3xl border-4 border-gray-200 p-6 md:p-8 mb-6 min-h-[200px] md:min-h-[250px] shadow-inner">
                 <p id="question-instruction" class="text-xl md:text-2xl text-gray-600 font-bold mb-4 md:mb-6"></p>
-                <div id="question-display" class="super-large-text text-indigo-700 font-sans tracking-widest"></div>
+                <div id="question-display" class="w-full flex justify-center items-center py-4"></div>
             </div>
 
             <button id="btn-show-answer" onclick="app.revealAnswer()" class="card-pop w-full bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold text-2xl md:text-3xl py-5 md:py-6 rounded-3xl border-4 border-yellow-300 mb-6 shadow-md">
@@ -826,17 +851,18 @@ const getCrystalBallSVG = (isActive) => `
                 }
             }
 
-            let symbolsHtml = cleanSymbols.map((sym, index) => {
+            let rowsHtml = cleanSymbols.map((sym, index) => {
                 const isLast = (index === cleanSymbols.length - 1);
                 if (isLast && tone && !isLightTone) {
-                    return `<span class="bopomofo-symbol relative">${sym}<span class="bopomofo-side-tone">${tone}</span></span>`;
+                    return `<div class="bopomofo-row"><span>${sym}</span><span class="bopomofo-tone-mark">${tone}</span></div>`;
                 }
-                return `<span class="bopomofo-symbol">${sym}</span>`;
+                return `<div class="bopomofo-row"><span>${sym}</span></div>`;
             }).join('');
 
-            let lightToneHtml = isLightTone ? `<span class="bopomofo-light-tone">˙</span>` : '';
+            let lightToneHtml = isLightTone ? `<div class="bopomofo-light-tone">˙</div>` : '';
+            const containerClass = isLarge ? 'bopomofo-container' : 'bopomofo-container-sm';
 
-            return `<div class="bopomofo-box ${isLarge ? 'bopomofo-box-lg' : 'bopomofo-box-sm'}">${lightToneHtml}<div class="bopomofo-col">${symbolsHtml}</div></div>`;
+            return `<div class="${containerClass}">${lightToneHtml}${rowsHtml}</div>`;
         }
 
         const app = {
@@ -1174,9 +1200,11 @@ const getCrystalBallSVG = (isActive) => `
                 let myData = this.appData[this.currentUser].wordsProgress;
                 
                 WORD_DB.forEach(word => {
-                    const idChar = word.id + '_write_char';
-                    if (myData[idChar] && myData[idChar].box === boxNum) {
-                        words.push({ word: word, testType: 'write_char', testId: idChar });
+                    if (!word.isReadWord) {
+                        const idChar = word.id + '_write_char';
+                        if (myData[idChar] && myData[idChar].box === boxNum) {
+                            words.push({ word: word, testType: 'write_char', testId: idChar });
+                        }
                     }
                     const idPinyin = word.id + '_write_pinyin';
                     if (myData[idPinyin] && myData[idPinyin].box === boxNum) {
@@ -1410,7 +1438,7 @@ const getCrystalBallSVG = (isActive) => `
                     qDisplay.innerHTML = renderBopomofoHTML(word.pinyin, true);
                 } else {
                     qInstruction.style.display = 'none';
-                    qDisplay.innerText = word.char;
+                    qDisplay.innerHTML = `<span class="single-hanzi-display">${word.char}</span>`;
                 }
 
                 document.getElementById('ans-char').innerText = word.char;
