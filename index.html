@@ -33,10 +33,9 @@
             font-size: 3.2rem;
             line-height: 0.45;
             margin-bottom: 0.35rem;
-            color: #DC2626;
+            color: #1E293B; /* 🌟 統一高質感深灰 */
             font-weight: 900;
-            -webkit-text-stroke: 1.5px #DC2626;
-            filter: drop-shadow(0 2px 4px rgba(220, 38, 38, 0.3));
+            -webkit-text-stroke: 1.5px #1E293B;
         }
 
         .bopomofo-row {
@@ -46,7 +45,7 @@
             position: relative;
             font-size: 4.8rem;
             font-weight: 800;
-            color: #4338CA;
+            color: #1E293B; /* 🌟 統一高質感深灰 */
             height: 1.15em;
             line-height: 1;
         }
@@ -56,18 +55,17 @@
             }
         }
 
-        /* 🌟 超大號、鮮紅高對比注音聲調（四聲放大大大、極致清晰醒目） */
+        /* 🌟 超大號、與符號融為一體的實心深灰注音聲調（四聲放大大大、同一色系） */
         .bopomofo-tone-mark {
             position: absolute;
             left: 100%;
             top: -0.05em;
             margin-left: 0.1em;
-            font-size: 1.05em; /* 大幅放大至 1.05em！ */
+            font-size: 1.05em; /* 尺寸維持放大大大 */
             font-weight: 900;
-            color: #DC2626; /* 鮮明豔紅，極致高對比 */
+            color: #1E293B; /* 🌟 一體化深灰 */
             line-height: 1;
-            -webkit-text-stroke: 2px #DC2626; /* 實心加粗筆劃，遠看超清晰 */
-            text-shadow: 0 1px 3px rgba(220, 38, 38, 0.35);
+            -webkit-text-stroke: 2px #1E293B; /* 實心加粗厚度 */
         }
 
         /* 小型解答注音盒 (放在解答卡片中) */
@@ -82,14 +80,14 @@
         .bopomofo-container-sm .bopomofo-light-tone {
             font-size: 1.5rem;
             margin-bottom: 0.1rem;
-            color: #DC2626;
+            color: #1E293B;
             font-weight: 900;
-            -webkit-text-stroke: 1px #DC2626;
+            -webkit-text-stroke: 1px #1E293B;
         }
         .bopomofo-container-sm .bopomofo-row {
             font-size: 2rem;
             height: 1.1em;
-            color: #2563EB;
+            color: #1E293B; /* 🌟 解答小卡也是深灰 */
             font-weight: 800;
         }
         @media (min-width: 768px) {
@@ -103,15 +101,15 @@
             top: -0.05em;
             margin-left: 0.1em;
             font-size: 0.9em;
-            color: #DC2626;
+            color: #1E293B;
             font-weight: 900;
-            -webkit-text-stroke: 1.2px #DC2626;
+            -webkit-text-stroke: 1.2px #1E293B;
         }
 
         .single-hanzi-display {
             font-size: 7.5rem;
             font-weight: 800;
-            color: #4338CA;
+            color: #1E293B; /* 🌟 國字同步深灰 */
             line-height: 1;
             user-select: none;
         }
@@ -122,11 +120,22 @@
         }
 
         /* 寵物大小使用響應式調整，避免手機版太擠 */
+        /* 🐾 寵物自然呼吸微動態（純 CSS 本地運算，0 Token、0 負擔） */
+        @keyframes pet-idle-breathe {
+            0%, 100% { transform: translateY(0) scale(1, 1); }
+            50% { transform: translateY(-4px) scale(1.03, 0.97); }
+        }
         .pixel-art {
             width: 100px;
             height: 100px;
             filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15));
+            animation: pet-idle-breathe 2.8s ease-in-out infinite;
+            transform-origin: bottom center;
+            cursor: pointer;
             transition: transform 0.2s;
+        }
+        .pixel-art:active {
+            transform: scale(0.92);
         }
         @media (min-width: 768px) {
             .pixel-art { width: 140px; height: 140px; }
