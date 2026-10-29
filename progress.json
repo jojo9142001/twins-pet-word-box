@@ -4607,7 +4607,7 @@
       "drinks": 10,
       "mathTokens": 374,
       "correctStreak": 0,
-      "lastPetUpdate": 1793279527594,
+      "lastPetUpdate": 1793279580729,
       "activePoops": 0,
       "petName": "Doggy",
       "poopCounter": 3,
@@ -4633,5 +4633,5 @@
       "lastResetMonth": "2026-10"
     }
   },
-  "updatedAt": 1793279530001
+  "updatedAt": 1793279583024
 }
