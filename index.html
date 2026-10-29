@@ -30,11 +30,13 @@
         }
 
         .bopomofo-light-tone {
-            font-size: 2.2rem;
-            line-height: 0.5;
-            margin-bottom: 0.2rem;
-            color: #EA580C;
+            font-size: 3.2rem;
+            line-height: 0.45;
+            margin-bottom: 0.35rem;
+            color: #DC2626;
             font-weight: 900;
+            -webkit-text-stroke: 1.5px #DC2626;
+            filter: drop-shadow(0 2px 4px rgba(220, 38, 38, 0.3));
         }
 
         .bopomofo-row {
@@ -54,15 +56,18 @@
             }
         }
 
+        /* 🌟 超大號、鮮紅高對比注音聲調（四聲放大大大、極致清晰醒目） */
         .bopomofo-tone-mark {
             position: absolute;
             left: 100%;
-            top: 0.05em;
-            margin-left: 0.08em;
-            font-size: 0.55em;
+            top: -0.05em;
+            margin-left: 0.1em;
+            font-size: 1.05em; /* 大幅放大至 1.05em！ */
             font-weight: 900;
-            color: #EA580C;
+            color: #DC2626; /* 鮮明豔紅，極致高對比 */
             line-height: 1;
+            -webkit-text-stroke: 2px #DC2626; /* 實心加粗筆劃，遠看超清晰 */
+            text-shadow: 0 1px 3px rgba(220, 38, 38, 0.35);
         }
 
         /* 小型解答注音盒 (放在解答卡片中) */
@@ -75,10 +80,11 @@
             user-select: none;
         }
         .bopomofo-container-sm .bopomofo-light-tone {
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             margin-bottom: 0.1rem;
-            color: #EA580C;
+            color: #DC2626;
             font-weight: 900;
+            -webkit-text-stroke: 1px #DC2626;
         }
         .bopomofo-container-sm .bopomofo-row {
             font-size: 2rem;
@@ -94,11 +100,12 @@
         .bopomofo-container-sm .bopomofo-tone-mark {
             position: absolute;
             left: 100%;
-            top: 0.05em;
-            margin-left: 0.08em;
-            font-size: 0.55em;
-            color: #EA580C;
+            top: -0.05em;
+            margin-left: 0.1em;
+            font-size: 0.9em;
+            color: #DC2626;
             font-weight: 900;
+            -webkit-text-stroke: 1.2px #DC2626;
         }
 
         .single-hanzi-display {
@@ -587,7 +594,7 @@
 
     <div id="praise-modal" class="hidden-view fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 px-4">
         <div class="bg-transparent max-w-sm w-full text-center flex flex-col items-center">
-            <div class="speech-bubble mb-10 shadow-2xl text-xl md:text-2xl font-bold text-gray-800 w-full max-w-[300px]"><span id="praise-text"></span></div>
+            <div class="speech-bubble mb-8 shadow-2xl text-base md:text-lg font-bold text-gray-800 w-full max-w-[340px] md:max-w-[400px] leading-relaxed"><span id="praise-text"></span></div>
             <div id="praise-pet-container" class="mb-8 transform scale-125 drop-shadow-2xl"></div>
             <button onclick="app.closePraiseAndContinue()" class="card-pop w-full bg-green-500 hover:bg-green-600 text-white font-bold text-2xl md:text-3xl py-4 md:py-5 px-10 rounded-full shadow-2xl border-4 border-white mt-6">
                 繼續挑戰！🚀
@@ -800,43 +807,49 @@ const getCrystalBallSVG = (isActive) => `
         </svg>`;
 
         const ENID_PRAISES = [
-            // 🐾 方向 A：超萌貓咪生活視角 (Heartcute 的心聲)
-            "Purr~ You just powered up my paws, Enid! Keep scratching my ears! 🐾",
-            "Meow! That tricky word didn't stand a chance against your sharp eyes, Enid! ✨",
-            "Even while napping, Heartcute knew you could nail that word, Enid! 🐱",
-            "Pawsome! Heartcute is rolling on the floor with purrs of joy for you! 💕",
-            
-            // ⚔️ 方向 B：RPG 冒險隊友並肩作戰
-            "Critical hit, Enid! Boss word defeated! Our cat-power just leveled up! ⚔️",
-            "Whoa, magic master Enid! You just unlocked a legendary memory shield! 🛡️",
-            "Double combo! You cracked that tough radical like an expert adventurer! 🌟",
-            "Epic spell cast! You sent that difficult character straight into mastery! 🪄",
-            
-            // 🌸 方向 C：成長心態與溫暖幽默
-            "Are you secretly a word ninja, Enid? Heartcute wants to learn your secret! 🥷",
-            "Your brain muscles are looking super strong today, Enid! Keep shining! 💖",
-            "Mistakes were just stepping stones—look at how brightly you shine right now! 🌸",
-            "Heartcute loves how you never give up, even when words get tricky! 🎀"
+            "Meow?! You mastered that word so fast I almost choked on my hairball, Enid! 🙀",
+            "Hold on, Enid... are you possessed by a dictionary wizard?! Heartcute is shook! 🧙‍♀️✨",
+            "I was halfway through my 14th nap of the day, and you just exploded that word! 💤💥",
+            "Purr~ That stroke was so clean I forgot how to lick my own paws, Enid! 🐾",
+            "Wait! Did you just crush Box 5?! Brb, calling the Cat President to give you a medal! 🏅🐱",
+            "Even my tail stopped swishing because you look way too cool right now, Enid! 😎",
+            "Who told you to be this smart?! If you get any smarter, you'll be teaching me cat math! 📐🐾",
+            "Heartcute just did a backflip off the couch! (Okay, I tripped, but it looked awesome!) 🤸‍♀️",
+            "Excuse me, miss! This is a word test, not an action movie! How are you this fast?! 🎬🍿",
+            "Alert! Cutest girl Enid just crushed Box 5! All canned tuna is 50% off in celebration! 🐟🎉",
+            "I bet even that difficult word was crying: 'Please mercy, Enid knows me already!' 😭📖",
+            "My whiskers are tingling with pure amazement! You are unstoppable, Enid! ⚡🐱",
+            "If brain cells were cat treats, you'd own the whole pet supermarket by now! 🛒🍪",
+            "Did you hear that sound? That was that word running away from you in fear! 🏃‍♂️💨",
+            "Heartcute approves this level of genius! Now reward me with 3 chin scratches, human! 😼",
+            "Is it hot in here, or did Enid just set the whole Word Box on fire with her skills?! 🔥🎒",
+            "I was going to catch a laser dot, but watching you conquer Box 5 was way more fun! 🔴✨",
+            "Scientists say humans use 10% of their brains. Enid clearly uses 500%! 🧠🚀",
+            "Hold my catnip! Enid is officially the Queen of Chinese Characters! 👑🐾",
+            "Box 5 defeated! Heartcute's jaw dropped so hard it fell into my milk bowl! 🥛😲"
         ];
 
         const IAN_PRAISES = [
-            // 🐶 方向 A：超萌狗狗生活視角 (Ian 活潑小狗的心聲)
-            "Woof woof! My tail is wagging at supersonic speed for you, Ian! 🐶💨",
-            "I dropped my favorite toy bone just to give you two high-paws, Ian! 🦴",
-            "Ian, you caught that word faster than my flying frisbee! Good boy! 🎾",
-            "Ruff! Puppy zoomies activated! You are my favorite champion, Ian! 🐾",
-            
-            // ⚔️ 方向 B：RPG 冒險隊友並肩作戰
-            "Direct hit, Ian! You smashed through that difficult word like a brave knight! ⚔️",
-            "Level up, Ian! Our adventure party gained +100 Word Power! 🚀",
-            "Dragon-slayer Ian! You conquered that monster character with ease! 🛡️",
-            "Super combo! Your memory radar detected the right strokes instantly! ⚡",
-            
-            // ⭐ 方向 C：成長心態與溫暖幽默
-            "Are you a secret superhero, Ian? Even puppy goggles can't hide your greatness! 🦸‍♂️",
-            "Whoa, Ian! Your brain power just blasted through the roof today! 💥",
-            "You kept pushing through the tough challenges, Ian—that's true champion spirit! 🏆",
-            "Puppy high-five! You make learning look like the best game ever! ⭐"
+            "WOOF! I was chasing my tail, but your brain speed just made me dizzy, Ian! 🌪️🐶",
+            "Hold my bone! Did Ian just smash Box 5 with one finger?! THAT WAS WILD! 🦴💥",
+            "Bark bark! I just ran 10 zoomies around the living room because of you! 🐾💨",
+            "Wait, Ian! Are you secretly a robot superhero disguised as a 2nd grader?! 🤖⚡",
+            "I dropped my favorite slipper in shock! That word didn't stand a single chance! 🥿😲",
+            "Ian! You crushed that word so hard it went flying all the way to Jupiter! 🪐🚀",
+            "Woof! If solving words was an Olympic sport, you'd already have 10 gold medals! 🏆🐶",
+            "My ears popped up so fast they almost turned into helicopter blades, Ian! 🚁👂",
+            "Whoa! That difficult character saw Ian coming and immediately surrendered! 🏳️😂",
+            "Emergency! Ian's brain power is too strong, the couch cushions are floating! 🛋️✨",
+            "I barked so loud the neighbor's parrot tried to learn that Chinese word too! 🦜📚",
+            "Are you sure you didn't eat a dictionary for breakfast today, Ian?! 🥣📖",
+            "Two paws up, two back paws up! (Wait, now I'm lying on my back, scratch my belly!) 🐶🐾",
+            "That word thought it was tricky, but Ian tackled it like an NFL linebacker! 🏈💥",
+            "Woof woof! My tail is wagging so fast it's generating electricity for the house! ⚡🏡",
+            "Level 999 Word Master Ian has entered the game! Monsters beware! 🎮👾",
+            "I tried to count how many words you know, but dogs can only count to four! 🐾🤷‍♂️",
+            "Ian, you just made Box 5 look like a piece of cake! (Can I eat that cake, please?) 🍰😋",
+            "Barking news! 2nd-grade superstar Ian has officially conquered the universe! 📰🌟",
+            "Box 5 crushed! High-paw, high-five, and a giant puppy lick on your forehead! 🐾❤️"
         ];
 
         const LEITNER_INTERVALS = { 1: 1, 2: 3, 3: 7, 4: 14 };
@@ -2093,13 +2106,22 @@ const getCrystalBallSVG = (isActive) => `
                 }
             },
 
+            getNextPraise: function(user) {
+                if (!this.praisePool) this.praisePool = { Enid: [], Ian: [] };
+                if (!this.praisePool[user] || this.praisePool[user].length === 0) {
+                    const src = user === 'Enid' ? ENID_PRAISES : IAN_PRAISES;
+                    // 🌟 洗牌 20 句庫存，確保 20 句全部輪流出現一遍才重洗，絕不連續重複！
+                    this.praisePool[user] = [...src].sort(() => Math.random() - 0.5);
+                }
+                return this.praisePool[user].pop();
+            },
+
             showPraiseModal: function() {
                 const isEnid = this.currentUser === 'Enid';
-                const phrases = isEnid ? ENID_PRAISES : IAN_PRAISES;
-                const randomPraise = phrases[Math.floor(Math.random() * phrases.length)];
+                const praise = this.getNextPraise(this.currentUser);
                 let myData = this.appData[this.currentUser];
                 const petName = myData.petName || (isEnid ? "White Cat" : "White Dog");
-                document.getElementById('praise-text').innerText = `${randomPraise}\n\n— ${petName} 🐾`;
+                document.getElementById('praise-text').innerText = `${praise}\n\n— ${petName} 🐾`;
                 document.getElementById('praise-pet-container').innerHTML = isEnid ? SVG_CAT_SIT : SVG_DOG_SIT;
                 
                 this.playMasterySound();
