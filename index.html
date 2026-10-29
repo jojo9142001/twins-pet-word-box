@@ -120,22 +120,53 @@
         }
 
         /* 寵物大小使用響應式調整，避免手機版太擠 */
-        /* 🐾 寵物自然呼吸微動態（純 CSS 本地運算，0 Token、0 負擔） */
-        @keyframes pet-idle-breathe {
-            0%, 100% { transform: translateY(0) scale(1, 1); }
-            50% { transform: translateY(-4px) scale(1.03, 0.97); }
+        /* 🐾 寵物眨眼與搖尾巴動態（無全身起伏，純自然靈動細節） */
+        @keyframes pet-blink {
+            0%, 92%, 100% { transform: scaleY(1); }
+            95% { transform: scaleY(0.08); }
         }
+        .pet-eye-left, .pet-eye-right {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: pet-blink 3.6s ease-in-out infinite;
+        }
+
+        @keyframes cat-tail-wag {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-14deg); }
+        }
+        .cat-tail {
+            transform-origin: 70px 85px;
+            animation: cat-tail-wag 2.4s ease-in-out infinite;
+        }
+
+        @keyframes dog-tail-wag {
+            0%, 100% { transform: rotate(-12deg); }
+            50% { transform: rotate(16deg); }
+        }
+        .dog-tail {
+            transform-origin: 70px 82px;
+            animation: dog-tail-wag 0.8s ease-in-out infinite;
+        }
+
+        
+        /* 🐾 寵物身體各部位互動樣式 */
+        .pet-touch-ear, .pet-touch-belly, .pet-touch-tail {
+            cursor: pointer;
+            transition: filter 0.15s ease, transform 0.15s ease;
+        }
+        .pet-touch-ear:hover, .pet-touch-belly:hover, .pet-touch-tail:hover {
+            filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.7));
+        }
+        .pet-touch-ear:active, .pet-touch-belly:active, .pet-touch-tail:active {
+            transform: scale(0.96);
+        }
+
         .pixel-art {
             width: 100px;
             height: 100px;
             filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15));
-            animation: pet-idle-breathe 2.8s ease-in-out infinite;
-            transform-origin: bottom center;
-            cursor: pointer;
             transition: transform 0.2s;
-        }
-        .pixel-art:active {
-            transform: scale(0.92);
         }
         @media (min-width: 768px) {
             .pixel-art { width: 140px; height: 140px; }
@@ -176,18 +207,32 @@
             80%, 99.99% { fill: #63B3ED; stroke: #3182CE; } /* 天藍 */
             100% { fill: #FF69B4; stroke: #D53F8C; }
         }
-        /* 一般跳躍 */
-        .pet-bounce { animation: bounce 0.4s ease infinite alternate; }
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-15px); }
+        /* 🐾 有機果凍感彈跳：蹲下蓄力 -> 向上拉伸拉起 -> 落地果凍緩衝 (Squash & Stretch) */
+        .pet-bounce {
+            animation: jelly-hop 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            transform-origin: bottom center;
+        }
+        @keyframes jelly-hop {
+            0%   { transform: translateY(0) scale(1, 1); }
+            15%  { transform: translateY(2px) scale(1.12, 0.88); }   /* 輕輕蹲下蓄力 */
+            45%  { transform: translateY(-16px) scale(0.92, 1.12); } /* 向上輕盈彈起伸展 */
+            70%  { transform: translateY(0) scale(1.06, 0.94); }    /* 落地微果凍壓扁 */
+            85%  { transform: translateY(-3px) scale(0.98, 1.02); }  /* 微幅回彈 */
+            100% { transform: translateY(0) scale(1, 1); }          /* 平穩還原 */
         }
 
-        /* 喝飲料大跳躍 */
-        .pet-mega-bounce { animation: mega-bounce 0.4s ease infinite alternate; }
-        @keyframes mega-bounce {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-45px); }
+        /* 喝飲料大跳躍 (Mega Hop) */
+        .pet-mega-bounce {
+            animation: jelly-mega-hop 1.15s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            transform-origin: bottom center;
+        }
+        @keyframes jelly-mega-hop {
+            0%   { transform: translateY(0) scale(1, 1); }
+            15%  { transform: translateY(4px) scale(1.2, 0.8); }     /* 蓄力蹲深 */
+            45%  { transform: translateY(-38px) scale(0.88, 1.18); } /* 高空拉伸歡呼 */
+            70%  { transform: translateY(0) scale(1.12, 0.9); }     /* 著地吸收衝擊 */
+            85%  { transform: translateY(-6px) scale(0.96, 1.04); }  /* 次級小回彈 */
+            100% { transform: translateY(0) scale(1, 1); }          /* 俐落回正 */
         }
 
         .speech-bubble {
@@ -197,18 +242,19 @@
             border: 4px solid #F6AD55;
             white-space: pre-wrap; 
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: bold;
             color: #4A5568;
-            padding: 0.5rem 1rem;
+            padding: 0.45rem 0.85rem;
             text-align: center;
-            max-width: 200px;
+            max-width: 220px;
+            line-height: 1.35;
         }
         @media (min-width: 768px) {
             .speech-bubble {
-                font-size: 1.25rem;
-                padding: 0.75rem 1.25rem;
-                max-width: 250px;
+                font-size: 1.1rem;
+                padding: 0.6rem 1.1rem;
+                max-width: 320px;
             }
         }
         .speech-bubble:after {
@@ -497,8 +543,8 @@
 
 
                     <div class="w-1/3 flex flex-col justify-end items-center pb-4 md:pb-6">
-                        <div id="room-speech" class="speech-bubble mb-4 md:mb-6 opacity-0 transition-opacity duration-300 z-30">Hello!</div>
-                        <div id="room-pet-container" class="mt-auto z-10"></div>
+                        <div id="room-speech" class="speech-bubble mb-3 md:mb-4 opacity-0 transition-opacity duration-300 z-30">Hello!</div>
+                        <div id="room-pet-container" class="z-10"></div>
                     </div>
                     <div class="w-1/3 flex flex-col justify-center items-center pb-2 md:pb-4 gap-3 md:gap-4 h-full mt-10">
                         <div class="flex flex-col items-center bg-white bg-opacity-90 p-2 md:p-3 rounded-2xl border-4 border-orange-200 shadow-md w-full max-w-[160px]">
@@ -743,36 +789,77 @@
         // 🌟 核心 SVG 素材
         const SVG_CAT_SIT = `
         <svg class="pixel-art" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M30,45 C20,70 20,95 40,95 L60,95 C80,95 80,70 70,45 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="3"/>
-            <ellipse cx="40" cy="95" rx="8" ry="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
-            <ellipse cx="60" cy="95" rx="8" ry="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
-            <path d="M70,85 Q90,85 85,60" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
-            <path d="M70,85 Q90,85 85,60" fill="none" stroke="#E2E8F0" stroke-width="10" stroke-linecap="round" z-index="-1"/>
+            <!-- 🐾 1. 放在最底層後方的貓尾巴（點擊觸發尾巴對話） -->
+            <g class="cat-tail pet-touch-tail" onclick="app.interactWithPet('tail')" title="摸摸尾巴">
+                <path d="M68,80 Q92,82 86,52" fill="none" stroke="#E2E8F0" stroke-width="12" stroke-linecap="round"/>
+                <path d="M68,80 Q92,82 86,52" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+            </g>
+
+            <!-- 🐾 2. 肚子與身體主幹（點擊觸發肚子對話） -->
+            <g class="pet-touch-belly" onclick="app.interactWithPet('belly')" title="揉揉肚子">
+                <path d="M30,45 C20,70 20,95 40,95 L60,95 C80,95 80,70 70,45 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="3"/>
+                <ellipse cx="40" cy="95" rx="8" ry="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+                <ellipse cx="60" cy="95" rx="8" ry="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+                <rect x="35" y="65" width="30" height="6" rx="3" fill="#F6E05E"/><circle cx="50" cy="72" r="5" fill="#D69E2E"/>
+            </g>
+
+            <!-- 🐾 3. 臉部、頭部與耳朵（點擊耳朵觸發耳朵對話） -->
             <path d="M20,40 L15,15 L40,30 L60,30 L85,15 L80,40 C90,55 90,65 80,70 L20,70 C10,65 10,55 20,40 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="3" stroke-linejoin="round"/>
-            <path d="M22,35 L19,20 L35,28 Z" fill="#FBB6CE"/><path d="M78,35 L81,20 L65,28 Z" fill="#FBB6CE"/>
-            <!-- 🌟 貓咪頭上的紫色多邊形(polygon)與黃色圓球(circle)帽子魔法已經被拿掉囉！ -->
-            <circle cx="35" cy="48" r="7" fill="#2D3748"/><circle cx="37" cy="46" r="2.5" fill="#FFFFFF"/>
-            <circle cx="65" cy="48" r="7" fill="#2D3748"/><circle cx="67" cy="46" r="2.5" fill="#FFFFFF"/>
+            <!-- 左右耳朵互動熱區 -->
+            <g class="pet-touch-ear" onclick="app.interactWithPet('ears')" title="搔搔耳朵">
+                <path d="M22,35 L19,20 L35,28 Z" fill="#FBB6CE" stroke="#F687B3" stroke-width="1.5"/>
+                <path d="M78,35 L81,20 L65,28 Z" fill="#FBB6CE" stroke="#F687B3" stroke-width="1.5"/>
+            </g>
+            
+            <!-- 🐾 4. 自然眨眼的左右雙眼 -->
+            <g class="pet-eye-left">
+                <circle cx="35" cy="48" r="7" fill="#2D3748"/><circle cx="37" cy="46" r="2.5" fill="#FFFFFF"/>
+            </g>
+            <g class="pet-eye-right">
+                <circle cx="65" cy="48" r="7" fill="#2D3748"/><circle cx="67" cy="46" r="2.5" fill="#FFFFFF"/>
+            </g>
+
+            <!-- 🐾 5. 腮紅、嘴巴、鼻子 -->
             <ellipse cx="25" cy="55" rx="5" ry="3" fill="#FED7E2"/><ellipse cx="75" cy="55" rx="5" ry="3" fill="#FED7E2"/>
             <path d="M45,55 Q50,60 55,55" fill="none" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round"/>
             <circle cx="50" cy="52" r="2" fill="#F56565"/>
-            <rect x="35" y="65" width="30" height="6" rx="3" fill="#F6E05E"/><circle cx="50" cy="72" r="5" fill="#D69E2E"/>
         </svg>`;
 
         const SVG_DOG_SIT = `
         <svg class="pixel-art" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M30,45 C20,70 25,95 40,95 L60,95 C75,95 80,70 70,45 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="3"/>
-            <ellipse cx="38" cy="95" rx="8" ry="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
-            <ellipse cx="62" cy="95" rx="8" ry="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+            <!-- 🐾 1. 開心搖動的狗尾巴（點擊觸發尾巴對話） -->
+            <g class="dog-tail pet-touch-tail" onclick="app.interactWithPet('tail')" title="摸摸尾巴">
+                <path d="M70,82 Q90,82 86,64" fill="none" stroke="#E2E8F0" stroke-width="11" stroke-linecap="round"/>
+                <path d="M70,82 Q90,82 86,64" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/>
+            </g>
+
+            <!-- 🐾 2. 肚子與身體主幹（點擊觸發肚子對話） -->
+            <g class="pet-touch-belly" onclick="app.interactWithPet('belly')" title="搔搔肚子">
+                <path d="M30,45 C20,70 25,95 40,95 L60,95 C75,95 80,70 70,45 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="3"/>
+                <ellipse cx="38" cy="95" rx="8" ry="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+                <ellipse cx="62" cy="95" rx="8" ry="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+                <rect x="30" y="66" width="40" height="6" rx="3" fill="#F56565"/><circle cx="50" cy="70" r="4" fill="#ECC94B"/>
+            </g>
+
+            <!-- 🐾 3. 臉部、頭部與耳朵（點擊耳朵觸發耳朵對話） -->
             <path d="M25,35 C25,15 75,15 75,35 C85,45 90,60 80,70 L20,70 C10,60 15,45 25,35 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="3" stroke-linejoin="round"/>
-            <path d="M25,35 Q10,45 15,65 Q25,70 30,50 Z" fill="#D6BCFA" stroke="#E2E8F0" stroke-width="2"/><path d="M75,35 Q90,45 85,65 Q75,70 70,50 Z" fill="#D6BCFA" stroke="#E2E8F0" stroke-width="2"/>
+            <g class="pet-touch-ear" onclick="app.interactWithPet('ears')" title="揉揉耳朵">
+                <path d="M25,35 Q10,45 15,65 Q25,70 30,50 Z" fill="#D6BCFA" stroke="#E2E8F0" stroke-width="2"/>
+                <path d="M75,35 Q90,45 85,65 Q75,70 70,50 Z" fill="#D6BCFA" stroke="#E2E8F0" stroke-width="2"/>
+            </g>
             <path d="M25,35 C25,15 50,15 50,35 Z" fill="#E9D8FD"/>
-            <!-- 🌟 狗狗頭上的紫色多邊形(polygon)與黃色圓球(circle)帽子魔法也已經被拿掉囉！ -->
-            <circle cx="35" cy="48" r="7" fill="#2D3748"/><circle cx="37" cy="46" r="2.5" fill="#FFFFFF"/>
-            <circle cx="65" cy="48" r="7" fill="#2D3748"/><circle cx="67" cy="46" r="2.5" fill="#FFFFFF"/>
+            
+            <!-- 🐾 4. 自然眨眼的左右雙眼 -->
+            <g class="pet-eye-left">
+                <circle cx="35" cy="48" r="7" fill="#2D3748"/><circle cx="37" cy="46" r="2.5" fill="#FFFFFF"/>
+            </g>
+            <g class="pet-eye-right">
+                <circle cx="65" cy="48" r="7" fill="#2D3748"/><circle cx="67" cy="46" r="2.5" fill="#FFFFFF"/>
+            </g>
+
+            <!-- 🐾 5. 腮紅、大鼻子 -->
             <ellipse cx="25" cy="55" rx="4" ry="2" fill="#FED7E2"/><ellipse cx="75" cy="55" rx="4" ry="2" fill="#FED7E2"/>
             <ellipse cx="50" cy="58" rx="8" ry="6" fill="#4A5568"/>
-            <rect x="30" y="66" width="40" height="6" rx="3" fill="#F56565"/><circle cx="50" cy="70" r="4" fill="#ECC94B"/>
         </svg>`;
 
         const getPlantSVG = (isActive) => `
@@ -1844,6 +1931,56 @@ const getCrystalBallSVG = (isActive) => `
                 this.showView('view-stats');
             },
 
+            
+            /* 🐾 點選寵物耳朵、肚子、尾巴的專屬對話互動 */
+            interactWithPet: function(part) {
+                unlockAudio();
+                this.playBeep();
+                const isEnid = this.currentUser === 'Enid';
+                const petName = isEnid ? "Heartcute" : "White Dog";
+
+                const responses = {
+                    Enid: {
+                        ears: [
+                            "Purr~ That's the spot, Enid! My ears love scratches! 🐱✨",
+                            "Meow! Ear scratch superpower activated! 💕",
+                            "Tingle tingle! My whiskers tickle when you scratch my ears! 🐾"
+                        ],
+                        belly: [
+                            "Purrrr~ Fluffy belly rubs are the best, Enid! 🌸",
+                            "Ticklish belly! *rolls over happily* 🐾🎀",
+                            "Heartcute's engine is purring: PRRRRRR! 💖"
+                        ],
+                        tail: [
+                            "Hey! Who's touching my royal cat tail?! Hehe~ 😼💨",
+                            "Swish swish! My tail has a mind of its own, Enid! 🐾",
+                            "Oops, you caught my fluffy tail! Gotcha! 🐱✨"
+                        ]
+                    },
+                    Ian: {
+                        ears: [
+                            "Woof! Oh yeah, right behind the floppy ears, Ian! 🐶🦴",
+                            "My ears are flapping with pure happiness, Ian! 🐾⚡",
+                            "Ruff! Ear rubs make me the happiest pup in the world! 🎾"
+                        ],
+                        belly: [
+                            "WOOF! Belly rubs! *kicks back leg with joy* 🐶✨",
+                            "Aww yeah, scratch that puppy tummy, Ian! 🐾❤️",
+                            "Ian, your belly scratches are 100/10! More please! 🦴"
+                        ],
+                        tail: [
+                            "Whoa! Don't catch my tail, Ian, it's wagging too fast! 🌪️🐶",
+                            "Supersonic tail wag! It might blow us away! 💨🐾",
+                            "Haha, got my tail! Let's chase it together, Ian! 🎾🚀"
+                        ]
+                    }
+                };
+
+                const userPool = responses[isEnid ? 'Enid' : 'Ian'][part];
+                const text = userPool[Math.floor(Math.random() * userPool.length)];
+                this.roomSpeech(text, part === 'tail' ? 'mega' : 'normal');
+            },
+
             roomSpeech: function(text, bounceType = 'normal') {
                 const speech = document.getElementById('room-speech');
                 speech.innerText = text;
@@ -1852,8 +1989,10 @@ const getCrystalBallSVG = (isActive) => `
                 const pet = document.getElementById('room-pet-container').querySelector('svg');
                 if(pet) {
                     const animationClass = (bounceType === 'mega') ? 'pet-mega-bounce' : 'pet-bounce';
+                    pet.classList.remove('pet-bounce', 'pet-mega-bounce');
+                    void pet.offsetWidth; // 🌟 強制重繪，每次點擊都靈敏觸發果凍跳躍
                     pet.classList.add(animationClass);
-                    const dur = (bounceType === 'mega') ? 800 : 400;
+                    const dur = (bounceType === 'mega') ? 1150 : 850;
                     setTimeout(() => pet.classList.remove(animationClass), dur);
                 }
 
@@ -2344,7 +2483,7 @@ const getCrystalBallSVG = (isActive) => `
                 } else {
                     wrapper.innerHTML = snowflakeSVG;
                 }
-                let size = Math.random() * 20 + 32; // 32~52px
+                let size = Math.random() * 40 + 64; // 64~104px (原本的 2 倍大！)
                 wrapper.style.width  = size + 'px';
                 wrapper.style.height = size + 'px';
                 wrapper.style.left = (Math.random() * 90 + 5) + '%';
