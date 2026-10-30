@@ -4813,6 +4813,10 @@
         "w_388_write_char": {
           "box": 2,
           "nextReview": "2026-11-02"
+        },
+        "w_380_write_char": {
+          "box": 1,
+          "nextReview": "2026-10-30"
         }
       },
       "stats": {
@@ -4849,5 +4853,5 @@
       "lastResetMonth": "2026-10"
     }
   },
-  "updatedAt": 1793366837440
+  "updatedAt": 1793366911178
 }
