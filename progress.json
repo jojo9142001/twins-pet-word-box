@@ -2291,7 +2291,7 @@
       "drinks": 31,
       "mathTokens": 520,
       "correctStreak": 0,
-      "lastPetUpdate": 1793278644030,
+      "lastPetUpdate": 1793365479822,
       "activePoops": 0,
       "mathCounter": 2,
       "strokeCounter": 1,
@@ -2314,56 +2314,7 @@
         "2026-10",
         "2026-08"
       ],
-      "lastResetMonth": "2026-10",
-      "screenSessions": {
-        "20. 二上_第2課": {
-          "total": 38,
-          "remainingIds": [
-            "w_301_write_char",
-            "w_307_write_char",
-            "w_293_write_char",
-            "w_296_write_char",
-            "w_297_write_char",
-            "w_308_write_char",
-            "w_300_write_char",
-            "w_295_write_char",
-            "w_304_write_char",
-            "w_305_write_char",
-            "w_303_write_char",
-            "w_299_write_char",
-            "w_292_write_char",
-            "w_291_write_char",
-            "w_294_write_char",
-            "w_302_write_char",
-            "w_298_write_char",
-            "w_306_write_char",
-            "w_291_write_pinyin",
-            "w_302_write_pinyin",
-            "w_301_write_pinyin",
-            "w_303_write_pinyin",
-            "w_292_write_pinyin",
-            "w_294_write_pinyin",
-            "w_295_write_pinyin",
-            "w_296_write_pinyin",
-            "w_299_write_pinyin",
-            "w_308_write_pinyin",
-            "w_310_write_pinyin",
-            "w_293_write_pinyin",
-            "w_306_write_pinyin",
-            "w_297_write_pinyin",
-            "w_300_write_pinyin",
-            "w_298_write_pinyin",
-            "w_309_write_pinyin",
-            "w_304_write_pinyin",
-            "w_307_write_pinyin",
-            "w_305_write_pinyin"
-          ],
-          "stats": {
-            "correct": 0,
-            "total": 38
-          }
-        }
-      }
+      "lastResetMonth": "2026-10"
     },
     "Ian": {
       "wordsProgress": {
@@ -4679,9 +4630,8 @@
         "2026-10",
         "2026-08"
       ],
-      "lastResetMonth": "2026-10",
-      "screenSessions": {}
+      "lastResetMonth": "2026-10"
     }
   },
-  "updatedAt": 1793325746147
+  "updatedAt": 1793365482335
 }
