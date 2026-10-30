@@ -2314,7 +2314,8 @@
         "2026-10",
         "2026-08"
       ],
-      "lastResetMonth": "2026-10"
+      "lastResetMonth": "2026-10",
+      "screenSessions": {}
     },
     "Ian": {
       "wordsProgress": {
@@ -4630,8 +4631,9 @@
         "2026-10",
         "2026-08"
       ],
-      "lastResetMonth": "2026-10"
+      "lastResetMonth": "2026-10",
+      "screenSessions": {}
     }
   },
-  "updatedAt": 1793279583024
+  "updatedAt": 1793325739170
 }
