@@ -30,12 +30,12 @@
         }
 
         .bopomofo-light-tone {
-            font-size: 3.2rem;
+            font-size: 3.85rem; /* 🌟 考題注音再放大 1.2 倍 */
             line-height: 0.45;
             margin-bottom: 0.35rem;
             color: #1E293B; /* 🌟 統一高質感深灰 */
             font-weight: 900;
-            -webkit-text-stroke: 1.5px #1E293B;
+            -webkit-text-stroke: 1.8px #1E293B;
         }
 
         .bopomofo-row {
@@ -43,7 +43,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            font-size: 4.8rem;
+            font-size: 5.76rem; /* 🌟 考題注音再放大 1.2 倍 */
             font-weight: 800;
             color: #1E293B; /* 🌟 統一高質感深灰 */
             height: 1.15em;
@@ -51,7 +51,7 @@
         }
         @media (min-width: 768px) {
             .bopomofo-row {
-                font-size: 5.8rem;
+                font-size: 7rem; /* 🌟 考題注音桌機再放大 1.2 倍 */
             }
         }
 
@@ -107,7 +107,7 @@
         }
 
         .single-hanzi-display {
-            font-size: 7.5rem;
+            font-size: 10.8rem; /* 🌟 考題國字再放大 1.2 倍 */
             font-weight: 800;
             color: #1E293B; /* 🌟 國字同步深灰 */
             line-height: 1;
@@ -115,7 +115,7 @@
         }
         @media (min-width: 768px) {
             .single-hanzi-display {
-                font-size: 9rem;
+                font-size: 13rem; /* 🌟 考題國字桌機再放大 1.2 倍 */
             }
         }
 
@@ -286,7 +286,7 @@
             background-image: repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(139,69,19,0.1) 50px, rgba(139,69,19,0.1) 53px);
         }
 
-        /* 🐉 新增：龍舟水感滑行的專屬魔法動畫 */
+        /* �� 新增：龍舟水感滑行的專屬魔法動畫 */
         @keyframes boat-slide {
             /* 模擬在水面上微微左右搖晃漂流的感覺 */
             0% { transform: translateY(-10vh) translateX(0) rotate(-3deg); opacity: 0; }
@@ -426,7 +426,7 @@
                     <div class="text-3xl md:text-4xl font-black text-red-600 bg-white px-4 md:px-6 py-2 rounded-2xl shadow-inner border-2 border-red-100"><span id="box-count-1">0</span></div>
                 </button>
                 <button onclick="app.startBoxReview(2)" class="card-pop w-full bg-orange-50 border-4 border-orange-300 rounded-3xl p-4 md:p-5 flex items-center justify-between shadow-sm">
-                    <div class="text-left flex items-center"><span class="text-4xl md:text-5xl mr-3 md:mr-4">🟠</span><div><div class="text-xl md:text-2xl font-bold text-orange-800">Box 2</div><div class="text-sm md:text-lg text-orange-600 font-bold">每週兩天複習</div></div></div>
+                    <div class="text-left flex items-center"><span class="text-4xl md:text-5xl mr-3 md:mr-4">🟠</span><div><div class="text-xl md:text-2xl font-bold text-orange-800">Box 2</div><div class="text-sm md:text-lg text-orange-600 font-bold">每週兩天複���</div></div></div>
                     <div class="text-3xl md:text-4xl font-black text-orange-600 bg-white px-4 md:px-6 py-2 rounded-2xl shadow-inner border-2 border-orange-100"><span id="box-count-2">0</span></div>
                 </button>
                 <button onclick="app.startBoxReview(3)" class="card-pop w-full bg-blue-50 border-4 border-blue-300 rounded-3xl p-4 md:p-5 flex items-center justify-between shadow-sm">
@@ -454,7 +454,7 @@
             </div>
             <div id="phase-badge" class="hidden w-full text-center bg-orange-100 text-orange-700 text-base md:text-xl font-bold py-2 md:py-3 mb-4 rounded-2xl border-4 border-orange-200 shadow-sm"></div>
 
-            <div class="text-center w-full flex flex-col justify-center items-center bg-gray-50 rounded-3xl border-4 border-gray-200 p-6 md:p-8 mb-6 min-h-[200px] md:min-h-[250px] shadow-inner">
+            <div class="text-center w-full flex flex-col justify-center items-center bg-gray-50 rounded-3xl border-4 border-gray-200 p-6 md:p-8 mb-6 min-h-[220px] md:min-h-[280px] shadow-inner">
                 <p id="question-instruction" class="text-xl md:text-2xl text-gray-600 font-bold mb-4 md:mb-6"></p>
                 <div id="question-display" class="w-full flex justify-center items-center py-4"></div>
             </div>
@@ -464,7 +464,7 @@
             </button>
 
             <div id="answer-details" class="w-full hidden justify-around items-end mb-6 bg-green-50 rounded-3xl p-4 md:p-6 border-4 border-green-200 shadow-sm">
-                <div class="text-center"><div class="text-base md:text-xl text-gray-500 font-bold mb-1 md:mb-2">國字</div><div id="ans-char" class="text-5xl md:text-6xl font-bold text-gray-800"></div></div>
+                <div class="text-center"><div class="text-base md:text-xl text-gray-500 font-bold mb-1 md:mb-2">國字</div><div id="ans-char" class="text-6xl md:text-7xl font-bold text-gray-800"></div></div>
                 <div class="text-center"><div class="text-base md:text-xl text-gray-500 font-bold mb-1 md:mb-2">注音</div><div id="ans-pinyin" class="text-3xl md:text-4xl font-bold text-blue-600"></div></div>
                 <div class="text-center"><div class="text-base md:text-xl text-gray-500 font-bold mb-1 md:mb-2">部首</div><div id="ans-radical" class="text-3xl md:text-4xl font-bold text-red-500"></div></div>
                 <div class="text-center"><div class="text-base md:text-xl text-gray-500 font-bold mb-1 md:mb-2">筆劃</div><div id="ans-strokes" class="text-3xl md:text-4xl font-bold text-orange-500"></div></div>
@@ -491,7 +491,7 @@
             </div>
 
             <button onclick="app.exitCardSession()" class="mt-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 md:px-10 py-3 md:py-4 text-lg md:text-2xl rounded-full font-bold shadow-md">
-                返回上一頁
+                返��上一頁
             </button>
         </div>
 
@@ -672,11 +672,16 @@
                 </button>
                 <button onclick="app.startLessonModeWithChoice('screen')" class="card-pop w-full bg-indigo-50 hover:bg-indigo-100 border-4 border-indigo-300 rounded-2xl p-4 text-left flex items-center shadow-sm">
                     <span class="text-4xl mr-3">🎯</span>
-                    <div>
-                        <div class="text-xl md:text-2xl font-bold text-indigo-800">弱點快篩</div>
-                        <div class="text-xs md:text-sm text-indigo-600 font-bold">會寫直接精通畢業，不會的進 Box 1！</div>
+                    <div class="flex-1">
+                        <div class="text-xl md:text-2xl font-bold text-indigo-800" id="screen-btn-title">弱點快篩</div>
+                        <div class="text-xs md:text-sm text-indigo-600 font-bold" id="screen-btn-desc">會寫直接精通畢業，不會的進 Box 1！</div>
                     </div>
                 </button>
+                <div id="screen-restart-container" class="hidden text-right -mt-2 pr-2">
+                    <button onclick="app.resetAndStartScreen()" class="text-xs md:text-sm font-bold text-gray-400 hover:text-indigo-600 underline">
+                        ↺ 放棄進度，重新完整快篩
+                    </button>
+                </div>
             </div>
             <button onclick="document.getElementById('lesson-mode-modal').classList.add('hidden-view')" class="mt-6 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-base md:text-lg py-2.5 px-8 rounded-full shadow-sm">
                 返回
@@ -706,7 +711,7 @@
             "子":3, "小":3, "課":15, "兩":8, "人":2, "拉":8, "看":9, "找":7, "隻":10, "青":8, "蛙":12, "開":12, "心":4,
             "比":4, "門":8, "裡":13, "外":5, "有":6, "什":4, "麼":14, "不":4, "同":6, "早":6, "晚":11, "王":4, "主":5, "又":2,
             "路":13, "長":8, "白":5, "花":8, "紅":9, "走":7, "在":6, "向":6, "說":14, "朵":6, "從":11, "頭":16, "那":7,
-            "要":9, "靜":14, "天":4, "空":8, "雲":12, "水":4, "蟲":18, "鳥":11, "草":10, "先":6, "完":7, "再":6, "去":5,
+            "要":9, "靜":14, "天":4, "空":8, "雲":12, "水":4, "蟲":18, "鳥":11, "草":10, "先":6, "完":7, "再":6, "���":5,
             "園":13, "聽":22, "沒":7, "正":5, "唱":11, "著":12, "輕":14, "快":7, "歌":14, "出":5, "新":13, "芽":8, "聞":14, "身":7, "香":9, "呢":8,
             "媽":13, "音":9, "樂":15, "會":13, "始":8, "來":8, "重":9, "短":12, "陣":10, "過":13, "後":9, "吃":6, "菜":12, "就":12, "桌":10, "真":10,
             "鞋":15, "回":6, "家":10, "把":7, "脫":11, "爸":8, "靠":15, "見":7, "像":14, "船":11, "港":12, "口":3, "享":8, "受":8, "溫":13, "暖":13,
@@ -723,7 +728,7 @@
             "全":6, "煎":13, "蛋":11, "圓":13, "番":12, "茄":9, "切":4, "輪":15, "吐":6, "司":5, "夾":7, "中":4, "方":4, "城":9, "堡":12, "接":11, "畫":12, "臉":17,
             "巷":9, "叔":8, "貓":15, "屋":9, "捧":11, "蝴":15, "蝶":15, "忙":6, "娶":11, "娘":10, "黃":12, "筆":12, "打":5, "扮":7, "樣":15, "越":12, "美":9, "麗":19,
             "運":13, "動":11, "飄":20, "熱":15, "鬧":15, "舞":14, "哇":9, "往":8, "容":10, "步":7, "汗":6, "腳":13, "協":8, "聲":17, "河":8, "氣":10, "最":12, "可":5,
-            "竹":6, "籃":20, "鄉":11, "南":9, "暑":12, "假":11, "帶":11, "等":12, "跨":13, "划":6, "吹":7, "邊":19, "叫":5, "原":10, "近":8, "活":9, "識":19,
+            "竹":6, "籃":20, "鄉":11, "南":9, "暑":12, "假":11, "帶":11, "等":12, "跨":13, "划":6, "吹":7, "邊":19, "叫":5, "原":10, "���":8, "活":9, "識":19,
             "鎮":18, "餅":15, "節":13, "埔":10, "因":6, "此":6, "進":11, "排":11, "遠":14, "色":6, "愛":13, "月":4, "乾":11, "甜":11, "客":9, "買":12, "親":16, "如":6, "意":13,
             "衣":6, "胖":9, "簡":18, "單":12, "聰":17, "明":8, "針":10, "臣":6, "東":8, "西":6, "敢":12, "直":8, "棒":12, "街":12, "滿":14, "眼":11, "哪":10, "思":9,
             "渴":12, "烏":10, "喝":12, "瓶":11, "法":8, "森":12, "林":8, "旅":10, "行":6, "物":8, "午":4, "裝":13, "許":11, "石":5, "難":19, "忘":7, "哈":9, "但":7,
@@ -1060,6 +1065,7 @@ const getCrystalBallSVG = (isActive) => `
                         this.appData[name].petName = name === 'Enid' ? 'White Cat' : 'White Dog';
                     }
                     if (!this.appData[name].unlockedVideos) this.appData[name].unlockedVideos = [];
+                    if (!this.appData[name].screenSessions) this.appData[name].screenSessions = {};
 
                     // 🌟 確保過去已獲得的歷史月份（3~9月）全部納入解鎖影片庫，防止漏掉
                     ['2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10'].forEach(m => {
@@ -1456,7 +1462,36 @@ const getCrystalBallSVG = (isActive) => `
                 this.selectedLesson = lessonName;
                 let shortName = lessonName.includes('_') ? lessonName.split('_')[1] : lessonName;
                 document.getElementById('lesson-modal-title').innerText = shortName;
+
+                let myData = this.appData[this.currentUser];
+                const screenTitleEl = document.getElementById('screen-btn-title');
+                const screenDescEl = document.getElementById('screen-btn-desc');
+                const restartContainer = document.getElementById('screen-restart-container');
+
+                if (myData && myData.screenSessions && myData.screenSessions[lessonName] && 
+                    myData.screenSessions[lessonName].remainingIds && 
+                    myData.screenSessions[lessonName].remainingIds.length > 0) {
+                    const session = myData.screenSessions[lessonName];
+                    if (screenTitleEl) screenTitleEl.innerText = "接續未完快篩 🎯";
+                    if (screenDescEl) screenDescEl.innerHTML = `📍 尚有上次未完成進度 (剩餘 <span class="text-indigo-700 font-extrabold">${session.remainingIds.length}/${session.total}</span> 題)`;
+                    if (restartContainer) restartContainer.classList.remove('hidden');
+                } else {
+                    if (screenTitleEl) screenTitleEl.innerText = "弱點快篩";
+                    if (screenDescEl) screenDescEl.innerText = "會寫直接精通畢業，不會的進 Box 1！";
+                    if (restartContainer) restartContainer.classList.add('hidden');
+                }
+
                 document.getElementById('lesson-mode-modal').classList.remove('hidden-view');
+            },
+
+            resetAndStartScreen: function() {
+                const lessonName = this.selectedLesson;
+                let myData = this.appData[this.currentUser];
+                if (lessonName && myData && myData.screenSessions && myData.screenSessions[lessonName]) {
+                    delete myData.screenSessions[lessonName];
+                    this.saveData();
+                }
+                this.startLessonModeWithChoice('screen');
             },
 
             startLessonMode: function(lessonName) {
@@ -1478,16 +1513,52 @@ const getCrystalBallSVG = (isActive) => `
                 let totalItems = words.length * 2;
 
                 if (mode === 'screen') {
-                    // 🎯 弱點快篩模式：一般生字雙向考；認讀字只考看國字寫注音！
-                    words.filter(w => !w.isReadWord).sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
-                        word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
-                    }));
-                    words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
-                        word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
-                    }));
-                    this.lastCardOrigin = 'lesson';
-                    document.getElementById('phase-badge').classList.remove('hidden');
-                    this.startQueue(queue, `🎯 弱點快篩：${shortName} (共 ${queue.length} 題)`);
+                    // 🎯 弱點快篩模式（支援中斷接續）：
+                    myData.screenSessions = myData.screenSessions || {};
+                    let session = myData.screenSessions[lessonName];
+
+                    if (session && session.remainingIds && session.remainingIds.length > 0) {
+                        // 🌟 1. 接續既有進度
+                        const idSet = new Set(session.remainingIds);
+                        words.filter(w => !w.isReadWord && idSet.has(w.id + '_write_char')).forEach(w => queue.push({ 
+                            word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
+                        }));
+                        words.filter(w => idSet.has(w.id + '_write_pinyin')).forEach(w => queue.push({ 
+                            word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
+                        }));
+                        
+                        queue.sort(() => Math.random() - 0.5);
+
+                        if (queue.length === 0) {
+                            delete myData.screenSessions[lessonName];
+                            this.saveData();
+                            return this.startLessonModeWithChoice('screen');
+                        }
+
+                        this.lastCardOrigin = 'lesson';
+                        document.getElementById('phase-badge').classList.remove('hidden');
+                        const customStats = session.stats ? { ...session.stats } : { correct: 0, total: session.total };
+                        this.startQueue(queue, `🎯 弱點快篩：${shortName} (接續中：剩餘 ${queue.length}/${session.total} 題)`, customStats);
+                    } else {
+                        // 🌟 2. 全新開始快篩
+                        words.filter(w => !w.isReadWord).sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                            word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
+                        }));
+                        words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                            word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
+                        }));
+
+                        myData.screenSessions[lessonName] = {
+                            total: queue.length,
+                            remainingIds: queue.map(item => item.testId),
+                            stats: { correct: 0, total: queue.length }
+                        };
+                        this.saveData();
+
+                        this.lastCardOrigin = 'lesson';
+                        document.getElementById('phase-badge').classList.remove('hidden');
+                        this.startQueue(queue, `🎯 弱點快篩：${shortName} (共 ${queue.length} 題)`);
+                    }
                 } else {
                     // 🌱 生字初學模式：循序漸進
                     let unpracticedChar = [];
@@ -1542,10 +1613,10 @@ const getCrystalBallSVG = (isActive) => `
                 }
             },
 
-            startQueue: function(queue, modeTitle) {
+            startQueue: function(queue, modeTitle, customStats = null) {
                 this.currentQueue = queue;
                 this.currentIndex = 0;
-                this.sessionStats = { correct: 0, total: queue.length };
+                this.sessionStats = customStats || { correct: 0, total: queue.length };
                 document.getElementById('card-mode-title').innerText = modeTitle;
                 this.showNextCard();
                 this.showView('view-card');
@@ -1681,6 +1752,14 @@ const getCrystalBallSVG = (isActive) => `
                 }
 
                 myData.wordsProgress[testId] = record;
+
+                // 🎯 弱點快篩即時同步移除已作答題目，確保中斷後可無縫接續
+                if (this.currentLessonMode === 'screen' && this.selectedLesson && myData.screenSessions && myData.screenSessions[this.selectedLesson]) {
+                    const session = myData.screenSessions[this.selectedLesson];
+                    session.remainingIds = session.remainingIds.filter(id => id !== testId);
+                    session.stats = { correct: this.sessionStats.correct, total: session.total };
+                }
+
                 this.saveData();
 
                 if (justMastered) {
@@ -2301,6 +2380,11 @@ const getCrystalBallSVG = (isActive) => `
                 let subtitle = '';
                 
                 if (this.currentLessonMode === 'screen') {
+                    // 🎯 快篩完整通關，清除該課中斷存檔，下次可全新開始
+                    if (this.selectedLesson && myData.screenSessions && myData.screenSessions[this.selectedLesson]) {
+                        delete myData.screenSessions[this.selectedLesson];
+                        this.saveData();
+                    }
                     title = '🎯 弱點快篩完成！';
                     subtitle = `本次答對率：<span class="text-indigo-600 font-extrabold">${rate}%</span> (${this.sessionStats.correct}/${this.sessionStats.total})<br>` +
                                `<span class="text-sm md:text-base text-gray-600 font-bold block mt-2">✨ 不會的生字已送入 Box 1 每日練習，原本各箱進度安全保留！</span>`;
