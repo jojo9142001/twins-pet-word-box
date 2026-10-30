@@ -2439,14 +2439,14 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 612,
+      "cookies": 614,
       "drinks": 45,
-      "mathTokens": 521,
+      "mathTokens": 522,
       "correctStreak": 0,
       "lastPetUpdate": 1793367809076,
       "activePoops": 0,
-      "mathCounter": 2,
-      "strokeCounter": 0,
+      "mathCounter": 1,
+      "strokeCounter": 2,
       "strokeTokens": 250,
       "poopCounter": 4,
       "gems": 2,
@@ -4939,5 +4939,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793368047521
+  "updatedAt": 1793368061331
 }
