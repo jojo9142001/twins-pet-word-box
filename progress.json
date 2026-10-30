@@ -4908,7 +4908,7 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 401,
+      "cookies": 402,
       "drinks": 32,
       "mathTokens": 378,
       "correctStreak": 0,
@@ -4918,9 +4918,9 @@
       "poopCounter": 3,
       "gems": 2,
       "stars": 7,
-      "mathCounter": 1,
-      "strokeCounter": 3,
-      "strokeTokens": 353,
+      "mathCounter": 2,
+      "strokeCounter": 0,
+      "strokeTokens": 354,
       "hunger": 100,
       "happiness": 100,
       "activePeeps": 0,
@@ -4939,5 +4939,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793368042825
+  "updatedAt": 1793368047521
 }
