@@ -3472,8 +3472,8 @@
           "nextReview": null
         },
         "w_198_write_pinyin": {
-          "box": 4,
-          "nextReview": "2026-07-03"
+          "box": 5,
+          "nextReview": null
         },
         "w_192_write_pinyin": {
           "box": 5,
@@ -3856,8 +3856,8 @@
           "nextReview": null
         },
         "w_252_write_pinyin": {
-          "box": 4,
-          "nextReview": "2026-07-03"
+          "box": 5,
+          "nextReview": null
         },
         "w_250_write_pinyin": {
           "box": 3,
@@ -4908,9 +4908,9 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 443,
+      "cookies": 445,
       "drinks": 32,
-      "mathTokens": 392,
+      "mathTokens": 393,
       "correctStreak": 0,
       "lastPetUpdate": 1793367691074,
       "activePoops": 0,
@@ -4918,8 +4918,8 @@
       "poopCounter": 3,
       "gems": 2,
       "stars": 7,
-      "mathCounter": 1,
-      "strokeCounter": 1,
+      "mathCounter": 0,
+      "strokeCounter": 3,
       "strokeTokens": 364,
       "hunger": 100,
       "happiness": 100,
@@ -4939,5 +4939,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793415015651
+  "updatedAt": 1793415035407
 }
