@@ -1055,8 +1055,8 @@
           "nextReview": null
         },
         "w_193_write_pinyin": {
-          "box": 4,
-          "nextReview": "2026-10-02"
+          "box": 3,
+          "nextReview": "2026-10-31"
         },
         "w_208_write_char": {
           "box": 5,
@@ -4939,5 +4939,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793412738389
+  "updatedAt": 1793412744844
 }
