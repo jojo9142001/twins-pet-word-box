@@ -2440,10 +2440,10 @@
         "mastered": 0
       },
       "cookies": 655,
-      "drinks": 45,
-      "mathTokens": 536,
+      "drinks": 46,
+      "mathTokens": 535,
       "correctStreak": 0,
-      "lastPetUpdate": 1793415795816,
+      "lastPetUpdate": 1793415828179,
       "activePoops": 0,
       "mathCounter": 0,
       "strokeCounter": 3,
@@ -4909,7 +4909,7 @@
         "mastered": 0
       },
       "cookies": 466,
-      "drinks": 32,
+      "drinks": 33,
       "mathTokens": 400,
       "correctStreak": 0,
       "lastPetUpdate": 1793415311218,
@@ -4939,5 +4939,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793415798301
+  "updatedAt": 1793415832474
 }
