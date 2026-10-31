@@ -3344,8 +3344,8 @@
           "nextReview": null
         },
         "w_178_write_pinyin": {
-          "box": 4,
-          "nextReview": "2026-07-03"
+          "box": 3,
+          "nextReview": "2026-10-31"
         },
         "w_182_write_pinyin": {
           "box": 5,
@@ -4939,5 +4939,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793411908630
+  "updatedAt": 1793411934137
 }
