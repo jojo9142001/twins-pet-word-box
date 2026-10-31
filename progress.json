@@ -3700,8 +3700,8 @@
           "nextReview": null
         },
         "w_233_write_char": {
-          "box": 4,
-          "nextReview": "2026-10-02"
+          "box": 3,
+          "nextReview": "2026-10-31"
         },
         "w_237_write_char": {
           "box": 4,
@@ -4939,5 +4939,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793414750856
+  "updatedAt": 1793414787137
 }
