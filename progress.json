@@ -2443,7 +2443,7 @@
       "drinks": 45,
       "mathTokens": 551,
       "correctStreak": 0,
-      "lastPetUpdate": 1793415828179,
+      "lastPetUpdate": 1793499107541,
       "activePoops": 0,
       "mathCounter": 1,
       "strokeCounter": 0,
@@ -4941,5 +4941,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793499104505
+  "updatedAt": 1793499109779
 }
