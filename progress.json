@@ -4914,10 +4914,10 @@
       "mathTokens": 421,
       "correctStreak": 0,
       "lastPetUpdate": 1793503861212,
-      "activePoops": 18,
+      "activePoops": 4,
       "petName": "Doggy",
       "poopCounter": 3,
-      "gems": 21,
+      "gems": 35,
       "stars": 5,
       "mathCounter": 1,
       "strokeCounter": 0,
@@ -4941,5 +4941,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793503925926
+  "updatedAt": 1793503931990
 }
