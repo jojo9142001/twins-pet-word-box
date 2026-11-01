@@ -4913,7 +4913,7 @@
       "drinks": 33,
       "mathTokens": 434,
       "correctStreak": 0,
-      "lastPetUpdate": 1793511588920,
+      "lastPetUpdate": 1793524281416,
       "activePoops": 0,
       "petName": "Doggy",
       "poopCounter": 3,
@@ -4941,5 +4941,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793524274345
+  "updatedAt": 1793524283485
 }
