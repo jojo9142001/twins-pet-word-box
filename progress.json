@@ -2443,14 +2443,14 @@
       "drinks": 45,
       "mathTokens": 547,
       "correctStreak": 0,
-      "lastPetUpdate": 1793415828179,
+      "lastPetUpdate": 1793494710463,
       "activePoops": 0,
       "mathCounter": 2,
       "strokeCounter": 1,
       "strokeTokens": 270,
       "poopCounter": 4,
-      "gems": 4,
-      "stars": 8,
+      "gems": 0,
+      "stars": 0,
       "petName": "Heartcute💕🩵",
       "hunger": 100,
       "happiness": 100,
@@ -2464,9 +2464,10 @@
         "2026-07",
         "2026-09",
         "2026-10",
-        "2026-08"
+        "2026-08",
+        "2026-11"
       ],
-      "lastResetMonth": "2026-10",
+      "lastResetMonth": "2026-11",
       "screenSessions": {}
     },
     "Ian": {
@@ -4916,8 +4917,8 @@
       "activePoops": 0,
       "petName": "Doggy",
       "poopCounter": 3,
-      "gems": 2,
-      "stars": 7,
+      "gems": 0,
+      "stars": 0,
       "mathCounter": 1,
       "strokeCounter": 1,
       "strokeTokens": 373,
@@ -4933,11 +4934,12 @@
         "2026-07",
         "2026-09",
         "2026-10",
-        "2026-08"
+        "2026-08",
+        "2026-11"
       ],
-      "lastResetMonth": "2026-10",
+      "lastResetMonth": "2026-11",
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793420434451
+  "updatedAt": 1793494713041
 }
