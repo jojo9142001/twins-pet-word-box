@@ -2440,7 +2440,7 @@
         "mastered": 0
       },
       "cookies": 671,
-      "drinks": 44,
+      "drinks": 0,
       "mathTokens": 551,
       "correctStreak": 0,
       "lastPetUpdate": 1793499107541,
@@ -2449,13 +2449,13 @@
       "strokeCounter": 0,
       "strokeTokens": 273,
       "poopCounter": 2,
-      "gems": 42,
-      "stars": 0,
+      "gems": 39,
+      "stars": 2,
       "petName": "Heartcute💕🩵",
       "hunger": 100,
       "happiness": 100,
       "activePeeps": 0,
-      "peepCounter": 3,
+      "peepCounter": 2,
       "unlockedVideos": [
         "2026-03",
         "2026-04",
@@ -4941,5 +4941,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793499140249
+  "updatedAt": 1793499159054
 }
