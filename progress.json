@@ -2443,7 +2443,7 @@
       "drinks": 45,
       "mathTokens": 565,
       "correctStreak": 0,
-      "lastPetUpdate": 1793503792724,
+      "lastPetUpdate": 1793494736463,
       "activePoops": 0,
       "mathCounter": 0,
       "strokeCounter": 1,
@@ -4429,8 +4429,8 @@
           "nextReview": "2026-10-07"
         },
         "w_310_write_pinyin": {
-          "box": 3,
-          "nextReview": "2026-11-08"
+          "box": 2,
+          "nextReview": "2026-10-06"
         },
         "w_314_write_pinyin": {
           "box": 3,
@@ -4909,23 +4909,23 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 300,
-      "drinks": 0,
+      "cookies": 530,
+      "drinks": 33,
       "mathTokens": 421,
       "correctStreak": 0,
-      "lastPetUpdate": 1793504025176,
+      "lastPetUpdate": 1793420428502,
       "activePoops": 0,
       "petName": "Doggy",
-      "poopCounter": 4,
+      "poopCounter": 3,
       "gems": 0,
-      "stars": 7,
-      "mathCounter": 2,
-      "strokeCounter": 1,
+      "stars": 0,
+      "mathCounter": 1,
+      "strokeCounter": 0,
       "strokeTokens": 386,
       "hunger": 100,
       "happiness": 100,
       "activePeeps": 0,
-      "peepCounter": 2,
+      "peepCounter": 4,
       "unlockedVideos": [
         "2026-03",
         "2026-04",
@@ -4941,5 +4941,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793504027529
+  "updatedAt": 1793507869972
 }
