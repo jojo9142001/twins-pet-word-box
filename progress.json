@@ -4917,14 +4917,14 @@
       "activePoops": 0,
       "petName": "Doggy",
       "poopCounter": 3,
-      "gems": 2,
+      "gems": 3,
       "stars": 2,
       "mathCounter": 1,
       "strokeCounter": 0,
       "strokeTokens": 386,
       "hunger": 100,
       "happiness": 100,
-      "activePeeps": 7,
+      "activePeeps": 6,
       "peepCounter": 2,
       "unlockedVideos": [
         "2026-03",
@@ -4941,5 +4941,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793503861303
+  "updatedAt": 1793503863604
 }
