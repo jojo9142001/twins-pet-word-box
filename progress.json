@@ -4909,15 +4909,15 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 496,
+      "cookies": 490,
       "drinks": 33,
       "mathTokens": 434,
       "correctStreak": 0,
       "lastPetUpdate": 1793579638252,
-      "activePoops": 5,
+      "activePoops": 6,
       "petName": "Doggy",
-      "poopCounter": 0,
-      "gems": 32,
+      "poopCounter": 1,
+      "gems": 38,
       "stars": 1,
       "mathCounter": 0,
       "strokeCounter": 2,
@@ -4989,5 +4989,5 @@
       }
     }
   },
-  "updatedAt": 1793579719596
+  "updatedAt": 1793579720978
 }
