@@ -348,6 +348,33 @@
             0%, 100% { opacity: 0.4; transform: scale(0.9); }
             50% { opacity: 1; transform: scale(1.2); }
         }
+    
+        /* 🏆 榮耀金牌/獎盃通關動畫 (Option 1) */
+        @keyframes trophy-drop {
+            0%   { transform: translateY(-300px) scale(0.3) rotate(-15deg); opacity: 0; }
+            50%  { transform: translateY(15px) scale(1.15, 0.85) rotate(3deg); opacity: 1; }
+            70%  { transform: translateY(-12px) scale(0.95, 1.05) rotate(-2deg); }
+            85%  { transform: translateY(4px) scale(1.02, 0.98); }
+            100% { transform: translateY(0) scale(1, 1) rotate(0deg); opacity: 1; }
+        }
+        @keyframes sunburst-spin {
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes crown-float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50%      { transform: translateY(-8px) scale(1.06); }
+        }
+        .animate-trophy-drop {
+            animation: trophy-drop 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .animate-sunburst {
+            animation: sunburst-spin 18s linear infinite;
+        }
+        .animate-crown-float {
+            animation: crown-float 2.2s ease-in-out infinite;
+        }
+
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start py-8 px-4 relative overflow-x-hidden">
@@ -501,11 +528,26 @@
             </button>
         </div>
 
-        <div id="view-end" class="hidden-view flex flex-col items-center text-center py-10">
-            <div class="text-7xl md:text-8xl mb-8">🎉</div>
-            <h2 id="end-title" class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">任務完成！</h2>
-            <p id="end-message" class="text-2xl md:text-3xl text-gray-600 mb-12 font-bold"></p>
-            <button onclick="app.showView('view-menu')" class="card-pop bg-blue-500 hover:bg-blue-600 text-white font-bold text-2xl md:text-3xl px-10 md:px-12 py-4 md:py-5 rounded-full shadow-xl">
+        <div id="view-end" class="hidden-view flex flex-col items-center text-center py-6 md:py-10 relative overflow-hidden">
+            <!-- 🌟 金光旋轉光芒背景 (Sunburst) -->
+            <div class="relative flex items-center justify-center my-4 md:my-6">
+                <div class="absolute w-72 h-72 md:w-96 md:h-96 rounded-full bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-100 opacity-60 filter blur-xl animate-sunburst pointer-events-none"></div>
+                
+                <!-- 🏆 榮耀金牌獎盃主體 (Squash & Stretch Drop) -->
+                <div class="relative z-10 animate-trophy-drop flex flex-col items-center">
+                    <div class="text-8xl md:text-9xl filter drop-shadow-[0_12px_24px_rgba(245,158,11,0.55)] animate-crown-float">
+                        🏆
+                    </div>
+                    <div class="mt-2 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-yellow-950 px-6 md:px-8 py-1.5 md:py-2 rounded-full border-4 border-white shadow-xl text-base md:text-xl font-black tracking-wider uppercase">
+                        ⭐ CHAMPION ⭐
+                    </div>
+                </div>
+            </div>
+
+            <h2 id="end-title" class="text-4xl md:text-5xl font-black text-gray-800 mb-4 drop-shadow-sm">任務完成！</h2>
+            <p id="end-message" class="text-xl md:text-2xl text-gray-600 mb-8 font-bold leading-relaxed max-w-lg"></p>
+            
+            <button onclick="app.showView('view-menu')" class="card-pop bg-blue-500 hover:bg-blue-600 text-white font-bold text-2xl md:text-3xl px-10 md:px-14 py-4 md:py-5 rounded-full shadow-2xl border-4 border-white">
                 返回主選單
             </button>
         </div>
@@ -578,8 +620,8 @@
 
             <!-- 🌟 方案 C：寵物房間下方快捷返回按鈕（免往下滑動） -->
             <div class="w-full flex justify-center mb-6">
-                <button onclick="app.showView('view-menu')" class="card-pop bg-orange-100 hover:bg-orange-200 border-4 border-orange-300 text-orange-800 px-8 md:px-10 py-3 md:py-3.5 rounded-full text-lg md:text-xl font-black shadow-md flex items-center gap-2">
-                    <span>🏠</span> <span>返回主選單</span>
+                <button onclick="app.showView('view-menu')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 md:px-10 py-3 md:py-4 text-lg md:text-2xl rounded-full font-bold shadow-md">
+                    返回主選單
                 </button>
             </div>
 
