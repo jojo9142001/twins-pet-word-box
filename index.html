@@ -1541,7 +1541,7 @@ const getCrystalBallSVG = (isActive) => `
                         this.lastCardOrigin = 'lesson';
                         document.getElementById('phase-badge').classList.remove('hidden');
                         const customStats = session.stats ? { ...session.stats } : { correct: 0, total: session.total };
-                        this.startQueue(queue, `🎯 弱點快篩：${shortName} (接續中：剩餘 ${queue.length}/${session.total} 題)`, customStats);
+                        this.startQueue(queue, `🎯 弱點快篩：${shortName} (接續)`, customStats);
                     } else {
                         // 🌟 2. 全新開始快篩
                         words.filter(w => !w.isReadWord).sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
@@ -1560,7 +1560,7 @@ const getCrystalBallSVG = (isActive) => `
 
                         this.lastCardOrigin = 'lesson';
                         document.getElementById('phase-badge').classList.remove('hidden');
-                        this.startQueue(queue, `🎯 弱點快篩：${shortName} (共 ${queue.length} 題)`);
+                        this.startQueue(queue, `🎯 弱點快篩：${shortName}`);
                     }
                 } else {
                     // 🌱 生字初學模式：循序漸進
