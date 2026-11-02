@@ -1326,46 +1326,35 @@ const getCrystalBallSVG = (isActive) => `
                 this.showView('view-profile');
             },
 
-            showBoxes: function() {
-                let counts = { 1: 0, 2: 0, 3: 0, 4: 0 };
-                let myData = this.appData[this.currentUser];
-                
-                WORD_DB.forEach(word => {
-                    // 🌟 認讀字不考寫國字，與複習佇列 100% 保持一致
-                    if (!word.isReadWord) {
-                        const idChar = word.id + '_write_char';
-                        if (myData.wordsProgress[idChar] && myData.wordsProgress[idChar].box >= 1 && myData.wordsProgress[idChar].box <= 4) {
-                            counts[myData.wordsProgress[idChar].box]++;
-                        }
-                    }
-                    const idPinyin = word.id + '_write_pinyin';
-                    if (myData.wordsProgress[idPinyin] && myData.wordsProgress[idPinyin].box >= 1 && myData.wordsProgress[idPinyin].box <= 4) {
-                        counts[myData.wordsProgress[idPinyin].box]++;
-                    }
-                });
-                document.getElementById('box-count-1').innerText = counts[1];
-                document.getElementById('box-count-2').innerText = counts[2];
-                document.getElementById('box-count-3').innerText = counts[3];
-                document.getElementById('box-count-4').innerText = counts[4];
-                this.showView('view-boxes');
-            },
-
-            startBoxReview: function(boxNum) {
-                let words = [];
+                        getBoxItems: function(boxNum) {
+                let items = [];
                 let myData = this.appData[this.currentUser].wordsProgress;
-                
                 WORD_DB.forEach(word => {
                     if (!word.isReadWord) {
                         const idChar = word.id + '_write_char';
                         if (myData[idChar] && myData[idChar].box === boxNum) {
-                            words.push({ word: word, testType: 'write_char', testId: idChar });
+                            items.push({ word: word, testType: 'write_char', testId: idChar });
                         }
                     }
                     const idPinyin = word.id + '_write_pinyin';
                     if (myData[idPinyin] && myData[idPinyin].box === boxNum) {
-                        words.push({ word: word, testType: 'write_pinyin', testId: idPinyin });
+                        items.push({ word: word, testType: 'write_pinyin', testId: idPinyin });
                     }
                 });
+                return items;
+            },
+
+            showBoxes: function() {
+                for (let b = 1; b <= 4; b++) {
+                    const count = this.getBoxItems(b).length;
+                    const el = document.getElementById('box-count-' + b);
+                    if (el) el.innerText = count;
+                }
+                this.showView('view-boxes');
+            },
+
+            startBoxReview: function(boxNum) {
+                let words = this.getBoxItems(boxNum);
                 if (words.length === 0) {
                     this.showModal('Empty Box!', `目前 <b>Box ${boxNum}</b> 裡面沒有需要複習的生字，太棒了！`, '✨');
                     return;
