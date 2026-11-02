@@ -4938,8 +4938,56 @@
         "2026-11"
       ],
       "lastResetMonth": "2026-11",
-      "screenSessions": {}
+      "screenSessions": {
+        "19. 二上_第1課": {
+          "total": 38,
+          "remainingIds": [
+            "w_286_write_char",
+            "w_275_write_char",
+            "w_283_write_char",
+            "w_284_write_char",
+            "w_285_write_char",
+            "w_271_write_char",
+            "w_276_write_char",
+            "w_280_write_char",
+            "w_287_write_char",
+            "w_282_write_char",
+            "w_278_write_char",
+            "w_272_write_char",
+            "w_274_write_char",
+            "w_281_write_char",
+            "w_288_write_char",
+            "w_273_write_char",
+            "w_279_write_char",
+            "w_277_write_char",
+            "w_274_write_pinyin",
+            "w_283_write_pinyin",
+            "w_272_write_pinyin",
+            "w_287_write_pinyin",
+            "w_275_write_pinyin",
+            "w_280_write_pinyin",
+            "w_273_write_pinyin",
+            "w_284_write_pinyin",
+            "w_290_write_pinyin",
+            "w_281_write_pinyin",
+            "w_271_write_pinyin",
+            "w_276_write_pinyin",
+            "w_279_write_pinyin",
+            "w_289_write_pinyin",
+            "w_278_write_pinyin",
+            "w_285_write_pinyin",
+            "w_288_write_pinyin",
+            "w_277_write_pinyin",
+            "w_282_write_pinyin",
+            "w_286_write_pinyin"
+          ],
+          "stats": {
+            "correct": 0,
+            "total": 38
+          }
+        }
+      }
     }
   },
-  "updatedAt": 1793578824316
+  "updatedAt": 1793578901621
 }
