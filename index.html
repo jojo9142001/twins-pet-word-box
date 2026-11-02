@@ -1230,50 +1230,122 @@ const getCrystalBallSVG = (isActive) => `
                             cloudData = parsed.appData || (parsed.Enid && parsed.Ian ? parsed : null);
                         }
 
-                        // 計算進度評分（星星數、寶石、已學單字數、餅乾飲料）
-                        const getRecordScore = (data) => {
-                            if (!data) return 0;
-                            let score = 0;
-                            ['Enid', 'Ian'].forEach(name => {
-                                if (data[name]) {
-                                    score += (data[name].stars || 0) * 10;
-                                    score += (data[name].gems || 0);
-                                    score += Object.keys(data[name].wordsProgress || {}).length;
-                                    score += (data[name].cookies || 0);
-                                    score += (data[name].drinks || 0);
+                        // 🌟 終極零衝突智慧合併 (Smart Deep Merge)：
+                        // 雙向比對兩端所有欄位，永遠取最大值與聯集，星星、寶石、單字箱位絕不被低版本覆蓋！
+                        if (!cloudData) {
+                            await this.pushToCloud();
+                            this.showSyncToast("✨ 本機進度已備份至雲端！", 2500);
+                            if (manual) alert("✅ 本機學習紀錄已成功備份至雲端！");
+                            return;
+                        }
+
+                        let hasLocalChanges = false;
+                        let hasCloudChanges = false;
+
+                        ['Enid', 'Ian'].forEach(name => {
+                            if (!this.appData[name]) this.appData[name] = {};
+                            const l = this.appData[name];
+                            const c = cloudData[name] || {};
+
+                            // 1. 星星數永遠取最大值
+                            const maxStars = Math.max(l.stars || 0, c.stars || 0);
+                            if (maxStars !== (l.stars || 0)) { l.stars = maxStars; hasCloudChanges = true; }
+                            if (maxStars !== (c.stars || 0)) { c.stars = maxStars; hasLocalChanges = true; }
+
+                            // 2. 寶石數：若星星較多則繼承該端的寶石，否則取寶石較高者
+                            if ((l.stars || 0) > (c.stars || 0)) {
+                                c.gems = l.gems || 0;
+                                hasLocalChanges = true;
+                            } else if ((c.stars || 0) > (l.stars || 0)) {
+                                l.gems = c.gems || 0;
+                                hasCloudChanges = true;
+                            } else {
+                                const maxGems = Math.max(l.gems || 0, c.gems || 0);
+                                if (maxGems !== (l.gems || 0)) { l.gems = maxGems; hasCloudChanges = true; }
+                                if (maxGems !== (c.gems || 0)) { c.gems = maxGems; hasLocalChanges = true; }
+                            }
+
+                            // 3. 餅乾與飲料：若星數不同，以已吃餅乾獲星較多的版本為主；星數相同取最大
+                            if ((l.stars || 0) > (c.stars || 0)) {
+                                c.cookies = l.cookies || 0;
+                                c.drinks = l.drinks || 0;
+                                hasLocalChanges = true;
+                            } else if ((c.stars || 0) > (l.stars || 0)) {
+                                l.cookies = c.cookies || 0;
+                                l.drinks = c.drinks || 0;
+                                hasCloudChanges = true;
+                            } else {
+                                // 星數相同，保留最新吃餅乾消耗後的數字（取兩端最小餅乾以反映已吃掉，或有作答增加取最新）
+                                if ((l.cookies || 0) !== (c.cookies || 0)) {
+                                    // 若本機有變動，保留本機
+                                    c.cookies = l.cookies || 0;
+                                    hasLocalChanges = true;
+                                }
+                                if ((l.drinks || 0) !== (c.drinks || 0)) {
+                                    c.drinks = l.drinks || 0;
+                                    hasLocalChanges = true;
+                                }
+                            }
+
+                            // 4. 單字寶盒進度：聯集合併，每個單字取較高的 Box 等級！
+                            l.wordsProgress = l.wordsProgress || {};
+                            const cProg = c.wordsProgress || {};
+                            const allWordKeys = new Set([...Object.keys(l.wordsProgress), ...Object.keys(cProg)]);
+
+                            allWordKeys.forEach(key => {
+                                const lItem = l.wordsProgress[key];
+                                const cItem = cProg[key];
+                                if (!lItem && cItem) {
+                                    l.wordsProgress[key] = { ...cItem };
+                                    hasCloudChanges = true;
+                                } else if (lItem && !cItem) {
+                                    cProg[key] = { ...lItem };
+                                    hasLocalChanges = true;
+                                } else if (lItem && cItem) {
+                                    // 兩端都有，Box 5 (精熟) > Box 4 > Box 3 > Box 2 > Box 1
+                                    const lBox = lItem.box || 0;
+                                    const cBox = cItem.box || 0;
+                                    if (lBox > cBox) {
+                                        cProg[key] = { ...lItem };
+                                        hasLocalChanges = true;
+                                    } else if (cBox > lBox) {
+                                        l.wordsProgress[key] = { ...cItem };
+                                        hasCloudChanges = true;
+                                    }
                                 }
                             });
-                            return score;
-                        };
+                            c.wordsProgress = cProg;
 
-                        const localScore = getRecordScore(this.appData);
-                        const cloudScore = getRecordScore(cloudData);
-
-                        // 🌟 核心保護：如果本機已有進度（例如舊 iPad 累積的成果），且比雲端完整，立即自動推上雲端保存！
-                        if (localScore > 0 && localScore >= cloudScore) {
-                            await this.pushToCloud();
-                            this.showSyncToast("✨ 本機進度已同步至 GitHub 雲端！", 3000);
-                            if (manual) alert("✅ 本機學習紀錄已成功備份並同步至 GitHub 雲端！");
-                            return;
-                        }
-
-                        // 🌟 如果雲端有更完整的進度（例如已在另一台打卡），自動載入本機
-                        if (cloudData && (cloudScore > localScore || (cloudScore > 0 && localScore === 0))) {
-                            this.appData = cloudData;
-                            localStorage.setItem('leitner_twins_global', JSON.stringify(this.appData));
-                            this.initData();
-                            if (this.currentUser) {
-                                this.updateTitleDisplay();
-                                this.updateStarUI();
-                                if (this.currentView === 'view-boxes') this.updateBoxCounts();
+                            // 5. 已解鎖影片月曆聯集合併
+                            const lVideos = new Set(l.unlockedVideos || []);
+                            const cVideos = new Set(c.unlockedVideos || []);
+                            const mergedVideos = [...new Set([...lVideos, ...cVideos])];
+                            if (mergedVideos.length !== (l.unlockedVideos || []).length) {
+                                l.unlockedVideos = mergedVideos;
+                                hasCloudChanges = true;
                             }
-                            this.showSyncToast("✨ 已載入跨裝置最新進度", 2500);
-                            if (manual) alert("✅ 已成功從雲端載入最新學習進度！");
-                            return;
+                            if (mergedVideos.length !== (c.unlockedVideos || []).length) {
+                                c.unlockedVideos = mergedVideos;
+                                hasLocalChanges = true;
+                            }
+                        });
+
+                        // 儲存合併結果到本地
+                        localStorage.setItem('leitner_twins_global', JSON.stringify(this.appData));
+                        this.initData();
+
+                        // 如果本機有新進度需要推給雲端，或者雲端已被合併覆蓋，立即更新雲端
+                        if (hasLocalChanges) {
+                            await this.pushToCloud();
                         }
 
-                        this.showSyncToast("✨ 目前進度已是最新", 2000);
-                        if (manual) alert("✨ 目前各裝置進度已是最新！");
+                        if (this.currentUser) {
+                            this.updateTitleDisplay();
+                            this.updateStarUI();
+                        }
+
+                        this.showSyncToast("✨ 雙向智慧同步完成！", 2500);
+                        if (manual) alert("✅ 雙向智慧同步完成！星星、寶石與學習紀錄已完美融合保存！");
                         return;
                     } else {
                         throw new Error('Get failed status ' + getRes.status);
@@ -2198,6 +2270,7 @@ const getCrystalBallSVG = (isActive) => `
 
                 this.addGems(1);
                 this.saveData();
+                this.pushToCloud();
                 
                 document.getElementById('ui-cookies-count').innerText = myData.cookies;
                 this.playBeep();
@@ -2222,6 +2295,7 @@ const getCrystalBallSVG = (isActive) => `
                 
                 this.addGems(2);
                 this.saveData();
+                this.pushToCloud();
                 document.getElementById('ui-drinks-count').innerText = myData.drinks;
                 this.playGorgeousSound();
                 this.roomSpeech("Power up! ++++++ ⚡\n(+2 Gems 💎)", "mega");
