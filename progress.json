@@ -2439,25 +2439,32 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 0,
-      "drinks": 7,
-      "mathTokens": 0,
+      "cookies": 745,
+      "drinks": 45,
+      "mathTokens": 565,
       "correctStreak": 0,
+      "lastPetUpdate": 1793523094847,
+      "activePoops": 0,
+      "mathCounter": 0,
+      "strokeCounter": 1,
+      "strokeTokens": 283,
+      "poopCounter": 4,
+      "gems": 0,
+      "stars": 0,
+      "petName": "Heartcute💕🩵",
       "hunger": 100,
       "happiness": 100,
-      "gems": 0,
-      "stars": 3,
-      "lastPetUpdate": 1775001842967,
-      "petName": "White Cat",
+      "activePeeps": 0,
+      "peepCounter": 2,
       "unlockedVideos": [
         "2026-03",
         "2026-04",
         "2026-05",
         "2026-06",
         "2026-07",
-        "2026-08",
         "2026-09",
         "2026-10",
+        "2026-08",
         "2026-11"
       ],
       "lastResetMonth": "2026-11",
@@ -2465,150 +2472,6 @@
     },
     "Ian": {
       "wordsProgress": {
-        "w_17_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_11_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_15_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_16_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_12_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_18_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_19_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_13_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_14_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_13_write_pinyin": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_11_write_pinyin": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_19_write_pinyin": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_14_write_pinyin": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_17_write_pinyin": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_18_write_pinyin": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_12_write_pinyin": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_15_write_pinyin": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_16_write_pinyin": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_22_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_20_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_25_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_27_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_26_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_23_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_24_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_28_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_30_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_21_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_29_write_char": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_28_write_pinyin": {
-          "box": 2,
-          "nextReview": "2026-03-31"
-        },
-        "w_267_write_char": {
-          "box": 3,
-          "nextReview": "2026-10-11"
-        },
-        "w_266_write_char": {
-          "box": 3,
-          "nextReview": "2026-10-17"
-        },
-        "w_255_write_char": {
-          "box": 3,
-          "nextReview": "2026-10-12"
-        },
-        "w_270_write_char": {
-          "box": 5,
-          "nextReview": null
-        },
-        "w_257_write_char": {
-          "box": 5,
-          "nextReview": null
-        },
-        "w_264_write_char": {
-          "box": 3,
-          "nextReview": "2026-10-22"
-        },
         "w_8_write_char": {
           "box": 5,
           "nextReview": null
@@ -4049,9 +3912,17 @@
           "box": 5,
           "nextReview": null
         },
+        "w_255_write_char": {
+          "box": 3,
+          "nextReview": "2026-10-12"
+        },
         "w_256_write_char": {
           "box": 3,
           "nextReview": "2026-10-31"
+        },
+        "w_257_write_char": {
+          "box": 5,
+          "nextReview": null
         },
         "w_268_write_char": {
           "box": 3,
@@ -4069,13 +3940,25 @@
           "box": 3,
           "nextReview": "2026-10-30"
         },
+        "w_270_write_char": {
+          "box": 5,
+          "nextReview": null
+        },
         "w_269_write_char": {
           "box": 5,
           "nextReview": null
         },
+        "w_264_write_char": {
+          "box": 3,
+          "nextReview": "2026-10-22"
+        },
         "w_261_write_char": {
           "box": 3,
           "nextReview": "2026-10-30"
+        },
+        "w_267_write_char": {
+          "box": 3,
+          "nextReview": "2026-10-11"
         },
         "w_258_write_char": {
           "box": 5,
@@ -4088,6 +3971,10 @@
         "w_265_write_char": {
           "box": 5,
           "nextReview": null
+        },
+        "w_266_write_char": {
+          "box": 3,
+          "nextReview": "2026-10-17"
         },
         "w_255_write_pinyin": {
           "box": 5,
@@ -5022,37 +4909,37 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 5,
-      "drinks": 0,
-      "mathTokens": 4,
+      "cookies": 568,
+      "drinks": 33,
+      "mathTokens": 434,
       "correctStreak": 0,
+      "lastPetUpdate": 1793524281416,
+      "activePoops": 0,
+      "petName": "Doggy",
+      "poopCounter": 3,
+      "gems": 0,
+      "stars": 0,
+      "mathCounter": 0,
+      "strokeCounter": 2,
+      "strokeTokens": 395,
       "hunger": 100,
       "happiness": 100,
-      "gems": 0,
-      "stars": 7,
-      "lastPetUpdate": 1793580578215,
-      "petName": "White Dog",
+      "activePeeps": 0,
+      "peepCounter": 4,
       "unlockedVideos": [
         "2026-03",
         "2026-04",
         "2026-05",
         "2026-06",
         "2026-07",
-        "2026-08",
         "2026-09",
         "2026-10",
+        "2026-08",
         "2026-11"
       ],
       "lastResetMonth": "2026-11",
-      "activePoops": 0,
-      "activePeeps": 0,
-      "mathCounter": 2,
-      "strokeCounter": 3,
-      "strokeTokens": 8,
-      "poopCounter": 0,
-      "peepCounter": 2,
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793580580308
+  "updatedAt": 1793710052722
 }
