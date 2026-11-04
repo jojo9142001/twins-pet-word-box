@@ -1776,10 +1776,12 @@ const getCrystalBallSVG = (isActive) => `
                     qDisplay.innerHTML = renderBopomofoHTML(word.pinyin, true);
                 } else {
                     qInstruction.style.display = 'none';
-                    qDisplay.innerHTML = `<span class="single-hanzi-display">${word.char}</span>`;
+                    const readBadge = word.isReadWord ? '<span class="absolute -top-3 -right-3 md:-top-4 md:-right-6 bg-purple-100 text-purple-700 border-2 border-purple-300 text-xs md:text-sm font-black px-2 md:px-2.5 py-0.5 md:py-1 rounded-full shadow-sm">📖 認讀字</span>' : '';
+                    qDisplay.innerHTML = `<div class="relative inline-flex items-center justify-center"><span class="single-hanzi-display">${word.char}</span>${readBadge}</div>`;
                 }
 
-                document.getElementById('ans-char').innerText = word.char;
+                const ansReadBadge = word.isReadWord ? '<span class="ml-1 bg-purple-100 text-purple-700 border border-purple-300 text-[10px] md:text-xs font-black px-1.5 py-0.5 rounded-full align-middle">認讀</span>' : '';
+                document.getElementById('ans-char').innerHTML = `${word.char}${ansReadBadge}`;
                 document.getElementById('ans-pinyin').innerHTML = renderBopomofoHTML(word.pinyin, false);
                 document.getElementById('ans-radical').innerText = word.radical;
                 document.getElementById('ans-strokes').innerText = word.strokes;
