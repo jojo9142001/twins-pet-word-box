@@ -1124,19 +1124,14 @@ const getCrystalBallSVG = (isActive) => `
                     if (!this.appData[name].unlockedVideos) this.appData[name].unlockedVideos = [];
                     if (!this.appData[name].screenSessions) this.appData[name].screenSessions = {};
 
-                    // 🌟 確保過去已獲得的歷史月份（3~9月）全部納入解鎖影片庫，防止漏掉
+                    // 1. 歷史月份永久保留於解鎖影片庫（3~10月）
                     ['2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10'].forEach(m => {
                         if (!this.appData[name].unlockedVideos.includes(m)) {
                             this.appData[name].unlockedVideos.push(m);
                         }
                     });
 
-                    // 🌟 防呆升級：只要星星滿 7 顆，確保當月影片已加入解鎖清單
-                    if (this.appData[name].stars >= 7 && !this.appData[name].unlockedVideos.includes(currentMonth)) {
-                        this.appData[name].unlockedVideos.push(currentMonth);
-                    }
-                    
-                    // 🌟 保護舊進度星星！換月時重置
+                    // 2. 換月機制：新月份開始時，重置當月每週任務星數與寶石數
                     if (!this.appData[name].lastResetMonth) {
                         this.appData[name].lastResetMonth = currentMonth;
                     } else if (this.appData[name].lastResetMonth !== currentMonth) {
@@ -1145,11 +1140,14 @@ const getCrystalBallSVG = (isActive) => `
                         this.appData[name].lastResetMonth = currentMonth;
                     }
 
-                    // 🌟 鐵壁保護：若當月影片已解鎖，本月星星絕對保底至少 7 顆，絕不受跨裝置快取或同步干擾而歸零！
-                    if (this.appData[name].unlockedVideos && this.appData[name].unlockedVideos.includes(currentMonth)) {
-                        if ((this.appData[name].stars || 0) < 7) {
-                            this.appData[name].stars = 7;
+                    // 3. 當月影片解鎖狀態校準：當且僅當當月星星滿 7 顆（或以上），才解鎖當月影片
+                    if ((this.appData[name].stars || 0) >= 7) {
+                        if (!this.appData[name].unlockedVideos.includes(currentMonth)) {
+                            this.appData[name].unlockedVideos.push(currentMonth);
                         }
+                    } else {
+                        // 若未滿 7 顆星，確保當月影片未解鎖（排除月初換月時的舊進度誤判偷跑）
+                        this.appData[name].unlockedVideos = this.appData[name].unlockedVideos.filter(m => m !== currentMonth);
                     }
                 }); // 🌟 補回了剛剛不小心刪掉的括號！
 
@@ -1380,20 +1378,7 @@ const getCrystalBallSVG = (isActive) => `
                             });
                             c.wordsProgress = cProg;
 
-                            // 5. 已解鎖影片月曆聯集合併
-                            const lVideos = new Set(l.unlockedVideos || []);
-                            const cVideos = new Set(c.unlockedVideos || []);
-                            const mergedVideos = [...new Set([...lVideos, ...cVideos])];
-                            if (mergedVideos.length !== (l.unlockedVideos || []).length) {
-                                l.unlockedVideos = mergedVideos;
-                                hasCloudChanges = true;
-                            }
-                            if (mergedVideos.length !== (c.unlockedVideos || []).length) {
-                                c.unlockedVideos = mergedVideos;
-                                hasLocalChanges = true;
-                            }
-
-                            // 6. 換月標記合併：取最新月份
+                            // 5. 換月標記合併：取最新月份
                             const currentMonth = this.getCurrentMonth();
                             if (c.lastResetMonth && (!l.lastResetMonth || c.lastResetMonth > l.lastResetMonth)) {
                                 l.lastResetMonth = c.lastResetMonth;
@@ -1403,15 +1388,18 @@ const getCrystalBallSVG = (isActive) => `
                                 hasLocalChanges = true;
                             }
 
-                            // 7. 鐵壁防護：若當月影片已解鎖，星星保底至少 7 顆，防止跨裝置舊快取拉低星數！
-                            if (l.unlockedVideos && l.unlockedVideos.includes(currentMonth) && (l.stars || 0) < 7) {
-                                l.stars = 7;
-                                hasCloudChanges = true;
+                            // 6. 解鎖影片清單合併：歷史月份聯集永久保存；當月影片則依實際星數（>= 7 顆）自然解鎖
+                            const histVideos = new Set([
+                                ...(l.unlockedVideos || []).filter(m => m !== currentMonth),
+                                ...(c.unlockedVideos || []).filter(m => m !== currentMonth)
+                            ]);
+                            const mergedVideos = [...histVideos];
+                            const effectiveStars = Math.max(l.stars || 0, c.stars || 0);
+                            if (effectiveStars >= 7) {
+                                mergedVideos.push(currentMonth);
                             }
-                            if (c.unlockedVideos && c.unlockedVideos.includes(currentMonth) && (c.stars || 0) < 7) {
-                                c.stars = 7;
-                                hasLocalChanges = true;
-                            }
+                            l.unlockedVideos = [...mergedVideos];
+                            c.unlockedVideos = [...mergedVideos];
                         });
 
                         // 儲存合併結果到本地
