@@ -2450,7 +2450,7 @@
       "strokeTokens": 288,
       "poopCounter": 4,
       "gems": 0,
-      "stars": 0,
+      "stars": 7,
       "petName": "Heartcute💕🩵",
       "hunger": 100,
       "happiness": 100,
@@ -4918,7 +4918,7 @@
       "petName": "Doggy",
       "poopCounter": 3,
       "gems": 0,
-      "stars": 0,
+      "stars": 7,
       "mathCounter": 2,
       "strokeCounter": 0,
       "strokeTokens": 402,
@@ -4941,5 +4941,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793711559918
+  "updatedAt": 1793852878443
 }
