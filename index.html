@@ -1327,7 +1327,7 @@ const getCrystalBallSVG = (isActive) => `
                                 if (maxGems !== (c.gems || 0)) { c.gems = maxGems; hasLocalChanges = true; }
                             }
 
-                            // 3. 餅乾與飲料：若星數不同，以已吃餅乾獲星較多的版本為主；星數相同取最大
+                            // 3. 餅乾與飲料同步：
                             if ((l.stars || 0) > (c.stars || 0)) {
                                 c.cookies = l.cookies || 0;
                                 c.drinks = l.drinks || 0;
@@ -1337,15 +1337,24 @@ const getCrystalBallSVG = (isActive) => `
                                 l.drinks = c.drinks || 0;
                                 hasCloudChanges = true;
                             } else {
-                                // 星數相同，保留最新吃餅乾消耗後的數字（取兩端最小餅乾以反映已吃掉，或有作答增加取最新）
-                                if ((l.cookies || 0) !== (c.cookies || 0)) {
-                                    // 若本機有變動，保留本機
+                                // 星數相同：若寶石數不同，以寶石較高者（代表有進一步餵食）的餅乾為準
+                                if ((l.gems || 0) > (c.gems || 0)) {
                                     c.cookies = l.cookies || 0;
-                                    hasLocalChanges = true;
-                                }
-                                if ((l.drinks || 0) !== (c.drinks || 0)) {
                                     c.drinks = l.drinks || 0;
                                     hasLocalChanges = true;
+                                } else if ((c.gems || 0) > (l.gems || 0)) {
+                                    l.cookies = c.cookies || 0;
+                                    l.drinks = c.drinks || 0;
+                                    hasCloudChanges = true;
+                                } else {
+                                    // 星數與寶石數皆相同：取餅乾與飲料較大值（代表作答賺取的獎勵不遺失）
+                                    const maxCookies = Math.max(l.cookies || 0, c.cookies || 0);
+                                    if (maxCookies !== (l.cookies || 0)) { l.cookies = maxCookies; hasCloudChanges = true; }
+                                    if (maxCookies !== (c.cookies || 0)) { c.cookies = maxCookies; hasLocalChanges = true; }
+
+                                    const maxDrinks = Math.max(l.drinks || 0, c.drinks || 0);
+                                    if (maxDrinks !== (l.drinks || 0)) { l.drinks = maxDrinks; hasCloudChanges = true; }
+                                    if (maxDrinks !== (c.drinks || 0)) { c.drinks = maxDrinks; hasLocalChanges = true; }
                                 }
                             }
 
