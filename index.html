@@ -1144,6 +1144,13 @@ const getCrystalBallSVG = (isActive) => `
                         this.appData[name].gems = 0;
                         this.appData[name].lastResetMonth = currentMonth;
                     }
+
+                    // 🌟 鐵壁保護：若當月影片已解鎖，本月星星絕對保底至少 7 顆，絕不受跨裝置快取或同步干擾而歸零！
+                    if (this.appData[name].unlockedVideos && this.appData[name].unlockedVideos.includes(currentMonth)) {
+                        if ((this.appData[name].stars || 0) < 7) {
+                            this.appData[name].stars = 7;
+                        }
+                    }
                 }); // 🌟 補回了剛剛不小心刪掉的括號！
 
                 this.saveData(false); // 本機立即存檔
@@ -1383,6 +1390,26 @@ const getCrystalBallSVG = (isActive) => `
                             }
                             if (mergedVideos.length !== (c.unlockedVideos || []).length) {
                                 c.unlockedVideos = mergedVideos;
+                                hasLocalChanges = true;
+                            }
+
+                            // 6. 換月標記合併：取最新月份
+                            const currentMonth = this.getCurrentMonth();
+                            if (c.lastResetMonth && (!l.lastResetMonth || c.lastResetMonth > l.lastResetMonth)) {
+                                l.lastResetMonth = c.lastResetMonth;
+                                hasCloudChanges = true;
+                            } else if (l.lastResetMonth && (!c.lastResetMonth || l.lastResetMonth > c.lastResetMonth)) {
+                                c.lastResetMonth = l.lastResetMonth;
+                                hasLocalChanges = true;
+                            }
+
+                            // 7. 鐵壁防護：若當月影片已解鎖，星星保底至少 7 顆，防止跨裝置舊快取拉低星數！
+                            if (l.unlockedVideos && l.unlockedVideos.includes(currentMonth) && (l.stars || 0) < 7) {
+                                l.stars = 7;
+                                hasCloudChanges = true;
+                            }
+                            if (c.unlockedVideos && c.unlockedVideos.includes(currentMonth) && (c.stars || 0) < 7) {
+                                c.stars = 7;
                                 hasLocalChanges = true;
                             }
                         });
