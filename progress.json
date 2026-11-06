@@ -2449,12 +2449,12 @@
       "strokeCounter": 2,
       "strokeTokens": 288,
       "poopCounter": 2,
-      "gems": 38,
+      "gems": 39,
       "stars": 5,
       "petName": "Heartcute💕🩵",
       "hunger": 100,
       "happiness": 100,
-      "activePeeps": 7,
+      "activePeeps": 6,
       "peepCounter": 2,
       "unlockedVideos": [
         "2026-03",
@@ -4940,5 +4940,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793963600170
+  "updatedAt": 1793963601723
 }
