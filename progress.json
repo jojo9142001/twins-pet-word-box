@@ -2439,16 +2439,16 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 666,
-      "drinks": 20,
-      "mathTokens": 565,
+      "cookies": 766,
+      "drinks": 45,
+      "mathTokens": 572,
       "correctStreak": 0,
-      "lastPetUpdate": 1793857118226,
+      "lastPetUpdate": 1793523094847,
       "activePoops": 0,
       "mathCounter": 0,
-      "strokeCounter": 1,
-      "strokeTokens": 283,
-      "poopCounter": 3,
+      "strokeCounter": 2,
+      "strokeTokens": 288,
+      "poopCounter": 4,
       "gems": 0,
       "stars": 3,
       "petName": "Heartcute💕🩵",
@@ -2462,9 +2462,10 @@
         "2026-05",
         "2026-06",
         "2026-07",
-        "2026-08",
         "2026-09",
-        "2026-10"
+        "2026-10",
+        "2026-08",
+        "2026-11"
       ],
       "lastResetMonth": "2026-11",
       "screenSessions": {}
@@ -4357,7 +4358,7 @@
         },
         "w_316_write_char": {
           "box": 1,
-          "nextReview": "2026-11-01"
+          "nextReview": "2026-11-04"
         },
         "w_307_write_char": {
           "box": 3,
@@ -4521,7 +4522,7 @@
         },
         "w_326_write_char": {
           "box": 1,
-          "nextReview": "2026-11-01"
+          "nextReview": "2026-11-04"
         },
         "w_340_write_char": {
           "box": 3,
@@ -4908,85 +4909,37 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 308,
-      "drinks": 16,
-      "mathTokens": 434,
+      "cookies": 594,
+      "drinks": 33,
+      "mathTokens": 442,
       "correctStreak": 0,
-      "lastPetUpdate": 1793857105085,
+      "lastPetUpdate": 1793711557808,
       "activePoops": 0,
       "petName": "Doggy",
       "poopCounter": 3,
       "gems": 0,
       "stars": 7,
-      "mathCounter": 0,
-      "strokeCounter": 2,
-      "strokeTokens": 395,
+      "mathCounter": 2,
+      "strokeCounter": 0,
+      "strokeTokens": 402,
       "hunger": 100,
       "happiness": 100,
       "activePeeps": 0,
-      "peepCounter": 1,
+      "peepCounter": 4,
       "unlockedVideos": [
         "2026-03",
         "2026-04",
         "2026-05",
         "2026-06",
         "2026-07",
-        "2026-08",
         "2026-09",
         "2026-10",
+        "2026-08",
         "2026-11"
       ],
       "lastResetMonth": "2026-11",
-      "screenSessions": {
-        "19. 二上_第1課": {
-          "total": 38,
-          "remainingIds": [
-            "w_286_write_char",
-            "w_275_write_char",
-            "w_283_write_char",
-            "w_284_write_char",
-            "w_285_write_char",
-            "w_271_write_char",
-            "w_276_write_char",
-            "w_280_write_char",
-            "w_287_write_char",
-            "w_282_write_char",
-            "w_278_write_char",
-            "w_272_write_char",
-            "w_274_write_char",
-            "w_281_write_char",
-            "w_288_write_char",
-            "w_273_write_char",
-            "w_279_write_char",
-            "w_277_write_char",
-            "w_274_write_pinyin",
-            "w_283_write_pinyin",
-            "w_272_write_pinyin",
-            "w_287_write_pinyin",
-            "w_275_write_pinyin",
-            "w_280_write_pinyin",
-            "w_273_write_pinyin",
-            "w_284_write_pinyin",
-            "w_290_write_pinyin",
-            "w_281_write_pinyin",
-            "w_271_write_pinyin",
-            "w_276_write_pinyin",
-            "w_279_write_pinyin",
-            "w_289_write_pinyin",
-            "w_278_write_pinyin",
-            "w_285_write_pinyin",
-            "w_288_write_pinyin",
-            "w_277_write_pinyin",
-            "w_282_write_pinyin",
-            "w_286_write_pinyin"
-          ],
-          "stats": {
-            "correct": 0,
-            "total": 38
-          }
-        }
-      }
+      "screenSessions": {}
     }
   },
-  "updatedAt": 1793857270695
+  "updatedAt": 1793963540256
 }
