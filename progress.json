@@ -2444,13 +2444,13 @@
       "mathTokens": 572,
       "correctStreak": 0,
       "lastPetUpdate": 1793963707743,
-      "activePoops": 5,
+      "activePoops": 3,
       "mathCounter": 0,
       "strokeCounter": 2,
       "strokeTokens": 278,
       "poopCounter": 0,
-      "gems": 48,
-      "stars": 6,
+      "gems": 0,
+      "stars": 7,
       "petName": "Heartcute💕🩵",
       "hunger": 100,
       "happiness": 100,
@@ -2464,7 +2464,8 @@
         "2026-07",
         "2026-09",
         "2026-10",
-        "2026-08"
+        "2026-08",
+        "2026-11"
       ],
       "lastResetMonth": "2026-11",
       "screenSessions": {}
@@ -4940,5 +4941,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793963721840
+  "updatedAt": 1793963724604
 }
