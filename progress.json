@@ -2439,17 +2439,17 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 724,
+      "cookies": 716,
       "drinks": 0,
       "mathTokens": 572,
       "correctStreak": 0,
       "lastPetUpdate": 1793963707743,
-      "activePoops": 1,
+      "activePoops": 2,
       "mathCounter": 0,
       "strokeCounter": 2,
       "strokeTokens": 278,
-      "poopCounter": 1,
-      "gems": 29,
+      "poopCounter": 4,
+      "gems": 37,
       "stars": 6,
       "petName": "Heartcute💕🩵",
       "hunger": 100,
@@ -4940,5 +4940,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1793963715641
+  "updatedAt": 1793963717337
 }
