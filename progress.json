@@ -4337,8 +4337,8 @@
           "nextReview": "2026-10-14"
         },
         "w_315_write_char": {
-          "box": 3,
-          "nextReview": "2026-11-13"
+          "box": 4,
+          "nextReview": "2026-11-22"
         },
         "w_317_write_char": {
           "box": 4,
@@ -4909,7 +4909,7 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 760,
+      "cookies": 761,
       "drinks": 33,
       "mathTokens": 498,
       "correctStreak": 0,
@@ -4919,8 +4919,8 @@
       "poopCounter": 3,
       "gems": 6,
       "stars": 7,
-      "mathCounter": 0,
-      "strokeCounter": 2,
+      "mathCounter": 1,
+      "strokeCounter": 3,
       "strokeTokens": 441,
       "hunger": 100,
       "happiness": 100,
@@ -4941,5 +4941,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1794126288054
+  "updatedAt": 1794126317900
 }
