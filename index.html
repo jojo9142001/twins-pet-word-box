@@ -6632,10 +6632,10 @@ const getCrystalBallSVG = (isActive) => `
                         this.startQueue(queue, `🎯 弱點快篩：${shortName} (接續)`, customStats);
                     } else {
                         // 🌟 2. 全新開始快篩
-                        words.filter(w => !w.isReadWord).sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                        words.filter(w => !w.isReadWord).forEach(w => queue.push({ 
                             word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
                         }));
-                        words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                        words.forEach(w => queue.push({ 
                             word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
                         }));
 
@@ -6670,10 +6670,10 @@ const getCrystalBallSVG = (isActive) => `
                     });
 
                     if (unpracticedChar.length > 0 || unpracticedPinyin.length > 0) {
-                        unpracticedChar.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                        unpracticedChar.forEach(w => queue.push({ 
                             word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
                         }));
-                        unpracticedPinyin.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                        unpracticedPinyin.forEach(w => queue.push({ 
                             word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
                         }));
                         this.lastCardOrigin = 'lesson';
@@ -6681,10 +6681,10 @@ const getCrystalBallSVG = (isActive) => `
                         let totalItems = words.reduce((sum, w) => sum + (w.isReadWord ? 1 : 2), 0);
                         this.startQueue(queue, `🌱 生字初學：${shortName} (剩餘 ${queue.length}/${totalItems} 題)`);
                     } else {
-                        words.filter(w => !w.isReadWord).sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                        words.filter(w => !w.isReadWord).forEach(w => queue.push({ 
                             word: w, testType: 'write_char', phase: 1, testId: w.id + '_write_char' 
                         }));
-                        words.sort(() => Math.random() - 0.5).forEach(w => queue.push({ 
+                        words.forEach(w => queue.push({ 
                             word: w, testType: 'write_pinyin', phase: 2, testId: w.id + '_write_pinyin' 
                         }));
                         this.lastCardOrigin = 'lesson';
@@ -7417,15 +7417,15 @@ const getCrystalBallSVG = (isActive) => `
                 if (selectedChar === this.currentStrokeAns) {
                     let myData = this.appData[this.currentUser];
                     myData.strokeTokens = Math.max(0, myData.strokeTokens - 1);
-                    
-                    this.addGems(3);
+                    myData.cookies = (myData.cookies || 0) + 2;
                     this.saveData();
 
                     this.fireConfetti(true);
+                    this.playCookieSound();
                     this.playMasterySound();
                     document.getElementById('stroke-modal').classList.add('hidden-view');
-                    this.showModal('水晶球魔法！🔮✨', `太厲害了！選對了國字「<b class="text-purple-600 text-2xl">${this.currentStrokeAns}</b>」！<br><br><span class="text-purple-600 font-bold text-xl">獲得 3 顆寶石！💎💎💎</span>`, '🔮');
-                    this.roomSpeech("水晶球力量！🔮\n(+3 寶石 💎)", "mega");
+                    this.showModal('水晶球魔法！🔮✨', `太厲害了！選對了國字「<b class="text-purple-600 text-2xl">${this.currentStrokeAns}</b>」！<br><br><span class="text-amber-600 font-bold text-xl">獲得 2 塊餅乾！🍪🍪</span>`, '🔮');
+                    this.roomSpeech("水晶球力量！🔮\n(+2 餅乾 🍪)", "mega");
                     this.showStats();
 
                 } else {
