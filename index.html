@@ -692,9 +692,12 @@
     </div>
     <div id="stroke-modal" class="hidden-view fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 px-4">
         <div class="bg-white rounded-[2.5rem] p-6 md:p-8 max-w-lg w-full text-center shadow-2xl border-8 border-purple-400">
-            <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center justify-between mb-2">
                 <span class="text-3xl">🔮</span>
-                <h3 class="text-2xl md:text-3xl font-black text-purple-700 tracking-wide">水晶球同音選字魔法</h3>
+                <div>
+                    <h3 class="text-2xl md:text-3xl font-black text-purple-700 tracking-wide">水晶球同音選字魔法</h3>
+                    <div id="stroke-round-info" class="text-xs md:text-sm font-bold text-purple-600 bg-purple-100 py-0.5 px-3 rounded-full inline-block mt-1">第 1 輪 · 剩餘 425 題</div>
+                </div>
                 <span class="text-3xl">🔮</span>
             </div>
             <p class="text-base md:text-lg text-purple-600 font-bold mb-3">選出（　）裡最適合的正確國字：</p>
@@ -710,7 +713,7 @@
             <p id="stroke-feedback" class="text-red-500 text-lg md:text-xl font-bold mb-4 h-7"></p>
             
             <div class="flex justify-center">
-                <button onclick="document.getElementById('stroke-modal').classList.add('hidden-view')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 font-bold text-base md:text-lg py-3 rounded-2xl transition">稍後再挑戰 (Later)</button>
+                <button onclick="app.deferStrokeQuest()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 font-bold text-base md:text-lg py-3 rounded-2xl transition">稍後再挑戰 (Later)</button>
             </div>
         </div>
     </div>
@@ -7381,15 +7384,41 @@ const getCrystalBallSVG = (isActive) => `
                 }
             },
 
+            shuffleArray: function(arr) {
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr;
+            },
+
+            getCrystalQuestPool: function(myData) {
+                if (!myData.crystalQuestPool || !Array.isArray(myData.crystalQuestPool) || myData.crystalQuestPool.length === 0) {
+                    myData.crystalQuestPool = this.shuffleArray(Array.from({ length: HOMOPHONE_QUEST_DB.length }, (_, i) => i));
+                    myData.crystalRound = (myData.crystalRound || 0) + 1;
+                    this.saveData();
+                }
+                return myData.crystalQuestPool;
+            },
+
             startStrokeQuest: function() {
                 unlockAudio();
                 let myData = this.appData[this.currentUser];
                 if (!myData.strokeTokens || myData.strokeTokens <= 0) return;
                 
-                // 隨機選出一道同音字語境題
-                const quest = HOMOPHONE_QUEST_DB[Math.floor(Math.random() * HOMOPHONE_QUEST_DB.length)];
+                // 取得不重複隨機題目池
+                const pool = this.getCrystalQuestPool(myData);
+                const questIdx = pool[pool.length - 1];
+                this.currentStrokeQuestIndex = questIdx;
+                
+                const quest = HOMOPHONE_QUEST_DB[questIdx];
                 this.currentStrokeAns = quest.ans;
                 this.currentStrokeQuest = quest;
+
+                // 顯示當前輪數與本輪剩餘題數
+                const roundText = `第 ${myData.crystalRound || 1} 輪 · 剩餘 ${pool.length} 題`;
+                const progressEl = document.getElementById('stroke-round-info');
+                if (progressEl) progressEl.innerText = roundText;
 
                 document.getElementById('stroke-question').innerText = quest.q;
                 document.getElementById('stroke-feedback').innerText = '';
@@ -7398,7 +7427,7 @@ const getCrystalBallSVG = (isActive) => `
                 optsContainer.innerHTML = '';
 
                 // 打亂選項位置
-                const shuffledOpts = [...quest.options].sort(() => Math.random() - 0.5);
+                const shuffledOpts = this.shuffleArray([...quest.options]);
                 shuffledOpts.forEach(opt => {
                     const btn = document.createElement('button');
                     btn.type = 'button';
@@ -7411,6 +7440,17 @@ const getCrystalBallSVG = (isActive) => `
                 document.getElementById('stroke-modal').classList.remove('hidden-view');
             },
 
+            deferStrokeQuest: function() {
+                // 稍後再試：將當前難題移到牌底，下次打開換下一道題，題庫依然不遺失
+                let myData = this.appData[this.currentUser];
+                if (myData && myData.crystalQuestPool && myData.crystalQuestPool.length > 1) {
+                    const skipped = myData.crystalQuestPool.pop();
+                    myData.crystalQuestPool.unshift(skipped);
+                    this.saveData();
+                }
+                document.getElementById('stroke-modal').classList.add('hidden-view');
+            },
+
             checkStrokeAnswer: function(selectedChar) {
                 const feedback = document.getElementById('stroke-feedback');
                 
@@ -7418,13 +7458,27 @@ const getCrystalBallSVG = (isActive) => `
                     let myData = this.appData[this.currentUser];
                     myData.strokeTokens = Math.max(0, myData.strokeTokens - 1);
                     myData.cookies = (myData.cookies || 0) + 2;
+
+                    // 答對過關：正式從本輪題庫中移出此題
+                    if (myData.crystalQuestPool && myData.crystalQuestPool.length > 0) {
+                        myData.crystalQuestPool.pop();
+                    }
+                    const isRoundComplete = (!myData.crystalQuestPool || myData.crystalQuestPool.length === 0);
+                    const currentRound = myData.crystalRound || 1;
+
                     this.saveData();
 
                     this.fireConfetti(true);
                     this.playCookieSound();
                     this.playMasterySound();
                     document.getElementById('stroke-modal').classList.add('hidden-view');
-                    this.showModal('水晶球魔法！🔮✨', `太厲害了！選對了國字「<b class="text-purple-600 text-2xl">${this.currentStrokeAns}</b>」！<br><br><span class="text-amber-600 font-bold text-xl">獲得 2 塊餅乾！🍪🍪</span>`, '🔮');
+
+                    let modalMsg = `太厲害了！選對了國字「<b class="text-purple-600 text-2xl">${this.currentStrokeAns}</b>」！<br><br><span class="text-amber-600 font-bold text-xl">獲得 2 塊餅乾！🍪🍪</span>`;
+                    if (isRoundComplete) {
+                        modalMsg += `<br><br><span class="text-purple-700 font-bold">🎉 太讚了！已完成第 ${currentRound} 輪全部 425 題！即將開啟下一輪全新洗牌挑戰！</span>`;
+                    }
+
+                    this.showModal('水晶球魔法！🔮✨', modalMsg, '🔮');
                     this.roomSpeech("水晶球力量！🔮\n(+2 餅乾 🍪)", "mega");
                     this.showStats();
 
