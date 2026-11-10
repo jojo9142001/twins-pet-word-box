@@ -4943,6 +4943,10 @@
         "w_400_write_char": {
           "box": 1,
           "nextReview": "2026-11-11"
+        },
+        "w_401_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-10"
         }
       },
       "stats": {
@@ -4981,5 +4985,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1794316551371
+  "updatedAt": 1794316669771
 }
