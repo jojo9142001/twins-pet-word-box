@@ -5012,6 +5012,7 @@
       "lastResetMonth": "2026-11",
       "screenSessions": {},
       "crystalQuestPool": [
+        68,
         238,
         191,
         260,
@@ -5434,11 +5435,10 @@
         319,
         157,
         283,
-        67,
-        68
+        67
       ],
       "crystalRound": 1
     }
   },
-  "updatedAt": 1794317066848
+  "updatedAt": 1794317076953
 }
