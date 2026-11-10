@@ -1692,7 +1692,7 @@
         },
         "w_272_write_pinyin": {
           "box": 3,
-          "nextReview": "2026-11-10"
+          "nextReview": "2026-11-08"
         },
         "w_285_write_pinyin": {
           "box": 5,
@@ -1868,7 +1868,7 @@
         },
         "w_323_write_char": {
           "box": 3,
-          "nextReview": "2026-11-10"
+          "nextReview": "2026-11-08"
         },
         "w_320_write_char": {
           "box": 5,
@@ -2136,7 +2136,7 @@
         },
         "w_327_write_pinyin": {
           "box": 3,
-          "nextReview": "2026-11-10"
+          "nextReview": "2026-11-08"
         },
         "w_330_write_pinyin": {
           "box": 2,
@@ -2433,22 +2433,26 @@
         "w_374_write_pinyin": {
           "box": 5,
           "nextReview": null
+        },
+        "w_391_write_char": {
+          "box": 2,
+          "nextReview": "2026-11-13"
         }
       },
       "stats": {
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 836,
+      "cookies": 837,
       "drinks": 45,
-      "mathTokens": 606,
+      "mathTokens": 579,
       "correctStreak": 0,
-      "lastPetUpdate": 1794228723784,
+      "lastPetUpdate": 1794316755934,
       "activePoops": 0,
       "mathCounter": 0,
-      "strokeCounter": 0,
-      "strokeTokens": 294,
-      "poopCounter": 0,
+      "strokeCounter": 3,
+      "strokeTokens": 293,
+      "poopCounter": 4,
       "gems": 33,
       "stars": 7,
       "petName": "Heartcute💕🩵",
@@ -2934,7 +2938,7 @@
         },
         "w_136_write_char": {
           "box": 3,
-          "nextReview": "2026-11-16"
+          "nextReview": "2026-10-30"
         },
         "w_135_write_char": {
           "box": 5,
@@ -3182,7 +3186,7 @@
         },
         "w_168_write_char": {
           "box": 3,
-          "nextReview": "2026-11-14"
+          "nextReview": "2026-10-22"
         },
         "w_162_write_char": {
           "box": 5,
@@ -3298,7 +3302,7 @@
         },
         "w_190_write_char": {
           "box": 3,
-          "nextReview": "2026-11-14"
+          "nextReview": "2026-10-28"
         },
         "w_186_write_char": {
           "box": 5,
@@ -3318,7 +3322,7 @@
         },
         "w_184_write_char": {
           "box": 3,
-          "nextReview": "2026-11-14"
+          "nextReview": "2026-10-31"
         },
         "w_176_write_char": {
           "box": 3,
@@ -3334,7 +3338,7 @@
         },
         "w_187_write_char": {
           "box": 3,
-          "nextReview": "2026-11-16"
+          "nextReview": "2026-10-22"
         },
         "w_181_write_char": {
           "box": 5,
@@ -3406,11 +3410,11 @@
         },
         "w_193_write_char": {
           "box": 3,
-          "nextReview": "2026-11-16"
+          "nextReview": "2026-10-31"
         },
         "w_197_write_char": {
           "box": 3,
-          "nextReview": "2026-11-16"
+          "nextReview": "2026-10-31"
         },
         "w_206_write_char": {
           "box": 5,
@@ -3434,7 +3438,7 @@
         },
         "w_199_write_char": {
           "box": 3,
-          "nextReview": "2026-11-13"
+          "nextReview": "2026-10-29"
         },
         "w_198_write_char": {
           "box": 5,
@@ -3442,11 +3446,11 @@
         },
         "w_194_write_char": {
           "box": 3,
-          "nextReview": "2026-11-15"
+          "nextReview": "2026-10-31"
         },
         "w_201_write_char": {
           "box": 3,
-          "nextReview": "2026-11-14"
+          "nextReview": "2026-10-22"
         },
         "w_195_write_char": {
           "box": 3,
@@ -3666,7 +3670,7 @@
         },
         "w_231_write_char": {
           "box": 3,
-          "nextReview": "2026-11-13"
+          "nextReview": "2026-10-28"
         },
         "w_225_write_char": {
           "box": 3,
@@ -3682,7 +3686,7 @@
         },
         "w_223_write_char": {
           "box": 3,
-          "nextReview": "2026-11-13"
+          "nextReview": "2026-10-29"
         },
         "w_226_write_char": {
           "box": 5,
@@ -3814,11 +3818,11 @@
         },
         "w_250_write_char": {
           "box": 3,
-          "nextReview": "2026-11-15"
+          "nextReview": "2026-10-30"
         },
         "w_244_write_char": {
           "box": 3,
-          "nextReview": "2026-11-16"
+          "nextReview": "2026-10-31"
         },
         "w_254_write_char": {
           "box": 3,
@@ -3838,7 +3842,7 @@
         },
         "w_245_write_char": {
           "box": 3,
-          "nextReview": "2026-11-14"
+          "nextReview": "2026-09-18"
         },
         "w_249_write_char": {
           "box": 5,
@@ -3918,7 +3922,7 @@
         },
         "w_256_write_char": {
           "box": 3,
-          "nextReview": "2026-11-16"
+          "nextReview": "2026-10-31"
         },
         "w_257_write_char": {
           "box": 5,
@@ -3950,11 +3954,11 @@
         },
         "w_264_write_char": {
           "box": 3,
-          "nextReview": "2026-11-14"
+          "nextReview": "2026-10-22"
         },
         "w_261_write_char": {
           "box": 3,
-          "nextReview": "2026-11-16"
+          "nextReview": "2026-10-30"
         },
         "w_267_write_char": {
           "box": 3,
@@ -4078,7 +4082,7 @@
         },
         "w_272_write_char": {
           "box": 3,
-          "nextReview": "2026-11-14"
+          "nextReview": "2026-10-13"
         },
         "w_279_write_char": {
           "box": 3,
@@ -4090,7 +4094,7 @@
         },
         "w_281_write_char": {
           "box": 2,
-          "nextReview": "2026-11-04"
+          "nextReview": "2026-09-13"
         },
         "w_276_write_char": {
           "box": 5,
@@ -4194,7 +4198,7 @@
         },
         "w_298_write_char": {
           "box": 3,
-          "nextReview": "2026-11-16"
+          "nextReview": "2026-11-08"
         },
         "w_289_write_char": {
           "box": 3,
@@ -4250,7 +4254,7 @@
         },
         "w_299_write_char": {
           "box": 3,
-          "nextReview": "2026-11-15"
+          "nextReview": "2026-11-08"
         },
         "w_303_write_char": {
           "box": 5,
@@ -4354,7 +4358,7 @@
         },
         "w_321_write_char": {
           "box": 3,
-          "nextReview": "2026-11-15"
+          "nextReview": "2026-10-13"
         },
         "w_316_write_char": {
           "box": 2,
@@ -4382,7 +4386,7 @@
         },
         "w_319_write_char": {
           "box": 2,
-          "nextReview": "2026-11-06"
+          "nextReview": "2026-10-06"
         },
         "w_324_write_char": {
           "box": 5,
@@ -4494,7 +4498,7 @@
         },
         "w_332_write_char": {
           "box": 2,
-          "nextReview": "2026-11-06"
+          "nextReview": "2026-11-03"
         },
         "w_327_write_char": {
           "box": 5,
@@ -4658,7 +4662,7 @@
         },
         "w_355_write_char": {
           "box": 3,
-          "nextReview": "2026-11-16"
+          "nextReview": "2026-11-02"
         },
         "w_352_write_char": {
           "box": 2,
@@ -4666,7 +4670,7 @@
         },
         "w_353_write_char": {
           "box": 3,
-          "nextReview": "2026-11-15"
+          "nextReview": "2026-11-02"
         },
         "w_358_write_char": {
           "box": 3,
@@ -4947,33 +4951,25 @@
         "w_401_write_char": {
           "box": 1,
           "nextReview": "2026-11-10"
-        },
-        "w_402_write_char": {
-          "box": 1,
-          "nextReview": "2026-11-10"
-        },
-        "w_403_write_char": {
-          "box": 2,
-          "nextReview": "2026-11-13"
         }
       },
       "stats": {
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 794,
+      "cookies": 793,
       "drinks": 33,
-      "mathTokens": 509,
+      "mathTokens": 426,
       "correctStreak": 0,
-      "lastPetUpdate": 1794105927892,
+      "lastPetUpdate": 1793511588920,
       "activePoops": 0,
       "petName": "Doggy",
       "poopCounter": 3,
       "gems": 6,
       "stars": 7,
-      "mathCounter": 1,
+      "mathCounter": 2,
       "strokeCounter": 0,
-      "strokeTokens": 450,
+      "strokeTokens": 390,
       "hunger": 100,
       "happiness": 100,
       "activePeeps": 0,
@@ -4993,5 +4989,5 @@
       "screenSessions": {}
     }
   },
-  "updatedAt": 1794316780745
+  "updatedAt": 1794316792535
 }
