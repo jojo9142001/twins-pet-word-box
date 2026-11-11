@@ -5031,13 +5031,17 @@
         "w_404_write_pinyin": {
           "box": 2,
           "nextReview": "2026-11-14"
+        },
+        "w_405_write_pinyin": {
+          "box": 2,
+          "nextReview": "2026-11-14"
         }
       },
       "stats": {
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 901,
+      "cookies": 902,
       "drinks": 33,
       "mathTokens": 515,
       "correctStreak": 0,
@@ -5047,8 +5051,8 @@
       "poopCounter": 2,
       "gems": 11,
       "stars": 7,
-      "mathCounter": 0,
-      "strokeCounter": 1,
+      "mathCounter": 1,
+      "strokeCounter": 2,
       "strokeTokens": 407,
       "hunger": 100,
       "happiness": 100,
@@ -5450,5 +5454,5 @@
       "crystalRound": 1
     }
   },
-  "updatedAt": 1794401827126
+  "updatedAt": 1794401832647
 }
