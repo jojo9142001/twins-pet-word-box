@@ -5035,6 +5035,10 @@
         "w_405_write_pinyin": {
           "box": 2,
           "nextReview": "2026-11-14"
+        },
+        "w_406_write_pinyin": {
+          "box": 1,
+          "nextReview": "2026-11-11"
         }
       },
       "stats": {
@@ -5454,5 +5458,5 @@
       "crystalRound": 1
     }
   },
-  "updatedAt": 1794401832647
+  "updatedAt": 1794401848213
 }
