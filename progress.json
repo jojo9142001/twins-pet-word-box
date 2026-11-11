@@ -2439,15 +2439,15 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 870,
+      "cookies": 872,
       "drinks": 45,
       "mathTokens": 606,
       "correctStreak": 0,
-      "lastPetUpdate": 1794402636338,
+      "lastPetUpdate": 1794402640471,
       "activePoops": 0,
       "mathCounter": 0,
       "strokeCounter": 0,
-      "strokeTokens": 277,
+      "strokeTokens": 276,
       "poopCounter": 0,
       "gems": 33,
       "stars": 7,
@@ -2876,8 +2876,7 @@
         364,
         347,
         198,
-        402,
-        89
+        402
       ],
       "crystalRound": 1
     },
@@ -5838,5 +5837,5 @@
       "crystalRound": 1
     }
   },
-  "updatedAt": 1794402638785
+  "updatedAt": 1794402642569
 }
