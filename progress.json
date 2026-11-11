@@ -4905,20 +4905,36 @@
           "nextReview": null
         },
         "w_391_write_char": {
-          "box": 2,
-          "nextReview": "2026-11-13"
+          "box": 1,
+          "nextReview": "2026-11-11"
         },
-        "w_399_write_char": {
+        "w_392_write_char": {
           "box": 2,
-          "nextReview": "2026-11-13"
+          "nextReview": "2026-11-14"
         },
-        "w_403_write_char": {
+        "w_395_write_char": {
           "box": 2,
-          "nextReview": "2026-11-13"
+          "nextReview": "2026-11-14"
         },
-        "w_404_write_char": {
+        "w_397_write_char": {
           "box": 2,
-          "nextReview": "2026-11-13"
+          "nextReview": "2026-11-14"
+        },
+        "w_398_write_char": {
+          "box": 2,
+          "nextReview": "2026-11-14"
+        },
+        "w_393_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-11"
+        },
+        "w_394_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-11"
+        },
+        "w_396_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-11"
         }
       },
       "stats": {
@@ -5339,5 +5355,5 @@
       "crystalRound": 1
     }
   },
-  "updatedAt": 1794359915634
+  "updatedAt": 1794360906352
 }
