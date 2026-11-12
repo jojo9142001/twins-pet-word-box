@@ -5289,36 +5289,76 @@
           "nextReview": null
         },
         "w_391_write_char": {
-          "box": 1,
-          "nextReview": "2026-11-12"
+          "box": 2,
+          "nextReview": "2026-11-13"
         },
         "w_392_write_char": {
           "box": 2,
-          "nextReview": "2026-11-15"
+          "nextReview": "2026-11-14"
         },
         "w_393_write_char": {
           "box": 1,
-          "nextReview": "2026-11-12"
+          "nextReview": "2026-11-11"
         },
         "w_394_write_char": {
           "box": 1,
-          "nextReview": "2026-11-12"
+          "nextReview": "2026-11-11"
         },
         "w_395_write_char": {
           "box": 2,
-          "nextReview": "2026-11-15"
+          "nextReview": "2026-11-14"
         },
         "w_396_write_char": {
           "box": 1,
-          "nextReview": "2026-11-12"
+          "nextReview": "2026-11-11"
         },
         "w_397_write_char": {
           "box": 2,
-          "nextReview": "2026-11-15"
+          "nextReview": "2026-11-14"
         },
         "w_398_write_char": {
           "box": 2,
-          "nextReview": "2026-11-15"
+          "nextReview": "2026-11-14"
+        },
+        "w_399_write_char": {
+          "box": 2,
+          "nextReview": "2026-11-13"
+        },
+        "w_400_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-11"
+        },
+        "w_401_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-10"
+        },
+        "w_402_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-10"
+        },
+        "w_403_write_char": {
+          "box": 2,
+          "nextReview": "2026-11-13"
+        },
+        "w_404_write_char": {
+          "box": 2,
+          "nextReview": "2026-11-13"
+        },
+        "w_405_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-11"
+        },
+        "w_406_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-11"
+        },
+        "w_407_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-11"
+        },
+        "w_408_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-11"
         },
         "w_391_write_pinyin": {
           "box": 2,
@@ -5771,5 +5811,5 @@
       "crystalRound": 1
     }
   },
-  "updatedAt": 1794462063630
+  "updatedAt": 1794488120588
 }
