@@ -5622,7 +5622,55 @@
         "2026-11"
       ],
       "lastResetMonth": "2026-11",
-      "screenSessions": {},
+      "screenSessions": {
+        "25. 二上_第7課": {
+          "total": 38,
+          "remainingIds": [
+            "w_391_write_char",
+            "w_392_write_char",
+            "w_393_write_char",
+            "w_395_write_char",
+            "w_406_write_char",
+            "w_400_write_char",
+            "w_401_write_char",
+            "w_404_write_char",
+            "w_403_write_char",
+            "w_394_write_char",
+            "w_398_write_char",
+            "w_396_write_char",
+            "w_397_write_char",
+            "w_408_write_char",
+            "w_407_write_char",
+            "w_399_write_char",
+            "w_402_write_char",
+            "w_405_write_char",
+            "w_392_write_pinyin",
+            "w_396_write_pinyin",
+            "w_408_write_pinyin",
+            "w_402_write_pinyin",
+            "w_395_write_pinyin",
+            "w_401_write_pinyin",
+            "w_393_write_pinyin",
+            "w_399_write_pinyin",
+            "w_405_write_pinyin",
+            "w_407_write_pinyin",
+            "w_394_write_pinyin",
+            "w_391_write_pinyin",
+            "w_397_write_pinyin",
+            "w_400_write_pinyin",
+            "w_410_write_pinyin",
+            "w_398_write_pinyin",
+            "w_406_write_pinyin",
+            "w_404_write_pinyin",
+            "w_403_write_pinyin",
+            "w_409_write_pinyin"
+          ],
+          "stats": {
+            "correct": 0,
+            "total": 38
+          }
+        }
+      },
       "crystalQuestPool": [
         234,
         68,
@@ -5954,5 +6002,5 @@
       "crystalStreakCount": 6
     }
   },
-  "updatedAt": 1794569809067
+  "updatedAt": 1794573060502
 }
