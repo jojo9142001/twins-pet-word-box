@@ -2622,6 +2622,7 @@
       "lastResetMonth": "2026-11",
       "screenSessions": {},
       "crystalQuestPool": [
+        27,
         326,
         361,
         236,
@@ -2984,8 +2985,7 @@
         172,
         112,
         223,
-        273,
-        27
+        273
       ],
       "crystalRound": 1,
       "crystalStreakCount": 18,
@@ -5967,5 +5967,5 @@
       ]
     }
   },
-  "updatedAt": 1794577580190
+  "updatedAt": 1794577583202
 }
