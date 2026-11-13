@@ -5533,8 +5533,8 @@
           "nextReview": "2026-11-14"
         },
         "w_399_write_pinyin": {
-          "box": 1,
-          "nextReview": "2026-11-11"
+          "box": 2,
+          "nextReview": "2026-11-16"
         },
         "w_400_write_pinyin": {
           "box": 2,
@@ -5593,9 +5593,9 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 1027,
+      "cookies": 1028,
       "drinks": 33,
-      "mathTokens": 521,
+      "mathTokens": 522,
       "correctStreak": 0,
       "lastPetUpdate": 1794576332325,
       "activePoops": 0,
@@ -5603,8 +5603,8 @@
       "poopCounter": 4,
       "gems": 13,
       "stars": 7,
-      "mathCounter": 2,
-      "strokeCounter": 1,
+      "mathCounter": 0,
+      "strokeCounter": 2,
       "strokeTokens": 358,
       "hunger": 100,
       "happiness": 100,
@@ -6001,5 +6001,5 @@
       "crystalStreakCount": 7
     }
   },
-  "updatedAt": 1794576352214
+  "updatedAt": 1794576358347
 }
