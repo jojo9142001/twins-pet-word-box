@@ -5442,7 +5442,7 @@
         },
         "w_391_write_char": {
           "box": 1,
-          "nextReview": "2026-11-12"
+          "nextReview": "2026-11-14"
         },
         "w_392_write_char": {
           "box": 3,
@@ -5503,14 +5503,6 @@
         "w_406_write_char": {
           "box": 2,
           "nextReview": "2026-11-15"
-        },
-        "w_407_write_char": {
-          "box": 1,
-          "nextReview": "2026-11-11"
-        },
-        "w_408_write_char": {
-          "box": 1,
-          "nextReview": "2026-11-11"
         },
         "w_391_write_pinyin": {
           "box": 2,
@@ -5590,6 +5582,14 @@
         },
         "w_410_write_pinyin": {
           "box": 2,
+          "nextReview": "2026-11-14"
+        },
+        "w_407_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-11"
+        },
+        "w_408_write_char": {
+          "box": 1,
           "nextReview": "2026-11-14"
         }
       },
@@ -5958,5 +5958,5 @@
       "crystalStreakCount": 6
     }
   },
-  "updatedAt": 1794569215216
+  "updatedAt": 1794569281487
 }
