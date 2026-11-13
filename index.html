@@ -1673,6 +1673,16 @@ const getCrystalBallSVG = (isActive) => `
                         Ian:  { wordsProgress: {}, stats: { totalPracticed: 0, mastered: 0 } }
                     };
                 }
+
+                // 🌟 一次性校準：將 Ian 第7課「哪(w_407)」「思(w_408)」國字重設為未考（防舊裝置快取覆蓋雲端）
+                if (!localStorage.getItem('patch_ian_l7_20261113')) {
+                    if (this.appData && this.appData.Ian && this.appData.Ian.wordsProgress) {
+                        delete this.appData.Ian.wordsProgress['w_407_write_char'];
+                        delete this.appData.Ian.wordsProgress['w_408_write_char'];
+                        localStorage.setItem('leitner_twins_global', JSON.stringify(this.appData));
+                    }
+                    localStorage.setItem('patch_ian_l7_20261113', '1');
+                }
                 
                 const currentMonth = this.getCurrentMonth();
                 ['Enid', 'Ian'].forEach(name => {
