@@ -2591,15 +2591,15 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 938,
+      "cookies": 942,
       "drinks": 45,
       "mathTokens": 606,
       "correctStreak": 0,
-      "lastPetUpdate": 1794569781325,
+      "lastPetUpdate": 1794569806977,
       "activePoops": 0,
       "mathCounter": 0,
       "strokeCounter": 0,
-      "strokeTokens": 247,
+      "strokeTokens": 245,
       "poopCounter": 0,
       "gems": 33,
       "stars": 8,
@@ -2997,12 +2997,10 @@
         154,
         248,
         300,
-        406,
-        318,
-        302
+        406
       ],
       "crystalRound": 1,
-      "crystalStreakCount": 3
+      "crystalStreakCount": 5
     },
     "Ian": {
       "wordsProgress": {
@@ -5956,5 +5954,5 @@
       "crystalStreakCount": 6
     }
   },
-  "updatedAt": 1794569783434
+  "updatedAt": 1794569809067
 }
