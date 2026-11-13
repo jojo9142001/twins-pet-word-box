@@ -2591,15 +2591,15 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 980,
+      "cookies": 984,
       "drinks": 52,
       "mathTokens": 608,
       "correctStreak": 0,
-      "lastPetUpdate": 1794577586100,
+      "lastPetUpdate": 1794577620151,
       "activePoops": 0,
       "mathCounter": 2,
       "strokeCounter": 0,
-      "strokeTokens": 233,
+      "strokeTokens": 232,
       "poopCounter": 0,
       "gems": 33,
       "stars": 8,
@@ -2987,7 +2987,7 @@
         223
       ],
       "crystalRound": 1,
-      "crystalStreakCount": 19,
+      "crystalStreakCount": 20,
       "idiomQuestPool": [
         12,
         3,
@@ -3012,8 +3012,7 @@
         17,
         14,
         9,
-        0,
-        19
+        0
       ]
     },
     "Ian": {
@@ -5966,5 +5965,5 @@
       ]
     }
   },
-  "updatedAt": 1794577588231
+  "updatedAt": 1794577622407
 }
