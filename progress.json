@@ -2599,7 +2599,7 @@
       "happiness": 100,
       "gems": 33,
       "stars": 8,
-      "lastPetUpdate": 1794618987503,
+      "lastPetUpdate": 1794619579483,
       "petName": "White Cat",
       "unlockedVideos": [
         "2026-03",
@@ -2616,7 +2616,9 @@
       "lastResetMonth": "2026-11",
       "mathCounter": 2,
       "strokeCounter": 0,
-      "strokeTokens": 5
+      "strokeTokens": 5,
+      "activePoops": 0,
+      "activePeeps": 0
     },
     "Ian": {
       "wordsProgress": {
@@ -5234,5 +5236,5 @@
       "lastResetMonth": "2026-11"
     }
   },
-  "updatedAt": 1794619573394
+  "updatedAt": 1794619582506
 }
