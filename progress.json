@@ -5219,7 +5219,7 @@
       "happiness": 100,
       "gems": 13,
       "stars": 7,
-      "lastPetUpdate": 1794618987503,
+      "lastPetUpdate": 1794634910525,
       "petName": "White Dog",
       "unlockedVideos": [
         "2026-03",
@@ -5233,8 +5233,10 @@
         "2026-11"
       ],
       "screenSessions": {},
-      "lastResetMonth": "2026-11"
+      "lastResetMonth": "2026-11",
+      "activePoops": 0,
+      "activePeeps": 0
     }
   },
-  "updatedAt": 1794619582506
+  "updatedAt": 1794634913250
 }
