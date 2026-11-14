@@ -2051,8 +2051,8 @@
           "nextReview": null
         },
         "w_341_write_char": {
-          "box": 2,
-          "nextReview": "2026-10-16"
+          "box": 3,
+          "nextReview": "2026-11-21"
         },
         "w_335_write_char": {
           "box": 5,
@@ -2591,7 +2591,7 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 987,
+      "cookies": 988,
       "drinks": 53,
       "mathTokens": 1,
       "correctStreak": 0,
@@ -2614,8 +2614,9 @@
       ],
       "screenSessions": {},
       "lastResetMonth": "2026-11",
-      "mathCounter": 0,
-      "strokeCounter": 3
+      "mathCounter": 1,
+      "strokeCounter": 0,
+      "strokeTokens": 1
     },
     "Ian": {
       "wordsProgress": {
@@ -5233,5 +5234,5 @@
       "lastResetMonth": "2026-11"
     }
   },
-  "updatedAt": 1794619100918
+  "updatedAt": 1794619116608
 }
