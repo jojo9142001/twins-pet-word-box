@@ -2592,12 +2592,12 @@
         "mastered": 0
       },
       "cookies": 1023,
-      "drinks": 52,
+      "drinks": 50,
       "mathTokens": 13,
       "correctStreak": 0,
       "hunger": 100,
       "happiness": 100,
-      "gems": 35,
+      "gems": 39,
       "stars": 8,
       "lastPetUpdate": 1794727196338,
       "petName": "White Cat",
@@ -2619,7 +2619,7 @@
       "strokeTokens": 9,
       "activePoops": 0,
       "activePeeps": 0,
-      "peepCounter": 1
+      "peepCounter": 3
     },
     "Ian": {
       "wordsProgress": {
@@ -5242,5 +5242,5 @@
       "strokeTokens": 4
     }
   },
-  "updatedAt": 1794727204487
+  "updatedAt": 1794727206580
 }
