@@ -2591,7 +2591,7 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 1023,
+      "cookies": 1024,
       "drinks": 50,
       "mathTokens": 13,
       "correctStreak": 0,
@@ -2616,7 +2616,6 @@
         "25. 二上_第7課": {
           "total": 38,
           "remainingIds": [
-            "w_404_write_char",
             "w_397_write_char",
             "w_400_write_char",
             "w_393_write_char",
@@ -2656,15 +2655,15 @@
             "w_401_write_pinyin"
           ],
           "stats": {
-            "correct": 0,
+            "correct": 1,
             "total": 38
           }
         }
       },
       "lastResetMonth": "2026-11",
-      "mathCounter": 0,
-      "strokeCounter": 3,
-      "strokeTokens": 9,
+      "mathCounter": 1,
+      "strokeCounter": 0,
+      "strokeTokens": 10,
       "activePoops": 0,
       "activePeeps": 0,
       "peepCounter": 3
@@ -5290,5 +5289,5 @@
       "strokeTokens": 8
     }
   },
-  "updatedAt": 1794832728723
+  "updatedAt": 1794832773219
 }
