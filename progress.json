@@ -4555,7 +4555,7 @@
         },
         "w_316_write_char": {
           "box": 2,
-          "nextReview": "2026-10-07"
+          "nextReview": "2026-11-19"
         },
         "w_307_write_char": {
           "box": 3,
@@ -5288,5 +5288,5 @@
       "strokeTokens": 9
     }
   },
-  "updatedAt": 1794833632714
+  "updatedAt": 1794833670354
 }
