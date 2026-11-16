@@ -5211,7 +5211,7 @@
         },
         "w_402_write_pinyin": {
           "box": 2,
-          "nextReview": "2026-11-16"
+          "nextReview": "2026-11-19"
         },
         "w_403_write_pinyin": {
           "box": 3,
@@ -5288,5 +5288,5 @@
       "strokeTokens": 10
     }
   },
-  "updatedAt": 1794833808090
+  "updatedAt": 1794833818373
 }
