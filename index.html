@@ -402,6 +402,29 @@
               line-height: 2.2 !important;
               letter-spacing: 0.15em !important;
               display: inline-block !important;
+              max-height: 200px;
+          }
+
+          /* 🌟 成語長句全注音專屬直排樣式：避免折行過多橫向爆框 */
+          #stroke-question.idiom-mode {
+              max-height: 270px !important;
+              line-height: 1.75 !important;
+              letter-spacing: 0.05em !important;
+              font-size: 1.25rem !important;
+          }
+          @media (min-width: 768px) {
+              #stroke-question.idiom-mode {
+                  max-height: 310px !important;
+                  font-size: 1.5rem !important;
+              }
+          }
+          #stroke-question.idiom-mode ruby rt {
+              font-size: 0.52em;
+          }
+          #stroke-question.idiom-mode .crystal-blank {
+              width: 30px;
+              height: 30px;
+              font-size: 16px;
           }
     </style>
 </head>
@@ -719,7 +742,7 @@
         </div>
     </div>
     <div id="stroke-modal" class="hidden-view fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 px-4">
-        <div class="bg-white rounded-[2.5rem] p-6 md:p-8 max-w-lg w-full text-center shadow-2xl border-8 border-purple-400">
+        <div class="bg-white rounded-[2.5rem] p-6 md:p-8 max-w-lg w-full max-h-[92vh] overflow-y-auto text-center shadow-2xl border-8 border-purple-400">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-3xl">🔮</span>
                 <div>
@@ -730,8 +753,8 @@
             </div>
             <p class="text-base md:text-lg text-purple-600 font-bold mb-3">選出（　）裡最適合的正確國字：</p>
             
-            <div class="bg-purple-50 rounded-2xl p-6 mb-5 border-2 border-purple-200 shadow-inner flex items-center justify-center min-h-[190px] md:min-h-[220px]">
-                <div class="text-2xl md:text-3xl font-black text-gray-800 tracking-widest leading-loose select-none" id="stroke-question" style="writing-mode: vertical-rl; text-align: start; margin: 0 auto; max-height: 200px;">現（　）幾點鐘？</div>
+            <div class="bg-purple-50 rounded-2xl p-5 mb-5 border-2 border-purple-200 shadow-inner flex items-center justify-center min-h-[190px] md:min-h-[220px] overflow-x-auto max-w-full">
+                <div class="text-2xl md:text-3xl font-black text-gray-800 tracking-widest leading-loose select-none" id="stroke-question" style="writing-mode: vertical-rl; text-align: start; margin: 0 auto;">現（　）幾點鐘？</div>
             </div>
 
             <div id="stroke-options" class="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 mb-4">
@@ -3131,7 +3154,9 @@ const getCrystalBallSVG = (isActive) => `
                     if (progressEl) progressEl.innerText = `第 ${solvedCount} 題特別加碼關 · 全注音二選一`;
 
                     const formattedQ = quest.q.replace(/（[　\s]*）/g, '<span class="crystal-blank">？</span>');
-                    document.getElementById('stroke-question').innerHTML = formattedQ;
+                    const qEl = document.getElementById('stroke-question');
+                    qEl.classList.add('idiom-mode');
+                    qEl.innerHTML = formattedQ;
 
                     // 渲染兩個成語選項（附帶全注音）
                     optsContainer.className = "grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-4";
@@ -3161,7 +3186,9 @@ const getCrystalBallSVG = (isActive) => `
                     if (progressEl) progressEl.innerText = `第 ${myData.crystalRound || 1} 輪 · 剩餘 ${pool.length} 題 (逢 10 出成語)`;
 
                     const formattedQ = quest.q.replace(/（[　\s]*）/g, '<span class="crystal-blank">？</span>');
-                    document.getElementById('stroke-question').innerHTML = formattedQ;
+                    const qEl = document.getElementById('stroke-question');
+                    qEl.classList.remove('idiom-mode');
+                    qEl.innerHTML = formattedQ;
 
                     optsContainer.className = "grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 mb-4";
                     const shuffledOpts = this.shuffleArray([...quest.options]);
