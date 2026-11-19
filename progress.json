@@ -2617,6 +2617,10 @@
         "w_418_write_char": {
           "box": 2,
           "nextReview": "2026-11-21"
+        },
+        "w_419_write_char": {
+          "box": 1,
+          "nextReview": "2026-11-20"
         }
       },
       "stats": {
@@ -6112,5 +6116,5 @@
       ]
     }
   },
-  "updatedAt": 1795007888694
+  "updatedAt": 1795093482214
 }
