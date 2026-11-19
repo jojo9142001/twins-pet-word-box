@@ -5812,11 +5812,11 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 1342,
+      "cookies": 1344,
       "drinks": 42,
       "mathTokens": 521,
       "correctStreak": 0,
-      "lastPetUpdate": 1795094701548,
+      "lastPetUpdate": 1795094705414,
       "activePoops": 0,
       "petName": "Doggy",
       "poopCounter": 4,
@@ -5824,7 +5824,7 @@
       "stars": 7,
       "mathCounter": 2,
       "strokeCounter": 2,
-      "strokeTokens": 252,
+      "strokeTokens": 251,
       "hunger": 100,
       "happiness": 100,
       "activePeeps": 0,
@@ -6113,11 +6113,10 @@
         133,
         364,
         135,
-        310,
-        41
+        310
       ],
       "crystalRound": 1,
-      "crystalStreakCount": 118,
+      "crystalStreakCount": 119,
       "idiomQuestPool": [
         4,
         24,
@@ -6137,5 +6136,5 @@
       ]
     }
   },
-  "updatedAt": 1795094703707
+  "updatedAt": 1795094707690
 }
