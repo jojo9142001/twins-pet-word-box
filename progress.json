@@ -2713,20 +2713,24 @@
         "w_424_write_pinyin": {
           "box": 2,
           "nextReview": "2026-11-23"
+        },
+        "w_425_write_pinyin": {
+          "box": 2,
+          "nextReview": "2026-11-23"
         }
       },
       "stats": {
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 1133,
+      "cookies": 1134,
       "drinks": 54,
       "mathTokens": 620,
       "correctStreak": 0,
       "lastPetUpdate": 1795094092367,
       "activePoops": 0,
-      "mathCounter": 0,
-      "strokeCounter": 0,
+      "mathCounter": 1,
+      "strokeCounter": 1,
       "strokeTokens": 216,
       "poopCounter": 0,
       "gems": 39,
@@ -6201,5 +6205,5 @@
       ]
     }
   },
-  "updatedAt": 1795181245159
+  "updatedAt": 1795181314378
 }
