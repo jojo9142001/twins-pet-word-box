@@ -5990,6 +5990,10 @@
         "w_428_write_pinyin": {
           "box": 2,
           "nextReview": "2026-11-23"
+        },
+        "w_429_write_pinyin": {
+          "box": 1,
+          "nextReview": "2026-11-21"
         }
       },
       "stats": {
@@ -6313,5 +6317,5 @@
       ]
     }
   },
-  "updatedAt": 1795182098674
+  "updatedAt": 1795182183305
 }
