@@ -6007,22 +6007,22 @@
         "mastered": 0
       },
       "cookies": 1520,
-      "drinks": 28,
+      "drinks": 26,
       "mathTokens": 544,
       "correctStreak": 0,
       "lastPetUpdate": 1795428750793,
       "activePoops": 0,
       "petName": "Doggy",
       "poopCounter": 4,
-      "gems": 44,
+      "gems": 48,
       "stars": 7,
       "mathCounter": 1,
       "strokeCounter": 2,
       "strokeTokens": 219,
       "hunger": 100,
       "happiness": 100,
-      "activePeeps": 0,
-      "peepCounter": 3,
+      "activePeeps": 1,
+      "peepCounter": 0,
       "unlockedVideos": [
         "2026-03",
         "2026-04",
@@ -6283,5 +6283,5 @@
       "starsSpentOnJokes": 0
     }
   },
-  "updatedAt": 1795428800347
+  "updatedAt": 1795428802256
 }
