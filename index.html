@@ -675,7 +675,7 @@
                     返回主選單
                 </button>
                 <button id="btn-redeem-joke" onclick="app.promptRedeemJoke()" class="card-pop bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-xl rounded-full font-extrabold shadow-lg border-2 border-pink-200 transition-all">
-                    🎭 Joke Video 笑話短片 (0)
+                    🎭 Joke Video 笑話短片 (0 ⭐)
                 </button>
             </div>
 
@@ -778,8 +778,8 @@
             <h3 class="text-2xl md:text-3xl font-black text-pink-600 mb-1">Redeem a Joke Video?</h3>
             <p class="text-lg md:text-xl font-bold text-gray-700 mb-4">確定要兌換極短笑話影片嗎？</p>
             <div class="bg-pink-50 border-2 border-pink-200 rounded-2xl p-4 mb-6 text-gray-700">
-                <p class="text-base md:text-lg font-bold text-pink-800 mb-1">Spend <b>1 Joke Ticket</b> (1⭐ after 7⭐) to unlock a new funny short!</p>
-                <p class="text-sm md:text-base font-bold text-gray-600">花費 <b>1 張笑話券</b>（滿 7 顆星後的額外星星）即可解鎖新笑話短片！</p>
+                <p class="text-base md:text-lg font-bold text-pink-800 mb-1">Spend <b>1 ⭐</b> (extra star after 7⭐) to unlock a new funny short!</p>
+                <p class="text-sm md:text-base font-bold text-gray-600">花費 <b>1 顆 ⭐</b>（滿 7 顆星後的額外星星）即可解鎖這支搞笑短片！</p>
                 <p id="joke-confirm-remain" class="text-sm md:text-base font-extrabold text-purple-600 mt-2"></p>
             </div>
             <div class="flex flex-col sm:flex-row gap-3">
@@ -1851,8 +1851,8 @@ const getCrystalBallSVG = (isActive) => `
                     }
                     if (!this.appData[name].unlockedVideos) this.appData[name].unlockedVideos = [];
                     if (!this.appData[name].unlockedJokes) this.appData[name].unlockedJokes = [];
-                    if (typeof this.appData[name].totalJokeTickets !== 'number') {
-                        this.appData[name].totalJokeTickets = Math.max(0, (this.appData[name].stars || 0) - 7);
+                    if (typeof this.appData[name].starsSpentOnJokes !== 'number') {
+                        this.appData[name].starsSpentOnJokes = 0;
                     }
                     if (!this.appData[name].screenSessions) this.appData[name].screenSessions = {};
 
@@ -1868,12 +1868,14 @@ const getCrystalBallSVG = (isActive) => `
                         this.appData[name].lastResetMonth = currentMonth;
                     } else if (this.appData[name].lastResetMonth !== currentMonth) {
                         this.appData[name].stars = 0;
+                        this.appData[name].starsSpentOnJokes = 0;
                         this.appData[name].gems = 0;
                         this.appData[name].lastResetMonth = currentMonth;
                     }
 
-                    // 3. 當月影片解鎖狀態校準：當且僅當當月星星滿 7 顆（或以上），才解鎖當月影片
-                    if ((this.appData[name].stars || 0) >= 7) {
+                    // 3. 當月影片解鎖狀態校準：當且僅當當月累積星星滿 7 顆（或以上），才解鎖當月影片
+                    const totalEarnedThisMonth = (this.appData[name].stars || 0) + (this.appData[name].starsSpentOnJokes || 0);
+                    if (totalEarnedThisMonth >= 7) {
                         if (!this.appData[name].unlockedVideos.includes(currentMonth)) {
                             this.appData[name].unlockedVideos.push(currentMonth);
                         }
@@ -2041,16 +2043,24 @@ const getCrystalBallSVG = (isActive) => `
                             const l = this.appData[name];
                             const c = cloudData[name] || {};
 
-                            // 1. 星星數永遠取最大值
-                            const maxStars = Math.max(l.stars || 0, c.stars || 0);
-                            if (maxStars !== (l.stars || 0)) { l.stars = maxStars; hasCloudChanges = true; }
-                            if (maxStars !== (c.stars || 0)) { c.stars = maxStars; hasLocalChanges = true; }
+                            // 1. 星星數與花費在笑話上的星星數合併（確保舊裝置不會把已花掉的星星蓋回來）
+                            const lEarned = (l.stars || 0) + (l.starsSpentOnJokes || 0);
+                            const cEarned = (c.stars || 0) + (c.starsSpentOnJokes || 0);
+                            const maxEarned = Math.max(lEarned, cEarned);
+                            const maxSpent = Math.max(l.starsSpentOnJokes || 0, c.starsSpentOnJokes || 0);
+                            const finalStars = Math.max(0, maxEarned - maxSpent);
+                            if (finalStars !== (l.stars || 0) || maxSpent !== (l.starsSpentOnJokes || 0)) {
+                                l.stars = finalStars; l.starsSpentOnJokes = maxSpent; hasCloudChanges = true;
+                            }
+                            if (finalStars !== (c.stars || 0) || maxSpent !== (c.starsSpentOnJokes || 0)) {
+                                c.stars = finalStars; c.starsSpentOnJokes = maxSpent; hasLocalChanges = true;
+                            }
 
-                            // 2. 寶石數：若星星較多則繼承該端的寶石，否則取寶石較高者
-                            if ((l.stars || 0) > (c.stars || 0)) {
+                            // 2. 寶石數：若總獲得星星較多則繼承該端的寶石，否則取寶石較高者
+                            if (lEarned > cEarned) {
                                 c.gems = l.gems || 0;
                                 hasLocalChanges = true;
-                            } else if ((c.stars || 0) > (l.stars || 0)) {
+                            } else if (cEarned > lEarned) {
                                 l.gems = c.gems || 0;
                                 hasCloudChanges = true;
                             } else {
@@ -2060,11 +2070,11 @@ const getCrystalBallSVG = (isActive) => `
                             }
 
                             // 3. 餅乾與飲料同步：
-                            if ((l.stars || 0) > (c.stars || 0)) {
+                            if (lEarned > cEarned) {
                                 c.cookies = l.cookies || 0;
                                 c.drinks = l.drinks || 0;
                                 hasLocalChanges = true;
-                            } else if ((c.stars || 0) > (l.stars || 0)) {
+                            } else if (cEarned > lEarned) {
                                 l.cookies = c.cookies || 0;
                                 l.drinks = c.drinks || 0;
                                 hasCloudChanges = true;
@@ -2135,18 +2145,13 @@ const getCrystalBallSVG = (isActive) => `
                                 ...(c.unlockedVideos || []).filter(m => m !== currentMonth)
                             ]);
                             const mergedVideos = [...histVideos];
-                            const effectiveStars = Math.max(l.stars || 0, c.stars || 0);
-                            if (effectiveStars >= 7) {
+                            if (maxEarned >= 7) {
                                 mergedVideos.push(currentMonth);
                             }
                             l.unlockedVideos = [...mergedVideos];
                             c.unlockedVideos = [...mergedVideos];
 
-                            // 7. 笑話兌換券與已解鎖笑話合併（跨月永久保留，只增不減）
-                            const maxJokeTickets = Math.max(l.totalJokeTickets || 0, c.totalJokeTickets || 0);
-                            if (maxJokeTickets !== (l.totalJokeTickets || 0)) { l.totalJokeTickets = maxJokeTickets; hasCloudChanges = true; }
-                            if (maxJokeTickets !== (c.totalJokeTickets || 0)) { c.totalJokeTickets = maxJokeTickets; hasLocalChanges = true; }
-
+                            // 7. 已解鎖笑話合併（跨月永久保留，聯集不遺失）
                             const mergedJokesSet = new Set([
                                 ...(l.unlockedJokes || []),
                                 ...(c.unlockedJokes || [])
@@ -2703,9 +2708,6 @@ const getCrystalBallSVG = (isActive) => `
                 while (myData.gems >= 50) {
                     myData.gems -= 50;
                     myData.stars += 1;
-                    if (myData.stars >= 8) {
-                        myData.totalJokeTickets = (myData.totalJokeTickets || 0) + 1;
-                    }
                     this.fireConfetti(true);
                     this.playMasterySound();
 
@@ -2785,10 +2787,8 @@ const getCrystalBallSVG = (isActive) => `
                 return btn;
             },
 
-            getAvailableJokeTickets: function(myData) {
-                const earned = myData.totalJokeTickets || 0;
-                const spent = (myData.unlockedJokes || []).length;
-                return Math.max(0, earned - spent);
+            getAvailableJokeStars: function(myData) {
+                return Math.max(0, (myData.stars || 0) - 7);
             },
 
             updateJokeButtonUI: function() {
@@ -2799,17 +2799,17 @@ const getCrystalBallSVG = (isActive) => `
 
                 const unlocked = myData.unlockedJokes || [];
                 const unseen = EXTRA_JOKE_VIDEOS.filter(j => !unlocked.includes(j.id));
-                const tickets = this.getAvailableJokeTickets(myData);
+                const availStars = this.getAvailableJokeStars(myData);
 
                 if (unseen.length === 0) {
                     btn.className = "bg-purple-100 text-purple-600 px-6 md:px-8 py-3 md:py-4 text-base md:text-xl rounded-full font-bold shadow-sm border-2 border-purple-200 transition-all";
                     btn.innerHTML = `🎉 All Jokes Unlocked / 笑話全解鎖囉`;
-                } else if (tickets > 0) {
+                } else if (availStars > 0) {
                     btn.className = "card-pop bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-xl rounded-full font-extrabold shadow-lg border-2 border-pink-200 transition-all animate-pulse";
-                    btn.innerHTML = `🎭 Joke Video / 換笑話短片 (${tickets} 🎟️)`;
+                    btn.innerHTML = `🎭 Joke Video / 換笑話短片 (${availStars} ⭐)`;
                 } else {
                     btn.className = "bg-gray-100 hover:bg-gray-200 text-gray-500 px-6 md:px-8 py-3 md:py-4 text-base md:text-xl rounded-full font-bold shadow-sm border-2 border-gray-200 transition-all";
-                    btn.innerHTML = `🎭 Joke Video / 換笑話 (0 🎟️)`;
+                    btn.innerHTML = `🎭 Joke Video / 換笑話 (0 ⭐)`;
                 }
             },
 
@@ -2825,15 +2825,15 @@ const getCrystalBallSVG = (isActive) => `
                     return;
                 }
 
-                const tickets = this.getAvailableJokeTickets(myData);
-                if (tickets <= 0) {
-                    this.showModal('🎟️ Need a Joke Ticket!', 'Collect <b>7 stars</b> first, then every extra ⭐ gives you <b>1 Joke Ticket</b>!<br><br>集滿當月 7 顆星後，每多收集 1 顆 ⭐ 就會送你 1 張笑話券喔！', '⭐');
+                const availStars = this.getAvailableJokeStars(myData);
+                if (availStars <= 0) {
+                    this.showModal('⭐ Need More Stars!', 'Collect <b>7 stars</b> first, then every extra ⭐ can unlock a funny joke video!<br><br>集滿 7 顆星後，多出來的 ⭐ 就能換搞笑短片喔！', '⭐');
                     return;
                 }
 
                 const remainEl = document.getElementById('joke-confirm-remain');
                 if (remainEl) {
-                    remainEl.innerText = `Remaining Tickets / 目前剩餘：${tickets} 🎟️ ➔ ${tickets - 1} 🎟️`;
+                    remainEl.innerText = `Stars / 目前星星：${myData.stars} ⭐ ➔ ${myData.stars - 1} ⭐`;
                 }
                 toggleModal('joke-confirm-modal', true);
             },
@@ -2845,14 +2845,16 @@ const getCrystalBallSVG = (isActive) => `
 
                 if (!myData.unlockedJokes) myData.unlockedJokes = [];
                 const unseen = EXTRA_JOKE_VIDEOS.filter(j => !myData.unlockedJokes.includes(j.id));
-                const tickets = this.getAvailableJokeTickets(myData);
-                if (unseen.length === 0 || tickets <= 0) return;
+                const availStars = this.getAvailableJokeStars(myData);
+                if (unseen.length === 0 || availStars <= 0) return;
 
                 const nextJoke = unseen[0];
+                myData.stars -= 1;
+                myData.starsSpentOnJokes = (myData.starsSpentOnJokes || 0) + 1;
                 myData.unlockedJokes.push(nextJoke.id);
+                this.updateStarUI();
                 this.saveData();
                 this.pushToCloud();
-                this.updateJokeButtonUI();
                 this.fireConfetti(true);
                 this.playMasterySound();
 
