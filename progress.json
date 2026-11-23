@@ -2754,7 +2754,7 @@
       "strokeTokens": 226,
       "poopCounter": 0,
       "gems": 39,
-      "stars": 8,
+      "stars": 7,
       "petName": "Heartcute💕🩵",
       "hunger": 100,
       "happiness": 100,
@@ -3140,8 +3140,10 @@
         17,
         14
       ],
-      "unlockedJokes": [],
-      "starsSpentOnJokes": 0
+      "unlockedJokes": [
+        "joke_01"
+      ],
+      "starsSpentOnJokes": 1
     },
     "Ian": {
       "wordsProgress": {
@@ -6272,5 +6274,5 @@
       "starsSpentOnJokes": 1
     }
   },
-  "updatedAt": 1795429753796
+  "updatedAt": 1795429778136
 }
