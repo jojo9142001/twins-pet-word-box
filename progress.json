@@ -6014,14 +6014,14 @@
       "activePoops": 0,
       "petName": "Doggy",
       "poopCounter": 4,
-      "gems": 35,
+      "gems": 38,
       "stars": 7,
       "mathCounter": 1,
       "strokeCounter": 2,
       "strokeTokens": 219,
       "hunger": 100,
       "happiness": 100,
-      "activePeeps": 3,
+      "activePeeps": 0,
       "peepCounter": 0,
       "unlockedVideos": [
         "2026-03",
@@ -6283,5 +6283,5 @@
       "starsSpentOnJokes": 0
     }
   },
-  "updatedAt": 1795428791809
+  "updatedAt": 1795428796293
 }
