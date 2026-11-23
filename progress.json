@@ -3139,7 +3139,9 @@
         4,
         17,
         14
-      ]
+      ],
+      "unlockedJokes": [],
+      "starsSpentOnJokes": 0
     },
     "Ian": {
       "wordsProgress": {
@@ -6008,7 +6010,7 @@
       "drinks": 42,
       "mathTokens": 538,
       "correctStreak": 0,
-      "lastPetUpdate": 1795329635758,
+      "lastPetUpdate": 1795428289678,
       "activePoops": 0,
       "petName": "Doggy",
       "poopCounter": 4,
@@ -6277,8 +6279,10 @@
         3,
         18,
         14
-      ]
+      ],
+      "unlockedJokes": [],
+      "starsSpentOnJokes": 0
     }
   },
-  "updatedAt": 1795428277908
+  "updatedAt": 1795428292064
 }
