@@ -2620,7 +2620,7 @@
         },
         "w_419_write_char": {
           "box": 2,
-          "nextReview": "2026-11-26"
+          "nextReview": "2026-11-27"
         },
         "w_420_write_char": {
           "box": 3,
@@ -6274,5 +6274,5 @@
       "starsSpentOnJokes": 1
     }
   },
-  "updatedAt": 1795525822413
+  "updatedAt": 1795525981785
 }
