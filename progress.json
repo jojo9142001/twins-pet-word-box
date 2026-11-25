@@ -6087,6 +6087,7 @@
         }
       },
       "crystalQuestPool": [
+        177,
         350,
         56,
         13,
@@ -6247,8 +6248,7 @@
         245,
         233,
         139,
-        47,
-        177
+        47
       ],
       "crystalRound": 1,
       "crystalStreakCount": 187,
@@ -6268,5 +6268,5 @@
       "starsSpentOnJokes": 1
     }
   },
-  "updatedAt": 1795611526075
+  "updatedAt": 1795611531942
 }
