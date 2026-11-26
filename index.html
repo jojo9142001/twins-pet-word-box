@@ -426,6 +426,59 @@
               height: 30px;
               font-size: 16px;
           }
+
+          /* 🔍 火眼金睛找錯字專屬直排點擊樣式 */
+          #stroke-question.typo-mode {
+              max-height: 280px !important;
+              line-height: 2.0 !important;
+              letter-spacing: 0.08em !important;
+              font-size: 1.5rem !important;
+          }
+          @media (min-width: 768px) {
+              #stroke-question.typo-mode {
+                  max-height: 320px !important;
+                  font-size: 1.75rem !important;
+              }
+          }
+          .typo-char-btn {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              padding: 2px 3px;
+              border-radius: 8px;
+              cursor: pointer;
+              transition: background-color 0.15s, transform 0.15s;
+          }
+          .typo-char-btn:hover {
+              background-color: #ede9fe;
+              transform: scale(1.1);
+          }
+          .typo-wrong-fixed {
+              color: #dc2626 !important;
+              text-decoration: line-through !important;
+              text-decoration-thickness: 3px !important;
+              background-color: #fee2e2;
+              border-radius: 8px;
+              padding: 0 3px;
+          }
+          .typo-correct-pop {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              background-color: #16a34a;
+              color: #ffffff;
+              border: 3px solid #fde047;
+              border-radius: 10px;
+              padding: 2px 6px;
+              margin-top: 4px;
+              font-weight: 900;
+              box-shadow: 0 4px 10px rgba(22, 163, 74, 0.35);
+              animation: popIn 0.25s ease-out;
+          }
+          @keyframes popIn {
+              from { transform: scale(0.5); opacity: 0; }
+              to { transform: scale(1); opacity: 1; }
+          }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start py-8 px-4 relative overflow-x-hidden">
@@ -754,7 +807,7 @@
                 </div>
                 <span class="text-3xl">🔮</span>
             </div>
-            <p class="text-base md:text-lg text-purple-600 font-bold mb-3">選出（　）裡最適合的正確國字：</p>
+            <p id="stroke-subtitle" class="text-base md:text-lg text-purple-600 font-bold mb-3">選出（　）裡最適合的正確國字：</p>
             
             <div class="bg-purple-50 rounded-2xl p-5 mb-5 border-2 border-purple-200 shadow-inner flex items-center justify-center min-h-[190px] md:min-h-[220px] overflow-x-auto max-w-full">
                 <div class="text-2xl md:text-3xl font-black text-gray-800 tracking-widest leading-loose select-none" id="stroke-question" style="writing-mode: vertical-rl; text-align: start; margin: 0 auto;">現（　）幾點鐘？</div>
@@ -1129,7 +1182,108 @@
                 ans: "遊山玩水",
                 options: ["<ruby>遊<rt>ㄧㄡˊ</rt></ruby><ruby>山<rt>ㄕㄢ</rt></ruby><ruby>玩<rt>ㄨㄢˊ</rt></ruby><ruby>水<rt>ㄕㄨㄟˇ</rt></ruby>", "<ruby>五<rt>ㄨˇ</rt></ruby><ruby>顏<rt>ㄧㄢˊ</rt></ruby><ruby>六<rt>ㄌㄧㄡˋ</rt></ruby><ruby>色<rt>ㄙㄜˋ</rt></ruby>"],
                 explain: "到各處風景名勝遊玩、欣賞山水景色。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>博<rt>ㄅㄛˊ</rt></ruby><ruby>物<rt>ㄨˋ</rt></ruby><ruby>館<rt>ㄍㄨㄢˇ</rt></ruby><ruby>裡<rt>ㄌㄧˇ</rt></ruby><ruby>展<rt>ㄓㄢˇ</rt></ruby><ruby>示<rt>ㄕˋ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>古<rt>ㄍㄨˇ</rt></ruby><ruby>代<rt>ㄉㄞˋ</rt></ruby><ruby>皇<rt>ㄏㄨㄤˊ</rt></ruby><ruby>冠<rt>ㄍㄨㄢ</rt></ruby><ruby>非<rt>ㄈㄟ</rt></ruby><ruby>常<rt>ㄔㄤˊ</rt></ruby><ruby>珍<rt>ㄓㄣ</rt></ruby><ruby>貴<rt>ㄍㄨㄟˋ</rt></ruby>，<ruby>聽<rt>ㄊㄧㄥ</rt></ruby><ruby>說<rt>ㄕㄨㄛ</rt></ruby>（　）。",
+                ans: "價值連城",
+                options: ["<ruby>價<rt>ㄐㄧㄚˋ</rt></ruby><ruby>值<rt>ㄓˊ</rt></ruby><ruby>連<rt>ㄌㄧㄢˊ</rt></ruby><ruby>城<rt>ㄔㄥˊ</rt></ruby>", "<ruby>粗<rt>ㄘㄨ</rt></ruby><ruby>茶<rt>ㄔㄚˊ</rt></ruby><ruby>淡<rt>ㄉㄢˋ</rt></ruby><ruby>飯<rt>ㄈㄢˋ</rt></ruby>"],
+                explain: "形容物品極為貴重，價格高得難以估量。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>這<rt>ㄓㄜˋ</rt></ruby><ruby>張<rt>ㄓㄤ</rt></ruby><ruby>圖<rt>ㄊㄨˊ</rt></ruby><ruby>已<rt>ㄧˇ</rt></ruby><ruby>經<rt>ㄐㄧㄥ</rt></ruby><ruby>畫<rt>ㄏㄨㄚˋ</rt></ruby><ruby>得<rt>˙ㄉㄜ</rt></ruby><ruby>很<rt>ㄏㄣˇ</rt></ruby><ruby>完<rt>ㄨㄢˊ</rt></ruby><ruby>美<rt>ㄇㄟˇ</rt></ruby><ruby>了<rt>˙ㄌㄜ</rt></ruby>，<ruby>你<rt>ㄋㄧˇ</rt></ruby><ruby>又<rt>ㄧㄡˋ</rt></ruby><ruby>亂<rt>ㄌㄨㄢˋ</rt></ruby><ruby>加<rt>ㄐㄧㄚ</rt></ruby><ruby>上<rt>ㄕㄤˋ</rt></ruby><ruby>奇<rt>ㄑㄧˊ</rt></ruby><ruby>怪<rt>ㄍㄨㄞˋ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>線<rt>ㄒㄧㄢˋ</rt></ruby><ruby>條<rt>ㄊㄧㄠˊ</rt></ruby>，<ruby>真<rt>ㄓㄣ</rt></ruby><ruby>是<rt>ㄕˋ</rt></ruby>（　）。",
+                ans: "畫蛇添足",
+                options: ["<ruby>畫<rt>ㄏㄨㄚˋ</rt></ruby><ruby>蛇<rt>ㄕㄜˊ</rt></ruby><ruby>添<rt>ㄊㄧㄢ</rt></ruby><ruby>足<rt>ㄗㄨˊ</rt></ruby>", "<ruby>同<rt>ㄊㄨㄥˊ</rt></ruby><ruby>心<rt>ㄒㄧㄣ</rt></ruby><ruby>協<rt>ㄒㄧㄝˊ</rt></ruby><ruby>力<rt>ㄌㄧˋ</rt></ruby>"],
+                explain: "做了多餘的事，反而把事情弄糟。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>哥<rt>ㄍㄜ</rt></ruby><ruby>哥<rt>˙ㄍㄜ</rt></ruby><ruby>在<rt>ㄗㄞˋ</rt></ruby><ruby>太<rt>ㄊㄞˋ</rt></ruby><ruby>陽<rt>ㄧㄤˊ</rt></ruby><ruby>下<rt>ㄒㄧㄚˋ</rt></ruby><ruby>跑<rt>ㄆㄠˇ</rt></ruby><ruby>完<rt>ㄨㄢˊ</rt></ruby><ruby>大<rt>ㄉㄚˋ</rt></ruby><ruby>隊<rt>ㄉㄨㄟˋ</rt></ruby><ruby>接<rt>ㄐㄧㄝ</rt></ruby><ruby>力<rt>ㄌㄧˋ</rt></ruby>，<ruby>累<rt>ㄌㄟˋ</rt></ruby><ruby>得<rt>˙ㄉㄜ</rt></ruby>（　），<ruby>趕<rt>ㄍㄢˇ</rt></ruby><ruby>緊<rt>ㄐㄧㄣˇ</rt></ruby><ruby>喝<rt>ㄏㄜ</rt></ruby><ruby>一<rt>ㄧˊ</rt></ruby><ruby>大<rt>ㄉㄚˋ</rt></ruby><ruby>口<rt>ㄎㄡˇ</rt></ruby><ruby>水<rt>ㄕㄨㄟˇ</rt></ruby>。",
+                ans: "汗流浹背",
+                options: ["<ruby>汗<rt>ㄏㄢˋ</rt></ruby><ruby>流<rt>ㄌㄧㄡˊ</rt></ruby><ruby>浹<rt>ㄐㄧㄚˊ</rt></ruby><ruby>背<rt>ㄅㄟˋ</rt></ruby>", "<ruby>守<rt>ㄕㄡˇ</rt></ruby><ruby>口<rt>ㄎㄡˇ</rt></ruby><ruby>如<rt>ㄖㄨˊ</rt></ruby><ruby>瓶<rt>ㄆㄧㄥˊ</rt></ruby>"],
+                explain: "流汗多到濕透衣服，形容非常勞累或炎熱。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>只<rt>ㄓˇ</rt></ruby><ruby>要<rt>ㄧㄠˋ</rt></ruby><ruby>全<rt>ㄑㄩㄢˊ</rt></ruby><ruby>班<rt>ㄅㄢ</rt></ruby><ruby>同<rt>ㄊㄨㄥˊ</rt></ruby><ruby>學<rt>ㄒㄩㄝˊ</rt></ruby>（　），<ruby>一<rt>ㄧˊ</rt></ruby><ruby>定<rt>ㄉㄧㄥˋ</rt></ruby><ruby>能<rt>ㄋㄥˊ</rt></ruby><ruby>把<rt>ㄅㄚˇ</rt></ruby><ruby>拔<rt>ㄅㄚˊ</rt></ruby><ruby>河<rt>ㄏㄜˊ</rt></ruby><ruby>比<rt>ㄅㄧˇ</rt></ruby><ruby>賽<rt>ㄙㄞˋ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>冠<rt>ㄍㄨㄢˋ</rt></ruby><ruby>軍<rt>ㄐㄩㄣ</rt></ruby><ruby>贏<rt>ㄧㄥˊ</rt></ruby><ruby>回<rt>ㄏㄨㄟˊ</rt></ruby><ruby>來<rt>ㄌㄞˊ</rt></ruby>！",
+                ans: "同心協力",
+                options: ["<ruby>同<rt>ㄊㄨㄥˊ</rt></ruby><ruby>心<rt>ㄒㄧㄣ</rt></ruby><ruby>協<rt>ㄒㄧㄝˊ</rt></ruby><ruby>力<rt>ㄌㄧˋ</rt></ruby>", "<ruby>自<rt>ㄗˋ</rt></ruby><ruby>相<rt>ㄒㄧㄤ</rt></ruby><ruby>矛<rt>ㄇㄠˊ</rt></ruby><ruby>盾<rt>ㄉㄨㄣˋ</rt></ruby>"],
+                explain: "團結一致，共同努力。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>媽<rt>ㄇㄚ</rt></ruby><ruby>媽<rt>˙ㄇㄚ</rt></ruby><ruby>叫<rt>ㄐㄧㄠˋ</rt></ruby><ruby>他<rt>ㄊㄚ</rt></ruby><ruby>快<rt>ㄎㄨㄞˋ</rt></ruby><ruby>點<rt>ㄉㄧㄢˇ</rt></ruby><ruby>去<rt>ㄑㄩˋ</rt></ruby><ruby>睡<rt>ㄕㄨㄟˋ</rt></ruby><ruby>覺<rt>ㄐㄧㄠˋ</rt></ruby>，<ruby>他<rt>ㄊㄚ</rt></ruby><ruby>卻<rt>ㄑㄩㄝˋ</rt></ruby><ruby>跑<rt>ㄆㄠˇ</rt></ruby><ruby>去<rt>ㄑㄩˋ</rt></ruby><ruby>玩<rt>ㄨㄢˊ</rt></ruby><ruby>玩<rt>ㄨㄢˊ</rt></ruby><ruby>具<rt>ㄐㄩˋ</rt></ruby>，<ruby>結<rt>ㄐㄧㄝˊ</rt></ruby><ruby>果<rt>ㄍㄨㄛˇ</rt></ruby><ruby>弄<rt>ㄋㄨㄥˋ</rt></ruby><ruby>痛<rt>ㄊㄨㄥˋ</rt></ruby><ruby>手<rt>ㄕㄡˇ</rt></ruby>，<ruby>真<rt>ㄓㄣ</rt></ruby><ruby>是<rt>ㄕˋ</rt></ruby>（　）。",
+                ans: "節外生枝",
+                options: ["<ruby>節<rt>ㄐㄧㄝˊ</rt></ruby><ruby>外<rt>ㄨㄞˋ</rt></ruby><ruby>生<rt>ㄕㄥ</rt></ruby><ruby>枝<rt>ㄓ</rt></ruby>", "<ruby>百<rt>ㄅㄞˇ</rt></ruby><ruby>發<rt>ㄈㄚ</rt></ruby><ruby>百<rt>ㄅㄞˇ</rt></ruby><ruby>中<rt>ㄓㄨㄥˋ</rt></ruby>"],
+                explain: "事情進行中，意外又發生其他麻煩或問題。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>這<rt>ㄓㄜˋ</rt></ruby><ruby>兩<rt>ㄌㄧㄤˇ</rt></ruby><ruby>隊<rt>ㄉㄨㄟˋ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>籃<rt>ㄌㄢˊ</rt></ruby><ruby>球<rt>ㄑㄧㄡˊ</rt></ruby><ruby>實<rt>ㄕˊ</rt></ruby><ruby>力<rt>ㄌㄧˋ</rt></ruby><ruby>都<rt>ㄉㄡ</rt></ruby><ruby>很<rt>ㄏㄣˇ</rt></ruby><ruby>強<rt>ㄑㄧㄤˊ</rt></ruby>，<ruby>打<rt>ㄉㄚˇ</rt></ruby><ruby>得<rt>˙ㄉㄜ</rt></ruby>（　），<ruby>直<rt>ㄓˊ</rt></ruby><ruby>到<rt>ㄉㄠˋ</rt></ruby><ruby>最<rt>ㄗㄨㄟˋ</rt></ruby><ruby>後<rt>ㄏㄡˋ</rt></ruby><ruby>一<rt>ㄧˋ</rt></ruby><ruby>秒<rt>ㄇㄧㄠˇ</rt></ruby><ruby>才<rt>ㄘㄞˊ</rt></ruby><ruby>分<rt>ㄈㄣ</rt></ruby><ruby>出<rt>ㄔㄨ</rt></ruby><ruby>勝<rt>ㄕㄥˋ</rt></ruby><ruby>負<rt>ㄈㄨˋ</rt></ruby>。",
+                ans: "平分秋色",
+                options: ["<ruby>平<rt>ㄆㄧㄥˊ</rt></ruby><ruby>分<rt>ㄈㄣ</rt></ruby><ruby>秋<rt>ㄑㄧㄡ</rt></ruby><ruby>色<rt>ㄙㄜˋ</rt></ruby>", "<ruby>畫<rt>ㄏㄨㄚˋ</rt></ruby><ruby>蛇<rt>ㄕㄜˊ</rt></ruby><ruby>添<rt>ㄊㄧㄢ</rt></ruby><ruby>足<rt>ㄗㄨˊ</rt></ruby>"],
+                explain: "雙方實力相當，表現一樣好，不相上下。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>媽<rt>ㄇㄚ</rt></ruby><ruby>媽<rt>˙ㄇㄚ</rt></ruby><ruby>說<rt>ㄕㄨㄛ</rt></ruby><ruby>考<rt>ㄎㄠˇ</rt></ruby><ruby>完<rt>ㄨㄢˊ</rt></ruby><ruby>試<rt>ㄕˋ</rt></ruby><ruby>才<rt>ㄘㄞˊ</rt></ruby><ruby>能<rt>ㄋㄥˊ</rt></ruby><ruby>買<rt>ㄇㄞˇ</rt></ruby><ruby>玩<rt>ㄨㄢˊ</rt></ruby><ruby>具<rt>ㄐㄩˋ</rt></ruby>，<ruby>弟<rt>ㄉㄧˋ</rt></ruby><ruby>弟<rt>˙ㄉㄧ</rt></ruby><ruby>每<rt>ㄇㄟˇ</rt></ruby><ruby>天<rt>ㄊㄧㄢ</rt></ruby><ruby>盯<rt>ㄉㄧㄥ</rt></ruby><ruby>著<rt>˙ㄓㄜ</rt></ruby><ruby>玩<rt>ㄨㄢˊ</rt></ruby><ruby>具<rt>ㄐㄩˋ</rt></ruby><ruby>店<rt>ㄉㄧㄢˋ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>廣<rt>ㄍㄨㄤˇ</rt></ruby><ruby>告<rt>ㄍㄠˋ</rt></ruby><ruby>照<rt>ㄓㄠˋ</rt></ruby><ruby>片<rt>ㄆㄧㄢˋ</rt></ruby>（　）。",
+                ans: "望梅止渴",
+                options: ["<ruby>望<rt>ㄨㄤˋ</rt></ruby><ruby>梅<rt>ㄇㄟˊ</rt></ruby><ruby>止<rt>ㄓˇ</rt></ruby><ruby>渴<rt>ㄎㄜˇ</rt></ruby>", "<ruby>汗<rt>ㄏㄢˋ</rt></ruby><ruby>流<rt>ㄌㄧㄡˊ</rt></ruby><ruby>浹<rt>ㄐㄧㄚˊ</rt></ruby><ruby>背<rt>ㄅㄟˋ</rt></ruby>"],
+                explain: "比喻用空想來安慰自己，無法真正解決問題。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>這<rt>ㄓㄜˋ</rt></ruby><ruby>是<rt>ㄕˋ</rt></ruby><ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>準<rt>ㄓㄨㄣˇ</rt></ruby><ruby>備<rt>ㄅㄟˋ</rt></ruby><ruby>給<rt>ㄍㄟˇ</rt></ruby><ruby>媽<rt>ㄇㄚ</rt></ruby><ruby>媽<rt>˙ㄇㄚ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>生<rt>ㄕㄥ</rt></ruby><ruby>日<rt>ㄖˋ</rt></ruby><ruby>驚<rt>ㄐㄧㄥ</rt></ruby><ruby>喜<rt>ㄒㄧˇ</rt></ruby>，<ruby>你<rt>ㄋㄧˇ</rt></ruby><ruby>一<rt>ㄧˊ</rt></ruby><ruby>定<rt>ㄉㄧㄥˋ</rt></ruby><ruby>要<rt>ㄧㄠˋ</rt></ruby>（　），<ruby>千<rt>ㄑㄧㄢ</rt></ruby><ruby>萬<rt>ㄨㄢˋ</rt></ruby><ruby>不<rt>ㄅㄨˋ</rt></ruby><ruby>能<rt>ㄋㄥˊ</rt></ruby><ruby>說<rt>ㄕㄨㄛ</rt></ruby><ruby>出<rt>ㄔㄨ</rt></ruby><ruby>去<rt>ㄑㄩˋ</rt></ruby><ruby>喔<rt>ㄛ</rt></ruby>！",
+                ans: "守口如瓶",
+                options: ["<ruby>守<rt>ㄕㄡˇ</rt></ruby><ruby>口<rt>ㄎㄡˇ</rt></ruby><ruby>如<rt>ㄖㄨˊ</rt></ruby><ruby>瓶<rt>ㄆㄧㄥˊ</rt></ruby>", "<ruby>節<rt>ㄐㄧㄝˊ</rt></ruby><ruby>外<rt>ㄨㄞˋ</rt></ruby><ruby>生<rt>ㄕㄥ</rt></ruby><ruby>枝<rt>ㄓ</rt></ruby>"],
+                explain: "嚴守秘密，絕不洩漏半句話。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>你<rt>ㄋㄧˇ</rt></ruby><ruby>剛<rt>ㄍㄤ</rt></ruby><ruby>剛<rt>ㄍㄤ</rt></ruby><ruby>說<rt>ㄕㄨㄛ</rt></ruby><ruby>最<rt>ㄗㄨㄟˋ</rt></ruby><ruby>討<rt>ㄊㄠˇ</rt></ruby><ruby>厭<rt>ㄧㄢˋ</rt></ruby><ruby>吃<rt>ㄔ</rt></ruby><ruby>青<rt>ㄑㄧㄥ</rt></ruby><ruby>菜<rt>ㄘㄞˋ</rt></ruby>，<ruby>現<rt>ㄒㄧㄢˋ</rt></ruby><ruby>在<rt>ㄗㄞˋ</rt></ruby><ruby>又<rt>ㄧㄡˋ</rt></ruby><ruby>搶<rt>ㄑㄧㄤˇ</rt></ruby><ruby>著<rt>˙ㄓㄜ</rt></ruby><ruby>吃<rt>ㄔ</rt></ruby><ruby>青<rt>ㄑㄧㄥ</rt></ruby><ruby>花<rt>ㄏㄨㄚ</rt></ruby><ruby>菜<rt>ㄘㄞˋ</rt></ruby>，<ruby>這<rt>ㄓㄜˋ</rt></ruby><ruby>不<rt>ㄅㄨˊ</rt></ruby><ruby>是<rt>ㄕˋ</rt></ruby>（　）<ruby>嗎<rt>˙ㄇㄚ</rt></ruby>？",
+                ans: "自相矛盾",
+                options: ["<ruby>自<rt>ㄗˋ</rt></ruby><ruby>相<rt>ㄒㄧㄤ</rt></ruby><ruby>矛<rt>ㄇㄠˊ</rt></ruby><ruby>盾<rt>ㄉㄨㄣˋ</rt></ruby>", "<ruby>歡<rt>ㄏㄨㄢ</rt></ruby><ruby>欣<rt>ㄒㄧㄣ</rt></ruby><ruby>鼓<rt>ㄍㄨˇ</rt></ruby><ruby>舞<rt>ㄨˇ</rt></ruby>"],
+                explain: "自己的說話或行為前後互相抵觸。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>鄉<rt>ㄒㄧㄤ</rt></ruby><ruby>下<rt>ㄒㄧㄚˋ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>阿<rt>ㄚ</rt></ruby><ruby>公<rt>ㄍㄨㄥ</rt></ruby><ruby>阿<rt>ㄚ</rt></ruby><ruby>嬤<rt>ㄇㄚˋ</rt></ruby><ruby>生<rt>ㄕㄥ</rt></ruby><ruby>活<rt>ㄏㄨㄛˊ</rt></ruby><ruby>很<rt>ㄏㄣˇ</rt></ruby><ruby>節<rt>ㄐㄧㄝˊ</rt></ruby><ruby>儉<rt>ㄐㄧㄢˇ</rt></ruby>，<ruby>平<rt>ㄆㄧㄥˊ</rt></ruby><ruby>常<rt>ㄔㄤˊ</rt></ruby><ruby>只<rt>ㄓˇ</rt></ruby><ruby>吃<rt>ㄔ</rt></ruby>（　），<ruby>卻<rt>ㄑㄩㄝˋ</rt></ruby><ruby>覺<rt>ㄐㄩㄝˊ</rt></ruby><ruby>得<rt>˙ㄉㄜ</rt></ruby><ruby>很<rt>ㄏㄣˇ</rt></ruby><ruby>幸<rt>ㄒㄧㄥˋ</rt></ruby><ruby>福<rt>ㄈㄨˊ</rt></ruby>。",
+                ans: "粗茶淡飯",
+                options: ["<ruby>粗<rt>ㄘㄨ</rt></ruby><ruby>茶<rt>ㄔㄚˊ</rt></ruby><ruby>淡<rt>ㄉㄢˋ</rt></ruby><ruby>飯<rt>ㄈㄢˋ</rt></ruby>", "<ruby>價<rt>ㄐㄧㄚˋ</rt></ruby><ruby>值<rt>ㄓˊ</rt></ruby><ruby>連<rt>ㄌㄧㄢˊ</rt></ruby><ruby>城<rt>ㄔㄥˊ</rt></ruby>"],
+                explain: "簡單樸素的飲食，形容生活簡樸。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>聽<rt>ㄊㄧㄥ</rt></ruby><ruby>到<rt>ㄉㄠˋ</rt></ruby><ruby>明<rt>ㄇㄧㄥˊ</rt></ruby><ruby>天<rt>ㄊㄧㄢ</rt></ruby><ruby>要<rt>ㄧㄠˋ</rt></ruby><ruby>放<rt>ㄈㄤˋ</rt></ruby><ruby>假<rt>ㄐㄧㄚˋ</rt></ruby><ruby>去<rt>ㄑㄩˋ</rt></ruby><ruby>遊<rt>ㄧㄡˊ</rt></ruby><ruby>樂<rt>ㄌㄜˋ</rt></ruby><ruby>園<rt>ㄩㄢˊ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>消<rt>ㄒㄧㄠ</rt></ruby><ruby>息<rt>˙ㄒㄧ</rt></ruby>，<ruby>全<rt>ㄑㄩㄢˊ</rt></ruby><ruby>家<rt>ㄐㄧㄚ</rt></ruby><ruby>人<rt>ㄖㄣˊ</rt></ruby><ruby>都<rt>ㄉㄡ</rt></ruby>（　），<ruby>開<rt>ㄎㄞ</rt></ruby><ruby>心<rt>ㄒㄧㄣ</rt></ruby><ruby>極<rt>ㄐㄧˊ</rt></ruby><ruby>了<rt>˙ㄌㄜ</rt></ruby>。",
+                ans: "歡欣鼓舞",
+                options: ["<ruby>歡<rt>ㄏㄨㄢ</rt></ruby><ruby>欣<rt>ㄒㄧㄣ</rt></ruby><ruby>鼓<rt>ㄍㄨˇ</rt></ruby><ruby>舞<rt>ㄨˇ</rt></ruby>", "<ruby>望<rt>ㄨㄤˋ</rt></ruby><ruby>梅<rt>ㄇㄟˊ</rt></ruby><ruby>止<rt>ㄓˇ</rt></ruby><ruby>渴<rt>ㄎㄜˇ</rt></ruby>"],
+                explain: "形容非常高興、振奮的樣子。"
+            },
+            {
+                lesson: "生活成語",
+                q: "<ruby>爸<rt>ㄅㄚˋ</rt></ruby><ruby>爸<rt>˙ㄅㄚ</rt></ruby><ruby>在<rt>ㄗㄞˋ</rt></ruby><ruby>夜<rt>ㄧㄝˋ</rt></ruby><ruby>市<rt>ㄕˋ</rt></ruby><ruby>玩<rt>ㄨㄢˊ</rt></ruby><ruby>套<rt>ㄊㄠˋ</rt></ruby><ruby>圈<rt>ㄑㄩㄢ</rt></ruby><ruby>圈<rt>ㄑㄩㄢ</rt></ruby><ruby>超<rt>ㄔㄠ</rt></ruby><ruby>厲<rt>ㄌㄧˋ</rt></ruby><ruby>害<rt>ㄏㄞˋ</rt></ruby>，<ruby>幾<rt>ㄐㄧ</rt></ruby><ruby>乎<rt>ㄏㄨ</rt></ruby>（　），<ruby>贏<rt>ㄧㄥˊ</rt></ruby><ruby>回<rt>ㄏㄨㄟˊ</rt></ruby><ruby>好<rt>ㄏㄠˇ</rt></ruby><ruby>多<rt>ㄉㄨㄛ</rt></ruby><ruby>娃<rt>ㄨㄚˊ</rt></ruby><ruby>娃<rt>ㄨㄚˊ</rt></ruby>！",
+                ans: "百發百中",
+                options: ["<ruby>百<rt>ㄅㄞˇ</rt></ruby><ruby>發<rt>ㄈㄚ</rt></ruby><ruby>百<rt>ㄅㄞˇ</rt></ruby><ruby>中<rt>ㄓㄨㄥˋ</rt></ruby>", "<ruby>平<rt>ㄆㄧㄥˊ</rt></ruby><ruby>分<rt>ㄈㄣ</rt></ruby><ruby>秋<rt>ㄑㄧㄡ</rt></ruby><ruby>色<rt>ㄙㄜˋ</rt></ruby>"],
+                explain: "每一次投擲或射擊都命中目標，技術高超。"
             }
+        ];
+
+        // 🔍 火眼金睛找錯字題庫（水晶球逢第 9 題觸發：點中錯字後顯示正確字 5 秒過關）
+        const TYPO_QUEST_DB = [
+            { q: "我們一家人局住在這棟溫暖的大樓裡。", wrong: "局", correct: "居" },
+            { q: "可愛的小貓迷早上都會對著我喵喵叫。", wrong: "迷", correct: "咪" },
+            { q: "能和爸爸媽媽一起去旅行，真是太辛福了！", wrong: "辛", correct: "幸" },
+            { q: "週末去公園野餐，大家度過了偷快的一天。", wrong: "偷", correct: "愉" },
+            { q: "寒冷的各天來了，出門要記得穿厚外套。", wrong: "各", correct: "冬" },
+            { q: "春天和秋天都是我最喜歡的李節。", wrong: "李", correct: "季" },
+            { q: "請在門口稍持一下，媽媽馬上就出來。", wrong: "持", correct: "待" },
+            { q: "我期侍已久的校外教學終於要出發了！", wrong: "侍", correct: "待" },
+            { q: "冬天合歡山變冷了，有時候還會下雷呢！", wrong: "雷", correct: "雪" },
+            { q: "冬天到了，高山上覆蓋著一層厚厚的白電。", wrong: "電", correct: "雪" },
+            { q: "我一回到家就覺得非常口喝，一口氣喝光了一大杯開水。", wrong: "喝", correct: "渴" },
+            { q: "天空飛過一群黑色的鳥鴉，發出啞啞的叫聲。", wrong: "鳥", correct: "烏" },
+            { q: "桌上有一個裝滿漂亮花朵的玻璃花餅。", wrong: "餅", correct: "瓶" }
         ];
 
         const HOMOPHONE_QUEST_DB = [
@@ -3288,20 +3442,70 @@ const getCrystalBallSVG = (isActive) => `
                 unlockAudio();
                 let myData = this.appData[this.currentUser];
                 if (!myData.strokeTokens || myData.strokeTokens <= 0) return;
+
+                if (this.typoCountdownTimer) {
+                    clearInterval(this.typoCountdownTimer);
+                    this.typoCountdownTimer = null;
+                }
+                this.isTypoSolving = false;
                 
-                // 判斷是否為「第 10 題成語特別關卡」
+                // 判斷是否為「第 9 題找錯字」或「第 10 題成語特別關卡」
                 const solvedCount = (myData.crystalStreakCount || 0) + 1;
+                const isTypoQuest = (solvedCount % 10 === 9);
                 const isIdiomQuest = (solvedCount % 10 === 0);
 
                 const progressEl = document.getElementById('stroke-round-info');
                 const titleEl = document.querySelector('#stroke-modal h3');
+                const subtitleEl = document.getElementById('stroke-subtitle');
                 const feedbackEl = document.getElementById('stroke-feedback');
                 const optsContainer = document.getElementById('stroke-options');
-                if (feedbackEl) feedbackEl.innerHTML = '';
+                const qEl = document.getElementById('stroke-question');
+                if (feedbackEl) {
+                    feedbackEl.className = "text-red-500 text-lg md:text-xl font-bold mb-4 min-h-[1.75rem]";
+                    feedbackEl.innerHTML = '';
+                }
                 if (optsContainer) optsContainer.innerHTML = '';
 
-                if (isIdiomQuest) {
-                    // 🌟 出成語題
+                if (isTypoQuest) {
+                    // 🔍 出找錯字題（逢 9 觸發）
+                    this.isCurrentQuestTypo = true;
+                    this.isCurrentQuestIdiom = false;
+                    if (!myData.typoQuestPool || !Array.isArray(myData.typoQuestPool) || myData.typoQuestPool.length === 0) {
+                        myData.typoQuestPool = this.shuffleArray(Array.from({ length: TYPO_QUEST_DB.length }, (_, i) => i));
+                        this.saveData();
+                    }
+                    const typoIdx = myData.typoQuestPool[myData.typoQuestPool.length - 1];
+                    const quest = TYPO_QUEST_DB[typoIdx];
+                    this.currentStrokeAns = quest.wrong;
+                    this.currentStrokeQuest = quest;
+                    const targetWrongPos = quest.q.indexOf(quest.wrong);
+
+                    if (titleEl) titleEl.innerText = "🔍 火眼金睛找錯字！";
+                    if (subtitleEl) subtitleEl.innerText = "請直接點擊句子裡面藏著的【錯字】：";
+                    if (progressEl) progressEl.innerText = `第 ${solvedCount} 題特別關 · 找出 1 個錯字`;
+
+                    qEl.classList.remove('idiom-mode');
+                    qEl.classList.add('typo-mode');
+                    qEl.innerHTML = '';
+
+                    const chars = Array.from(quest.q);
+                    chars.forEach((ch, idx) => {
+                        if (/^[，。！？、；：「」『』（）\s]$/.test(ch)) {
+                            const span = document.createElement('span');
+                            span.innerText = ch;
+                            qEl.appendChild(span);
+                        } else {
+                            const charBtn = document.createElement('span');
+                            charBtn.className = 'typo-char-btn';
+                            charBtn.innerText = ch;
+                            charBtn.onclick = () => app.handleTypoCharClick(idx, targetWrongPos, charBtn, quest);
+                            qEl.appendChild(charBtn);
+                        }
+                    });
+                    optsContainer.className = "hidden";
+                } else if (isIdiomQuest) {
+                    // 🌟 出成語題（逢 10 觸發）
+                    this.isCurrentQuestTypo = false;
                     this.isCurrentQuestIdiom = true;
                     const idiomPool = myData.idiomQuestPool && myData.idiomQuestPool.length > 0 ? 
                         myData.idiomQuestPool : [...Array(IDIOM_QUEST_DB.length).keys()].sort(() => Math.random() - 0.5);
@@ -3312,10 +3516,11 @@ const getCrystalBallSVG = (isActive) => `
                     this.currentStrokeQuest = quest;
 
                     if (titleEl) titleEl.innerText = "🌟 水晶球成語大挑戰！";
+                    if (subtitleEl) subtitleEl.innerText = "選出（　）裡最適合的成語：";
                     if (progressEl) progressEl.innerText = `第 ${solvedCount} 題特別加碼關 · 全注音二選一`;
 
                     const formattedQ = quest.q.replace(/（[　\s]*）/g, '<span class="crystal-blank">？</span>');
-                    const qEl = document.getElementById('stroke-question');
+                    qEl.classList.remove('typo-mode');
                     qEl.classList.add('idiom-mode');
                     qEl.innerHTML = formattedQ;
 
@@ -3334,6 +3539,7 @@ const getCrystalBallSVG = (isActive) => `
                     });
                 } else {
                     // 🔮 一般同音字選字題
+                    this.isCurrentQuestTypo = false;
                     this.isCurrentQuestIdiom = false;
                     const pool = this.getCrystalQuestPool(myData);
                     const questIdx = pool[pool.length - 1];
@@ -3344,11 +3550,11 @@ const getCrystalBallSVG = (isActive) => `
                     this.currentStrokeQuest = quest;
 
                     if (titleEl) titleEl.innerText = "水晶球同音選字魔法";
-                    if (progressEl) progressEl.innerText = `第 ${myData.crystalRound || 1} 輪 · 剩餘 ${pool.length} 題 (逢 10 出成語)`;
+                    if (subtitleEl) subtitleEl.innerText = "選出（　）裡最適合的正確國字：";
+                    if (progressEl) progressEl.innerText = `第 ${myData.crystalRound || 1} 輪 · 剩餘 ${pool.length} 題 (逢 9 找錯字 · 逢 10 出成語)`;
 
                     const formattedQ = quest.q.replace(/（[　\s]*）/g, '<span class="crystal-blank">？</span>');
-                    const qEl = document.getElementById('stroke-question');
-                    qEl.classList.remove('idiom-mode');
+                    qEl.classList.remove('idiom-mode', 'typo-mode');
                     qEl.innerHTML = formattedQ;
 
                     optsContainer.className = "grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 mb-4";
@@ -3366,10 +3572,90 @@ const getCrystalBallSVG = (isActive) => `
                 toggleModal('stroke-modal', true);
             },
 
+            handleTypoCharClick: function(clickedIdx, targetWrongPos, charEl, quest) {
+                if (this.isTypoSolving) return;
+                const feedback = document.getElementById('stroke-feedback');
+
+                if (clickedIdx === targetWrongPos) {
+                    // 🎉 點中錯字！旁邊亮出正確字 5 秒後過關
+                    this.isTypoSolving = true;
+                    this.playCookieSound();
+
+                    charEl.classList.remove('typo-char-btn');
+                    charEl.classList.add('typo-wrong-fixed');
+                    const correctBadge = document.createElement('span');
+                    correctBadge.className = 'typo-correct-pop';
+                    correctBadge.innerText = quest.correct;
+                    charEl.insertAdjacentElement('afterend', correctBadge);
+
+                    let secLeft = 5;
+                    if (feedback) {
+                        feedback.className = "text-emerald-600 text-lg md:text-xl font-black mb-4 min-h-[1.75rem]";
+                        feedback.innerText = `✅ 找到了！正確字是「${quest.correct}」(${secLeft}秒後過關...)`;
+                    }
+
+                    this.typoCountdownTimer = setInterval(() => {
+                        secLeft--;
+                        if (secLeft > 0) {
+                            if (feedback) feedback.innerText = `✅ 找到了！正確字是「${quest.correct}」(${secLeft}秒後過關...)`;
+                        } else {
+                            clearInterval(this.typoCountdownTimer);
+                            this.typoCountdownTimer = null;
+                            this.completeTypoQuest(quest);
+                        }
+                    }, 1000);
+                } else {
+                    // 輕微提醒：這個字沒有寫錯喔
+                    charEl.classList.add('bg-red-100');
+                    setTimeout(() => charEl.classList.remove('bg-red-100'), 450);
+                    if (feedback) {
+                        feedback.className = "text-red-500 text-lg md:text-xl font-bold mb-4 min-h-[1.75rem]";
+                        feedback.innerText = `「${charEl.innerText}」字沒有寫錯喔，再找找看！`;
+                    }
+                }
+            },
+
+            completeTypoQuest: function(quest) {
+                let myData = this.appData[this.currentUser];
+                if (!myData) return;
+
+                myData.strokeTokens = Math.max(0, (myData.strokeTokens || 0) - 1);
+                myData.crystalStreakCount = (myData.crystalStreakCount || 0) + 1;
+                if (myData.typoQuestPool && myData.typoQuestPool.length > 0) {
+                    myData.typoQuestPool.pop();
+                }
+
+                const cookiesEarned = 2;
+                myData.cookies = (myData.cookies || 0) + cookiesEarned;
+                this.saveData();
+
+                this.fireConfetti(true);
+                this.playMasterySound();
+                toggleModal('stroke-modal', false);
+                this.isTypoSolving = false;
+
+                const modalMsg = `火眼金睛抓出錯字「<b class="text-red-500 line-through">${quest.wrong}</b>」➔ 正確是「<b class="text-emerald-600 text-2xl">${quest.correct}</b>」！<br><br><span class="text-amber-600 font-bold text-xl">獲得 2 塊餅乾！🍪🍪</span>`;
+                this.showModal('找錯字成功！🔍✨', modalMsg, '🔍');
+                this.roomSpeech(`抓到錯字！🔍\n(+${cookiesEarned} 餅乾 🍪)`, "mega");
+                this.showStats();
+            },
+
             deferStrokeQuest: function() {
                 // 稍後再試
+                if (this.typoCountdownTimer) {
+                    clearInterval(this.typoCountdownTimer);
+                    this.typoCountdownTimer = null;
+                }
+                this.isTypoSolving = false;
+
                 let myData = this.appData[this.currentUser];
-                if (this.isCurrentQuestIdiom) {
+                if (this.isCurrentQuestTypo) {
+                    if (myData && myData.typoQuestPool && myData.typoQuestPool.length > 1) {
+                        const skipped = myData.typoQuestPool.pop();
+                        myData.typoQuestPool.unshift(skipped);
+                        this.saveData();
+                    }
+                } else if (this.isCurrentQuestIdiom) {
                     if (myData && myData.idiomQuestPool && myData.idiomQuestPool.length > 1) {
                         const skipped = myData.idiomQuestPool.pop();
                         myData.idiomQuestPool.unshift(skipped);
