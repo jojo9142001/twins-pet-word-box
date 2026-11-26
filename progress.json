@@ -2748,7 +2748,7 @@
         "mastered": 0
       },
       "cookies": 1202,
-      "drinks": 65,
+      "drinks": 66,
       "mathTokens": 641,
       "correctStreak": 0,
       "lastPetUpdate": 1795698310924,
@@ -6017,10 +6017,10 @@
         "mastered": 0
       },
       "cookies": 1570,
-      "drinks": 35,
-      "mathTokens": 534,
+      "drinks": 36,
+      "mathTokens": 533,
       "correctStreak": 0,
-      "lastPetUpdate": 1795698722256,
+      "lastPetUpdate": 1795698897574,
       "activePoops": 0,
       "petName": "Doggy",
       "poopCounter": 4,
@@ -6268,5 +6268,5 @@
       "starsSpentOnJokes": 2
     }
   },
-  "updatedAt": 1795698764677
+  "updatedAt": 1795698900082
 }
