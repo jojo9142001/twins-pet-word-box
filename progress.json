@@ -6243,12 +6243,12 @@
       "crystalRound": 1,
       "crystalStreakCount": 209,
       "idiomQuestPool": [
+        19,
         4,
         24,
         11,
         20,
-        12,
-        19
+        12
       ],
       "unlockedJokes": [
         "joke_01",
@@ -6270,5 +6270,5 @@
       ]
     }
   },
-  "updatedAt": 1795699200267
+  "updatedAt": 1795699212815
 }
