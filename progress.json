@@ -6025,7 +6025,7 @@
       "petName": "Doggy",
       "poopCounter": 4,
       "gems": 2,
-      "stars": 8,
+      "stars": 7,
       "mathCounter": 1,
       "strokeCounter": 0,
       "strokeTokens": 196,
@@ -6262,10 +6262,11 @@
         21
       ],
       "unlockedJokes": [
-        "joke_01"
+        "joke_01",
+        "joke_02"
       ],
-      "starsSpentOnJokes": 1
+      "starsSpentOnJokes": 2
     }
   },
-  "updatedAt": 1795698758669
+  "updatedAt": 1795698764677
 }
