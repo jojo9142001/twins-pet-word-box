@@ -2771,7 +2771,7 @@
       "drinks": 70,
       "mathTokens": 649,
       "correctStreak": 0,
-      "lastPetUpdate": 1795832782547,
+      "lastPetUpdate": 1795832800481,
       "activePoops": 0,
       "mathCounter": 1,
       "strokeCounter": 3,
@@ -2798,6 +2798,7 @@
       "lastResetMonth": "2026-11",
       "screenSessions": {},
       "crystalQuestPool": [
+        37,
         398,
         27,
         326,
@@ -3134,8 +3135,7 @@
         88,
         206,
         397,
-        76,
-        37
+        76
       ],
       "crystalRound": 1,
       "crystalStreakCount": 47,
@@ -6280,5 +6280,5 @@
       ]
     }
   },
-  "updatedAt": 1795832788329
+  "updatedAt": 1795832802561
 }
