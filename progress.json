@@ -5837,7 +5837,7 @@
         },
         "w_28_write_char": {
           "box": 2,
-          "nextReview": "2026-11-28"
+          "nextReview": "2026-12-01"
         },
         "w_30_write_char": {
           "box": 3,
@@ -6226,5 +6226,5 @@
       ]
     }
   },
-  "updatedAt": 1795830113180
+  "updatedAt": 1795830161898
 }
