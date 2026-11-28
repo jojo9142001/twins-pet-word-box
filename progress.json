@@ -2767,15 +2767,15 @@
         "totalPracticed": 0,
         "mastered": 0
       },
-      "cookies": 1226,
+      "cookies": 1228,
       "drinks": 70,
       "mathTokens": 649,
       "correctStreak": 0,
-      "lastPetUpdate": 1795832800481,
+      "lastPetUpdate": 1795832804968,
       "activePoops": 0,
       "mathCounter": 1,
       "strokeCounter": 3,
-      "strokeTokens": 237,
+      "strokeTokens": 236,
       "poopCounter": 0,
       "gems": 2,
       "stars": 7,
@@ -3134,11 +3134,10 @@
         209,
         88,
         206,
-        397,
-        76
+        397
       ],
       "crystalRound": 1,
-      "crystalStreakCount": 47,
+      "crystalStreakCount": 48,
       "idiomQuestPool": [
         12,
         3,
@@ -3167,7 +3166,22 @@
         "joke_01",
         "joke_02"
       ],
-      "starsSpentOnJokes": 2
+      "starsSpentOnJokes": 2,
+      "typoQuestPool": [
+        6,
+        11,
+        0,
+        9,
+        7,
+        10,
+        5,
+        12,
+        1,
+        4,
+        8,
+        2,
+        3
+      ]
     },
     "Ian": {
       "wordsProgress": {
@@ -6280,5 +6294,5 @@
       ]
     }
   },
-  "updatedAt": 1795832802561
+  "updatedAt": 1795832807341
 }
